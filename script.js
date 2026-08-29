@@ -35,11 +35,37 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion || !('IntersectionObserver' in window)) return;
 
+  const animateCounter = (element) => {
+    if (element.dataset.counted) return;
+    element.dataset.counted = 'true';
+    const from = Number(element.dataset.countFrom);
+    const to = Number(element.dataset.countTo);
+    const suffix = element.dataset.countSuffix || '';
+    const duration = Math.min(1600, 900 + Math.abs(to - from) * 8);
+    const started = performance.now();
+    let previous;
+    element.classList.add('is-counting');
+
+    const update = (now) => {
+      const progress = Math.min(1, (now - started) / duration);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const next = Math.round(from + (to - from) * eased);
+      if (next !== previous) element.textContent = `${next}${suffix}`;
+      previous = next;
+      if (progress < 1) return requestAnimationFrame(update);
+      element.textContent = `${to}${suffix}`;
+      element.classList.remove('is-counting');
+    };
+
+    requestAnimationFrame(update);
+  };
+
   document.documentElement.classList.add('reveal-enabled');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       entry.target.classList.add('is-visible');
+      entry.target.querySelectorAll('[data-count-to]').forEach(animateCounter);
       observer.unobserve(entry.target);
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });

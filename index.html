@@ -13,8 +13,8 @@
     <meta property="og:image" content="assets/ce-portrait-hero.webp">
     <title>Claudia Effertz | Die Brückenbauerin</title>
     <link rel="preload" href="assets/ce-portrait-hero.webp" as="image" fetchpriority="high">
-    <link rel="stylesheet" href="styles.css?v=20260829-2">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20260829-3">
+    <script src="script.js?v=20260829-3" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -63,7 +63,6 @@
       <section class="hero" id="start" aria-labelledby="hero-title">
         <div class="shell hero__grid">
           <div class="hero__copy" data-reveal>
-            <p class="eyebrow">Claudia Effertz | Die Brückenbauerin</p>
             <h1 id="hero-title"><span>Vom Verstehen</span><span>zur Veränderung.</span></h1>
             <p class="hero__lead">Ich verbinde Menschen, Perspektiven und Möglichkeiten und mache aus komplexen Situationen tragfähige nächste Schritte.</p>
             <div class="actions">
@@ -88,10 +87,10 @@
           </div>
         </div>
         <dl class="shell facts" aria-label="Erfahrung und Arbeitsweise">
-          <div data-reveal><dt>21</dt><dd>erste Führungsaufgabe</dd></div>
-          <div data-reveal><dt>1999</dt><dd>Start in die Selbstständigkeit</dd></div>
-          <div data-reveal><dt>30+</dt><dd>Jahre Begleitung</dd></div>
-          <div data-reveal><dt>Tausende</dt><dd>begleitete Menschen</dd></div>
+          <div data-reveal><dt data-count-from="0" data-count-to="21" aria-label="21">21</dt><dd>erste Führungsaufgabe</dd></div>
+          <div data-reveal><dt data-count-from="2026" data-count-to="1999" aria-label="1999">1999</dt><dd>Start in die Selbstständigkeit</dd></div>
+          <div data-reveal><dt data-count-from="0" data-count-to="30" data-count-suffix="+" aria-label="mehr als 30">30+</dt><dd>Jahre Begleitung</dd></div>
+          <div data-reveal><dt class="facts__word">Tausende</dt><dd>begleitete Menschen</dd></div>
         </dl>
       </section>
 
@@ -101,14 +100,19 @@
             <h2 id="method-title">Aus Einsicht wird Bewegung.</h2>
             <p>Sechs Schritte geben Veränderung eine klare Richtung.</p>
           </header>
-          <ol class="method__list">
-            <li data-reveal><strong>Verstehen</strong><span>Zusammenhänge, Bedürfnisse und Dynamiken erkennen.</span></li>
-            <li data-reveal><strong>Verbinden</strong><span>Menschen, Perspektiven und Ressourcen zusammenbringen.</span></li>
-            <li data-reveal><strong>Entwickeln</strong><span>Tragfähige Ideen und Lösungswege gestalten.</span></li>
-            <li data-reveal><strong>Befähigen</strong><span>Verantwortung, Kompetenz und Zuversicht stärken.</span></li>
-            <li data-reveal><strong>Umsetzen</strong><span>Aus Entscheidungen konkrete nächste Schritte machen.</span></li>
-            <li data-reveal><strong>Verankern</strong><span>Wirkung im Alltag und in der Organisation sichern.</span></li>
-          </ol>
+          <div class="method__layout">
+            <figure class="method__media" data-reveal>
+              <img src="assets/ce-collaboration.webp" width="1536" height="1024" alt="Hände ordnen Karten rund um ein kleines Brückenmodell" loading="lazy" decoding="async">
+            </figure>
+            <ol class="method__list">
+              <li data-reveal><strong>Verstehen</strong><span>Zusammenhänge, Bedürfnisse und Dynamiken erkennen.</span></li>
+              <li data-reveal><strong>Verbinden</strong><span>Menschen, Perspektiven und Ressourcen zusammenbringen.</span></li>
+              <li data-reveal><strong>Entwickeln</strong><span>Tragfähige Ideen und Lösungswege gestalten.</span></li>
+              <li data-reveal><strong>Befähigen</strong><span>Verantwortung, Kompetenz und Zuversicht stärken.</span></li>
+              <li data-reveal><strong>Umsetzen</strong><span>Aus Entscheidungen konkrete nächste Schritte machen.</span></li>
+              <li data-reveal><strong>Verankern</strong><span>Wirkung im Alltag und in der Organisation sichern.</span></li>
+            </ol>
+          </div>
         </div>
       </section>
 
@@ -138,7 +142,6 @@
             </picture>
           </figure>
           <div class="book__copy" data-reveal>
-            <p class="eyebrow">Buch &amp; Brückenbauer-Edition</p>
             <h2 id="book-title">24 Impulse für Führung und Veränderung.</h2>
             <p>Das Buch verbindet Metaphern, Geschichten und Perspektivwechsel. Die Edition ergänzt es um Brückenkarten, Workbook und 24 Audio-Impulse.</p>
             <dl class="book__facts">
@@ -189,9 +192,14 @@
             <p>Der Podcast bringt Erfahrungen, Zweifel und Ideen aus Wirtschaft, Wissenschaft, Medizin, Politik, Gesellschaft, Sport und Kultur zusammen.</p>
               <p class="platforms"><span>Spotify</span><span>Apple Podcasts</span><span>YouTube</span><span>LinkedIn</span></p>
           </div>
-          <blockquote class="podcast__statement" data-reveal>
-            <p>„Menschen und ihre Erfahrungen öffnen neue Perspektiven.“</p>
-          </blockquote>
+          <div class="podcast__visual" data-reveal>
+            <figure class="podcast__media">
+              <img src="assets/ce-podcast-dialogue.webp" width="1448" height="1086" alt="Zwei Mikrofone und Kopfhörer an einem Tisch mit einem kleinen Brückenobjekt" loading="lazy" decoding="async">
+            </figure>
+            <blockquote class="podcast__statement">
+              <p>„Menschen und ihre Erfahrungen öffnen neue Perspektiven.“</p>
+            </blockquote>
+          </div>
         </div>
       </section>
 
@@ -244,7 +252,6 @@
       <section class="section contact" id="kontakt" aria-labelledby="contact-title">
         <div class="shell contact__grid">
           <div data-reveal>
-            <p class="eyebrow">Kontakt</p>
             <h2 id="contact-title">Welche Brücke möchten Sie bauen?</h2>
             <p>Für Vorträge, Coaching, Organisationsentwicklung, Buch &amp; Edition oder eine erste gemeinsame Klärung.</p>
           </div>
