@@ -31,9 +31,9 @@
     item.textContent = new Date().getFullYear();
   });
 
-  const items = [...document.querySelectorAll('[data-reveal]')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion || !('IntersectionObserver' in window)) return;
+  const supportsObserver = 'IntersectionObserver' in window;
+  const counters = [...document.querySelectorAll('[data-count-to]')];
 
   const animateCounter = (element) => {
     if (element.dataset.counted) return;
@@ -41,7 +41,7 @@
     const from = Number(element.dataset.countFrom);
     const to = Number(element.dataset.countTo);
     const suffix = element.dataset.countSuffix || '';
-    const duration = Math.min(1600, 900 + Math.abs(to - from) * 8);
+    const duration = reduceMotion ? 450 : Math.min(1600, 900 + Math.abs(to - from) * 8);
     const started = performance.now();
     let previous;
     element.classList.add('is-counting');
@@ -60,12 +60,32 @@
     requestAnimationFrame(update);
   };
 
+  counters.forEach((element) => {
+    element.textContent = `${element.dataset.countFrom}${element.dataset.countSuffix || ''}`;
+  });
+
+  if (supportsObserver) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.35 });
+
+    counters.forEach((counter) => counterObserver.observe(counter));
+  } else {
+    counters.forEach(animateCounter);
+  }
+
+  if (reduceMotion || !supportsObserver) return;
+
+  const items = [...document.querySelectorAll('[data-reveal]')];
   document.documentElement.classList.add('reveal-enabled');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       entry.target.classList.add('is-visible');
-      entry.target.querySelectorAll('[data-count-to]').forEach(animateCounter);
       observer.unobserve(entry.target);
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
