@@ -35,6 +35,40 @@
   const supportsObserver = 'IntersectionObserver' in window;
   const counters = [...document.querySelectorAll('[data-count-to]')];
 
+  const connection = document.querySelector('[data-living-connection]');
+  const hero = document.querySelector('.hero');
+  if (connection && hero && !reduceMotion) {
+    const lines = [...connection.querySelectorAll('.hero__connection-line')];
+    const pulse = connection.querySelector('.hero__connection-pulse');
+    let connectionFrame;
+
+    const updateConnection = () => {
+      const heroRect = hero.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, -heroRect.top / Math.max(1, heroRect.height * .72)));
+      const shifts = [-18, 14, -10];
+      const baseOpacity = [.28, .7, .43];
+
+      lines.forEach((line, index) => {
+        const x = progress * shifts[index];
+        const y = progress * (10 + index * 3);
+        line.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        line.style.opacity = String(baseOpacity[index] * (1 - progress * .42));
+      });
+      if (pulse) pulse.style.transform = `translate3d(${progress * shifts[1]}px, ${progress * 13}px, 0)`;
+      connection.style.opacity = String(1 - progress * .28);
+      connectionFrame = undefined;
+    };
+
+    const requestConnectionUpdate = () => {
+      if (connectionFrame) return;
+      connectionFrame = requestAnimationFrame(updateConnection);
+    };
+
+    addEventListener('scroll', requestConnectionUpdate, { passive: true });
+    addEventListener('resize', requestConnectionUpdate);
+    requestConnectionUpdate();
+  }
+
   const animateCounter = (element) => {
     if (element.dataset.counted) return;
     element.dataset.counted = 'true';
