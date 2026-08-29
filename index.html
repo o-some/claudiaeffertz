@@ -132,7 +132,10 @@
       <section class="section book" id="buch" aria-labelledby="book-title">
         <div class="shell book__grid">
           <figure class="book__media" data-reveal>
-            <img src="assets/ce-book-bridge.webp" width="900" height="1125" alt="Neutrales dunkelblaues Buch neben einem kleinen goldenen Brückenobjekt" loading="lazy">
+            <picture>
+              <source media="(max-width: 640px)" srcset="assets/ce-book-bridge-mobile.webp">
+              <img src="assets/ce-book-bridge.webp" width="900" height="1125" alt="Neutrales dunkelblaues Buch neben einem kleinen goldenen Brückenobjekt" loading="lazy">
+            </picture>
           </figure>
           <div class="book__copy" data-reveal>
             <p class="eyebrow">Buch &amp; Brückenbauer-Edition</p>
