@@ -61,6 +61,11 @@
   };
 
   counters.forEach((element) => {
+    if (reduceMotion) {
+      element.textContent = `${element.dataset.countTo}${element.dataset.countSuffix || ''}`;
+      element.dataset.counted = 'true';
+      return;
+    }
     element.textContent = `${element.dataset.countFrom}${element.dataset.countSuffix || ''}`;
   });
 
