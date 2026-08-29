@@ -1,19 +1,20 @@
-# Claudia Effertz Shopify-Theme
+# Claudia Effertz Website
 
-Shopify-Theme für [claudia-effertz.de](https://www.claudia-effertz.de), umgesetzt im Chelonaki-App-Factory-Workflow auf Basis des vorhandenen Dawn-Themes.
+Eigenständige statische Website für Claudia Effertz. Kein Shopify, kein Framework und keine Build-Abhängigkeiten.
 
-## Inhalt
+## Dateien
 
-- Startseite mit Claudias Positionierung, Angeboten, Buchprojekt, Ausbildungen, Podcast, Engagement und Kontakt
-- Markenfarben, Typografie und Brückenmotiv aus dem CI-Playbook
-- Responsive Navigation, Kontaktformular, Shop- und Warenkorb-Grundfunktionen
-- Barrierearme Fokuszustände und reduzierte Bewegung bei entsprechender Systemeinstellung
+- `index.html` enthält Struktur, Inhalte, SEO und strukturierte Personendaten.
+- `styles.css` enthält das responsive Marken- und Dark-Mode-Design.
+- `script.js` steuert das mobile Menü und dezente Einblendungen.
+- `assets/` enthält Claudias optimiertes Originalporträt und ein neutrales, markenkonformes Buchmotiv.
 
-## Entwicklung
+## Lokal ansehen
 
-```sh
-shopify theme check
-shopify theme dev --store <shop-domain>
-```
+`index.html` direkt im Browser öffnen oder einen beliebigen statischen Webserver verwenden.
 
-GitHub ist die einzige Quelle für Änderungen und Veröffentlichungen. Die produktive Veröffentlichung erfolgt ausschließlich über den bestehenden GitHub-/Shopify-Workflow.
+## Veröffentlichung
+
+Die Website wird über GitHub Pages aus dem Branch `main` veröffentlicht. GitHub ist die einzige Quelle für Änderungen und Deployments.
+
+Die GitHub-Pages-Vorschau bleibt mit `noindex` gekennzeichnet, bis Impressum, Datenschutz und die endgültige Domainaufschaltung bestätigt sind.

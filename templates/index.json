@@ -1,9 +1,0 @@
-{
-  "sections": {
-    "ce_home": {
-      "type": "ce-home",
-      "settings": {}
-    }
-  },
-  "order": ["ce_home"]
-}
