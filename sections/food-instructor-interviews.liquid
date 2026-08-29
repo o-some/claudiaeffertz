@@ -1,0 +1,200 @@
+{% comment %} Food Instructor · Modulare Interview-Videos · v1.0 {% endcomment %}
+
+<style>
+  #FiInterviews-{{ section.id }} {
+    --fii-bg: {{ section.settings.background }};
+    --fii-card: {{ section.settings.card_background }};
+    --fii-heading: {{ section.settings.heading_color }};
+    --fii-text: {{ section.settings.text_color }};
+    --fii-accent: {{ section.settings.accent_color }};
+    --fii-border: {{ section.settings.border_color }};
+    display: block;
+    width: 100%;
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: var(--fii-bg);
+    color: var(--fii-text);
+  }
+  #FiInterviews-{{ section.id }} * { box-sizing: border-box; }
+  #FiInterviews-{{ section.id }} .fii-wrap { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
+  #FiInterviews-{{ section.id }} .fii-head { max-width: 760px; margin: 0 auto 36px; text-align: center; }
+  #FiInterviews-{{ section.id }} .fii-eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--fii-accent); font-size: 12px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+  #FiInterviews-{{ section.id }} .fii-eyebrow::before,
+  #FiInterviews-{{ section.id }} .fii-eyebrow::after { content: ""; width: 24px; height: 1px; background: currentColor; opacity: .65; }
+  #FiInterviews-{{ section.id }} h2 { margin: 12px 0 0; color: var(--fii-heading); font-family: var(--fi-font-heading, Georgia, serif); font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 400; line-height: 1.08; }
+  #FiInterviews-{{ section.id }} h2 em { color: var(--fii-accent); }
+  #FiInterviews-{{ section.id }} .fii-intro { margin: 15px auto 0; max-width: 680px; font-size: 16px; line-height: 1.7; }
+  #FiInterviews-{{ section.id }} .fii-grid { display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr)); gap: {{ section.settings.gap }}px; }
+  #FiInterviews-{{ section.id }} .fii-card { min-width: 0; overflow: hidden; border: 1px solid var(--fii-border); border-radius: {{ section.settings.radius }}px; background: var(--fii-card); box-shadow: 0 22px 55px -45px rgba(20,37,25,.65); transition: transform .25s ease, box-shadow .25s ease; }
+  #FiInterviews-{{ section.id }} .fii-card:hover { transform: translateY(-4px); box-shadow: 0 28px 65px -42px rgba(20,37,25,.72); }
+  #FiInterviews-{{ section.id }} .fii-trigger { position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; padding: 0; overflow: hidden; border: 0; background: #142519; color: #fff; cursor: pointer; }
+  #FiInterviews-{{ section.id }} .fii-poster { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform .5s cubic-bezier(.2,.75,.2,1), opacity .3s ease; }
+  #FiInterviews-{{ section.id }} .fii-trigger::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(8,24,15,.55)); }
+  #FiInterviews-{{ section.id }} .fii-card:hover .fii-poster { transform: scale(1.035); opacity: .94; }
+  #FiInterviews-{{ section.id }} .fii-play { position: absolute; z-index: 2; inset: 50% auto auto 50%; display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid rgba(255,255,255,.76); border-radius: 50%; background: color-mix(in srgb, var(--fii-accent) 42%, transparent); color: #10291d; box-shadow: 0 8px 24px rgba(0,0,0,.16); backdrop-filter: blur(2px); transform: translate(-50%,-50%); transition: transform .2s ease, background .2s ease; }
+  #FiInterviews-{{ section.id }} .fii-play svg { width: 21px; margin-left: 3px; }
+  #FiInterviews-{{ section.id }} .fii-trigger:hover .fii-play { transform: translate(-50%,-50%) scale(1.07); background: color-mix(in srgb, var(--fii-accent) 68%, transparent); }
+  #FiInterviews-{{ section.id }} .fii-body { padding: 20px 22px 22px; }
+  #FiInterviews-{{ section.id }} .fii-body h3 { margin: 0; color: var(--fii-heading); font-family: var(--fi-font-heading, Georgia, serif); font-size: 21px; font-weight: 500; line-height: 1.25; }
+  #FiInterviews-{{ section.id }} .fii-meta { margin: 7px 0 0; color: var(--fii-text); font-size: 13px; line-height: 1.5; opacity: .82; }
+  #FiInterviews-{{ section.id }} .fii-description { margin: 12px 0 0; color: var(--fii-text); font-size: 14px; line-height: 1.65; }
+  #FiInterviews-{{ section.id }} .fii-description > :first-child { margin-top: 0; }
+  #FiInterviews-{{ section.id }} .fii-description > :last-child { margin-bottom: 0; }
+  #FiInterviews-{{ section.id }} .fii-dialog { width: min(960px, calc(100% - 28px)); max-width: none; padding: 0; overflow: visible; border: 0; border-radius: 20px; background: #07150d; box-shadow: 0 30px 90px rgba(0,0,0,.45); }
+  #FiInterviews-{{ section.id }} .fii-dialog::backdrop { background: rgba(7,18,11,.78); backdrop-filter: blur(7px); }
+  #FiInterviews-{{ section.id }} .fii-player { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 20px; }
+  #FiInterviews-{{ section.id }} .fii-player video { display: block; width: 100%; height: 100%; background: #000; object-fit: contain; }
+  #FiInterviews-{{ section.id }} .fii-close { position: absolute; z-index: 2; top: -14px; right: -14px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid rgba(255,255,255,.32); border-radius: 50%; background: #fffdf8; color: #142519; cursor: pointer; box-shadow: 0 8px 22px rgba(0,0,0,.2); }
+  #FiInterviews-{{ section.id }} .fii-close svg { width: 18px; }
+  @media (max-width: 990px) { #FiInterviews-{{ section.id }} .fii-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 680px) {
+    #FiInterviews-{{ section.id }} { padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px; }
+    #FiInterviews-{{ section.id }} .fii-wrap { width: min(100% - 28px, 1240px); }
+    #FiInterviews-{{ section.id }} .fii-head { margin-bottom: 25px; }
+    #FiInterviews-{{ section.id }} .fii-grid { grid-template-columns: 1fr; gap: 16px; }
+    #FiInterviews-{{ section.id }} .fii-body { padding: 17px 18px 19px; }
+    #FiInterviews-{{ section.id }} .fii-play { width: 48px; height: 48px; }
+    #FiInterviews-{{ section.id }} .fii-close { top: 8px; right: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #FiInterviews-{{ section.id }} .fii-card, #FiInterviews-{{ section.id }} .fii-poster, #FiInterviews-{{ section.id }} .fii-play { transition: none; } }
+</style>
+
+<fi-interviews id="FiInterviews-{{ section.id }}" data-fi-reveal-scope>
+  <div class="fii-wrap">
+    <header class="fii-head fi-reveal">
+      {% if section.settings.eyebrow != blank %}<span class="fii-eyebrow">{{ section.settings.eyebrow | escape }}</span>{% endif %}
+      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+      {% if section.settings.intro != blank %}<div class="fii-intro rte">{{ section.settings.intro }}</div>{% endif %}
+    </header>
+
+    <div class="fii-grid" role="list">
+      {% for block in section.blocks %}
+        <article class="fii-card fi-reveal" role="listitem" {{ block.shopify_attributes }}>
+          <button class="fii-trigger" type="button" data-fii-open data-video-url="{{ block.settings.video_url | escape }}" data-video-title="{{ block.settings.name | escape }}" aria-label="Interview mit {{ block.settings.name | escape }} abspielen">
+            {% if block.settings.poster != blank %}
+              {{ block.settings.poster | image_url: width: 1200 | image_tag: class: 'fii-poster', loading: 'lazy', widths: '420,640,900,1200', sizes: '(max-width: 680px) 100vw, (max-width: 990px) 50vw, 33vw', alt: block.settings.name }}
+            {% elsif block.settings.poster_url != blank %}
+              <img class="fii-poster" src="{{ block.settings.poster_url | escape }}" loading="lazy" width="900" height="563" alt="{{ block.settings.name | escape }}">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'fii-poster placeholder-svg' }}
+            {% endif %}
+            <span class="fii-play" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8 5.5v13l10-6.5-10-6.5Z" fill="currentColor"/></svg></span>
+          </button>
+          <div class="fii-body">
+            <h3>{{ block.settings.name | escape }}</h3>
+            {% if block.settings.subtitle != blank %}<p class="fii-meta">{{ block.settings.subtitle | escape }}</p>{% endif %}
+            {% if block.settings.description != blank %}<div class="fii-description rte">{{ block.settings.description }}</div>{% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <dialog class="fii-dialog" data-fii-dialog aria-label="Interview-Video">
+    <button class="fii-close" type="button" data-fii-close aria-label="Video schließen"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="fii-player" data-fii-player></div>
+  </dialog>
+</fi-interviews>
+
+<script>
+if (!customElements.get('fi-interviews')) customElements.define('fi-interviews', class extends HTMLElement {
+  connectedCallback() {
+    if (this.ready) return;
+    this.ready = true;
+    this.dialog = this.querySelector('[data-fii-dialog]');
+    this.player = this.querySelector('[data-fii-player]');
+    this.lastTrigger = null;
+    this.onClick = (event) => {
+      const trigger = event.target.closest('[data-fii-open]');
+      if (trigger && this.contains(trigger)) this.openVideo(trigger);
+      if (event.target.closest('[data-fii-close]')) this.closeVideo();
+    };
+    this.onDialogClick = (event) => { if (event.target === this.dialog) this.closeVideo(); };
+    this.onCancel = (event) => { event.preventDefault(); this.closeVideo(); };
+    this.addEventListener('click', this.onClick);
+    this.dialog?.addEventListener('click', this.onDialogClick);
+    this.dialog?.addEventListener('cancel', this.onCancel);
+  }
+  openVideo(trigger) {
+    const url = trigger.dataset.videoUrl;
+    if (!url || !this.dialog || !this.player) return;
+    this.lastTrigger = trigger;
+    const video = document.createElement('video');
+    video.controls = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    video.src = url;
+    video.setAttribute('aria-label', trigger.dataset.videoTitle || 'Interview');
+    this.player.replaceChildren(video);
+    this.dialog.showModal();
+    video.play().catch(() => {});
+  }
+  closeVideo() {
+    const video = this.player?.querySelector('video');
+    if (video) { video.pause(); video.removeAttribute('src'); video.load(); }
+    this.player?.replaceChildren();
+    if (this.dialog?.open) this.dialog.close();
+    this.lastTrigger?.focus();
+  }
+  disconnectedCallback() {
+    this.closeVideo();
+    this.removeEventListener('click', this.onClick);
+    this.dialog?.removeEventListener('click', this.onDialogClick);
+    this.dialog?.removeEventListener('cancel', this.onCancel);
+    this.ready = false;
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Chelonaki · Interviews",
+  "tag": "section",
+  "class": "fi-interviews-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Kleine Überschrift", "default": "Persönliche Geschichten" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Erfahrungen, die <em>Mut machen.</em>" },
+    { "type": "richtext", "id": "intro", "label": "Einleitung", "default": "<p>In persönlichen Gesprächen erzählen Kundinnen und Kunden von ihrem Weg zu mehr Wohlbefinden, Energie und Lebensqualität.</p>" },
+    { "type": "range", "id": "columns_desktop", "label": "Spalten auf Desktop", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "gap", "label": "Abstand zwischen Karten", "min": 12, "max": 40, "step": 2, "unit": "px", "default": 22 },
+    { "type": "range", "id": "radius", "label": "Kartenrundung", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 20 },
+    { "type": "header", "content": "Abstände" },
+    { "type": "range", "id": "padding_top", "label": "Oben Desktop", "min": 20, "max": 140, "step": 10, "unit": "px", "default": 70 },
+    { "type": "range", "id": "padding_bottom", "label": "Unten Desktop", "min": 20, "max": 140, "step": 10, "unit": "px", "default": 70 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Oben mobil", "min": 20, "max": 100, "step": 10, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Unten mobil", "min": 20, "max": 100, "step": 10, "unit": "px", "default": 40 },
+    { "type": "header", "content": "Farben" },
+    { "type": "color", "id": "background", "label": "Hintergrund", "default": "#FBF8F0" },
+    { "type": "color", "id": "card_background", "label": "Kartenhintergrund", "default": "#FFFDF8" },
+    { "type": "color", "id": "heading_color", "label": "Überschriften", "default": "#1F3A2A" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#66756D" },
+    { "type": "color", "id": "accent_color", "label": "Akzent", "default": "#B9912F" },
+    { "type": "color", "id": "border_color", "label": "Kartenrahmen", "default": "#DED8CA" }
+  ],
+  "blocks": [
+    {
+      "type": "interview",
+      "name": "Interview",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Interviewpartner:in" },
+        { "type": "text", "id": "subtitle", "label": "Zusatztext", "default": "Persönliche Erfahrungen" },
+        { "type": "richtext", "id": "description", "label": "Beschreibung", "default": "<p>Ein persönliches Gespräch über Erfahrungen, Veränderungen und den eigenen Weg.</p>" },
+        { "type": "text", "id": "video_url", "label": "MP4-Video-URL" },
+        { "type": "image_picker", "id": "poster", "label": "Eigenes Vorschaubild" },
+        { "type": "text", "id": "poster_url", "label": "Externes Vorschaubild (URL)" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Chelonaki · Interviews",
+      "blocks": [
+        { "type": "interview" },
+        { "type": "interview" },
+        { "type": "interview" }
+      ]
+    }
+  ]
+}
+{% endschema %}

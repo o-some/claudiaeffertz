@@ -1,0 +1,77 @@
+<section class="fi-block fi-training" id="FiTraining" data-fi-reveal-scope style="--fi-module-bg:#142519;--fi-heading-color:#fbf8f0;--fi-text-color:#efead9;--fi-accent-color:#d9bc6a;--fi-line-color:#526055;--fi-circle-bg:#142519;--fi-circle-text:#d9bc6a;--fi-circle-border:#d9bc6a;--fi-card-bg:#1b3022;--fi-card-heading:#fbf8f0;--fi-card-text:#efead9;--fi-card-border:#6e5b2a">
+  <div class="fi-wrap fi-training-grid">
+    <div>
+      <span class="fi-eyebrow">2-Tages-Ausbildung</span>
+      <h1 class="visually-hidden">Ausbildung</h1>
+      <h2>Werde Basis Coach für <em>Metabolic Nutrition.</em></h2>
+      <div class="fi-training-lead rte"><p>Ernährung ist mehr als eine Mahlzeit. In der Food Instructor MGU® Ausbildung lernst du, Ernährung nicht nur zu verstehen, sondern sie verständlich, sicher und praxisnah an andere Menschen weiterzugeben.</p></div>
+      <div class="fi-training-points">
+        <div class="fi-training-point"><div class="fi-number" aria-hidden="true">1</div><div><h3>Zusammenhänge verstehen</h3><div class="rte"><p>Wie Blutzucker, Insulin, Entzündungen und Stoffwechsel zusammenwirken – klar erklärt statt kompliziert.</p></div></div></div>
+        <div class="fi-training-point"><div class="fi-number" aria-hidden="true">2</div><div><h3>Einfach erklären können</h3><div class="rte"><p>Typische Ernährungsprobleme erkennen und Menschen unterstützen, ohne sie zu überfordern.</p></div></div></div>
+        <div class="fi-training-point"><div class="fi-number" aria-hidden="true">3</div><div><h3>Alltagstaugliche Lösungen</h3><div class="rte"><p>Moderne Ernährungsbildung: verständlich, präventiv, praxisorientiert und nah am Menschen.</p></div></div></div>
+      </div>
+    </div>
+    <div class="fi-training-side">
+      <div class="fi-training-cover">
+        <img src="{{ 'fi-static-004.jpg' | asset_url }}" width="538" height="760" loading="eager" decoding="async" alt="Schulungsbuch zur 2-Tages-Ausbildung">
+      </div>
+      <div class="fi-method-card">
+        <span class="fi-serif">Die MGU-Methode</span>
+        <div class="fi-method-row"><b aria-hidden="true">M</b><div><h3>Muskelversorgung</h3><div class="rte"><p>Eiweiß, Nährstoffe und Mahlzeiten, die den Körper wirklich versorgen.</p></div></div></div>
+        <div class="fi-method-row"><b aria-hidden="true">G</b><div><h3>Gelenke &amp; Gesundheit</h3><div class="rte"><p>Beweglichkeit, Wohlbefinden und langfristige Stärke im Blick behalten.</p></div></div></div>
+        <div class="fi-method-row"><b aria-hidden="true">U</b><div><h3>Umsetzung im Alltag</h3><div class="rte"><p>Routinen und Rezepte, die in ein echtes Leben passen – Tag für Tag.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  /* Keep the dark training module readable even when global heading styles change. */
+  #shopify-section-{{ section.id }} .fi-training {
+    color: #efead9;
+  }
+
+  #shopify-section-{{ section.id }} .fi-training h2,
+  #shopify-section-{{ section.id }} .fi-training-point h3,
+  #shopify-section-{{ section.id }} .fi-method-row h3 {
+    color: #fbf8f0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .fi-training h2 em,
+  #shopify-section-{{ section.id }} .fi-training .fi-eyebrow,
+  #shopify-section-{{ section.id }} .fi-training .fi-serif {
+    color: #d9bc6a !important;
+  }
+
+  #shopify-section-{{ section.id }} .fi-training-lead,
+  #shopify-section-{{ section.id }} .fi-training-point .rte,
+  #shopify-section-{{ section.id }} .fi-method-row .rte {
+    color: #efead9 !important;
+  }
+
+  @media (max-width: 749px) {
+    #shopify-section-{{ section.id }} .fi-training h2 {
+      font-size: clamp(3.4rem, 10vw, 4.6rem);
+      line-height: 1.08;
+    }
+
+    #shopify-section-{{ section.id }} .fi-training-point h3 {
+      font-size: 1.75rem;
+      line-height: 1.3;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "MGU · Ausbildungsintro",
+  "tag": "section",
+  "class": "mgu-training-page-section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "MGU · Ausbildungsintro"
+    }
+  ]
+}
+{% endschema %}

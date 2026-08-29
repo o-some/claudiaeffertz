@@ -1,0 +1,40 @@
+{% comment %}
+  Breadcrumb-Navigation mit SEO-Schema (JSON-LD).
+  In layout/theme.liquid direkt NACH dem Header einbinden:
+  {% render 'mgu-breadcrumbs' %}
+{% endcomment %}
+{%- if template != 'index' and template != 'cart' -%}
+{%- comment -%}
+  Keep breadcrumb metadata for search engines, but do not expose the technical
+  page hierarchy in the visual design.
+{%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": {{ 'mgu.crumbs.start' | t | default: 'Start' | json }}, "item": {{ routes.root_url | prepend: request.origin | json }} }
+    {%- if template contains 'product' -%}
+      {%- if collection or product.collections.first -%}
+        {%- assign c = collection | default: product.collections.first -%}
+        ,{ "@type": "ListItem", "position": 2, "name": {{ c.title | json }}, "item": {{ c.url | prepend: request.origin | json }} }
+        ,{ "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ canonical_url | json }} }
+      {%- else -%}
+        ,{ "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ canonical_url | json }} }
+      {%- endif -%}
+    {%- elsif template contains 'collection' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ canonical_url | json }} }
+    {%- elsif template contains 'article' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ blog.title | json }}, "item": {{ blog.url | prepend: request.origin | json }} }
+      ,{ "@type": "ListItem", "position": 3, "name": {{ article.title | json }}, "item": {{ canonical_url | json }} }
+    {%- elsif template contains 'blog' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ blog.title | json }}, "item": {{ canonical_url | json }} }
+    {%- elsif template contains 'page' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ page.title | json }}, "item": {{ canonical_url | json }} }
+    {%- elsif template contains 'search' -%}
+      ,{ "@type": "ListItem", "position": 2, "name": {{ 'mgu.crumbs.suche' | t | default: 'Suche' | json }}, "item": {{ canonical_url | json }} }
+    {%- endif -%}
+  ]
+}
+</script>
+{%- endif -%}

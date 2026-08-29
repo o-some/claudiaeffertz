@@ -1,0 +1,46 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+<div class="mgu-pop-overlay mgu" data-mgu-popup data-delay="{{ section.settings.delay }}" data-tage="{{ section.settings.tage }}">
+  <div class="mgu-pop" role="dialog" aria-modal="true" aria-label="{{ section.settings.heading | strip_html | escape }}">
+    <button type="button" class="mgu-pop-close" aria-label="{{ 'mgu.allgemein.schliessen' | t }}">×</button>
+    <div class="mgu-pop-media">
+      {%- if section.settings.image != blank -%}
+        <img width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}" src="{{ section.settings.image | image_url: width: 700 }}" alt="">
+      {%- endif -%}
+    </div>
+    <div class="mgu-pop-body">
+      {%- if section.settings.eyebrow != blank -%}<span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h3>{{ section.settings.heading }}</h3>
+      <p>{{ section.settings.text }}</p>
+      {%- assign popup_form_id = 'MguPopupForm-' | append: section.id -%}
+      {%- form 'customer', id: popup_form_id, class: 'mgu-pop-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,popup">
+        {%- if form.posted_successfully? -%}
+          <p class="mgu-form-success" style="color:var(--mgu-forest)">{{ section.settings.success }}</p>
+        {%- else -%}
+          <input type="email" name="contact[email]" required placeholder="{{ section.settings.placeholder | escape }}" aria-label="E-Mail" autocomplete="email">
+          <button class="mgu-btn mgu-btn--primary" type="submit">{{ section.settings.button }}</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Chelonaki · Newsletter",
+  "settings": [
+    { "type": "paragraph", "content": "Erscheint nach einstellbarer Zeit, merkt sich Schließen für X Tage (pro Gerät). Auf der Startseite ganz unten einfügen." },
+    { "type": "range", "id": "delay", "label": "Erscheint nach (Sekunden)", "min": 2, "max": 30, "step": 1, "default": 6 },
+    { "type": "range", "id": "tage", "label": "Nach Schließen erst wieder nach (Tagen)", "min": 1, "max": 60, "step": 1, "default": 7 },
+    { "type": "image_picker", "id": "image", "label": "Bild (links)" },
+    { "type": "text", "id": "eyebrow", "label": "Kicker-Zeile", "default": "Newsletter" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "10 % auf deine <em>erste Bestellung.</em>" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Trag dich ein und erhalte Rezepte, Ernährungswissen und exklusive Angebote direkt in dein Postfach." },
+    { "type": "text", "id": "placeholder", "label": "Eingabefeld-Platzhalter", "default": "Deine E-Mail-Adresse" },
+    { "type": "text", "id": "button", "label": "Button", "default": "Jetzt anmelden" },
+    { "type": "text", "id": "success", "label": "Erfolgsmeldung", "default": "Willkommen! Schau in dein Postfach." }
+  ],
+  "presets": [{ "name": "Chelonaki – Newsletter-Popup" }]
+}
+{% endschema %}

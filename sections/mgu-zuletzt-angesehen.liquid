@@ -1,0 +1,127 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+<section data-mgu-effect="{{ section.settings.effect | default: 'up' }}" data-mgu-speed="{{ section.settings.effect_speed | default: 'normal' }}" class="mgu mgu-block" style="background:{{ section.settings.bg }}">
+  <div class="mgu-wrap" data-mgu-recent data-max="{{ section.settings.max }}">
+    <div class="mgu-sec-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div class="mgu-prod-grid"></div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Verlauf",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {
+      "type": "header",
+      "content": "Scroll-Effekt"
+    },
+    {
+      "type": "select",
+      "id": "effect",
+      "label": "Erscheinen beim Scrollen",
+      "default": "up",
+      "options": [
+        {
+          "value": "none",
+          "label": "Kein Effekt"
+        },
+        {
+          "value": "fade",
+          "label": "Einblenden"
+        },
+        {
+          "value": "up",
+          "label": "Von unten (Standard)"
+        },
+        {
+          "value": "left",
+          "label": "Von links"
+        },
+        {
+          "value": "right",
+          "label": "Von rechts"
+        },
+        {
+          "value": "zoom",
+          "label": "Sanfter Zoom"
+        },
+        {
+          "value": "blur",
+          "label": "Aus der Unschärfe"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "effect_speed",
+      "label": "Effekt-Tempo",
+      "default": "normal",
+      "options": [
+        {
+          "value": "schnell",
+          "label": "Schnell"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "langsam",
+          "label": "Langsam"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Zeigt die Produkte, die der Besucher zuletzt geöffnet hat. Blendet sich automatisch aus, wenn es noch keine gibt."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Kicker-Zeile",
+      "default": "Weiterstöbern"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Zuletzt <em>angesehen.</em>"
+    },
+    {
+      "type": "range",
+      "id": "max",
+      "label": "Maximale Anzahl",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Hintergrundfarbe",
+      "default": "#F3EDDF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chelonaki – Zuletzt angesehen"
+    }
+  ]
+}
+{% endschema %}

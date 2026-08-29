@@ -1,0 +1,279 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+<section data-mgu-effect="{{ section.settings.effect | default: 'up' }}" data-mgu-speed="{{ section.settings.effect_speed | default: 'normal' }}" class="mgu mgu-ausbildung mgu-block" id="mgu-ausbildung-{{ section.id }}">
+  <div class="mgu-wrap mgu-aus-grid">
+    <div class="mgu-reveal">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="mgu-aus-lead">{{ section.settings.text }}</p>
+      {%- endif -%}
+
+      {%- assign points = section.blocks | where: 'type', 'punkt' -%}
+      {%- if points.size > 0 -%}
+        <div class="mgu-aus-points">
+          {%- for block in points -%}
+            <div class="mgu-aus-point" {{ block.shopify_attributes }}>
+              <div class="mgu-dot">{{ forloop.index }}</div>
+              <div>
+                <h4>{{ block.settings.title }}</h4>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <a class="mgu-btn mgu-btn--gold" href="{{ section.settings.button_link }}">
+          {{ section.settings.button_label }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="mgu-aus-right mgu-reveal" style="transition-delay:.15s">
+      {%- if section.settings.cover != blank -%}
+        <div class="mgu-aus-cover">
+          <img width="{{ section.settings.cover.width }}" height="{{ section.settings.cover.height }}" src="{{ section.settings.cover | image_url: width: 680 }}"
+               alt="{{ section.settings.cover.alt | escape }}"
+               loading="lazy">
+        </div>
+      {%- endif -%}
+
+      {%- assign rows = section.blocks | where: 'type', 'methode' -%}
+      {%- if rows.size > 0 -%}
+        <div class="mgu-mgu-card">
+          {%- if section.settings.method_title != blank -%}
+            <span class="mgu-serif">{{ section.settings.method_title }}</span>
+          {%- endif -%}
+          {%- for block in rows -%}
+            <div class="mgu-mgu-row" {{ block.shopify_attributes }}>
+              <b>{{ block.settings.letter }}</b>
+              <div>
+                <h5>{{ block.settings.title }}</h5>
+                <p>{{ block.settings.text }}</p>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Ausbildung",
+  "tag": "div",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {
+      "type": "header",
+      "content": "Scroll-Effekt"
+    },
+    {
+      "type": "select",
+      "id": "effect",
+      "label": "Erscheinen beim Scrollen",
+      "default": "up",
+      "options": [
+        {
+          "value": "none",
+          "label": "Kein Effekt"
+        },
+        {
+          "value": "fade",
+          "label": "Einblenden"
+        },
+        {
+          "value": "up",
+          "label": "Von unten (Standard)"
+        },
+        {
+          "value": "left",
+          "label": "Von links"
+        },
+        {
+          "value": "right",
+          "label": "Von rechts"
+        },
+        {
+          "value": "zoom",
+          "label": "Sanfter Zoom"
+        },
+        {
+          "value": "blur",
+          "label": "Aus der Unschärfe"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "effect_speed",
+      "label": "Effekt-Tempo",
+      "default": "normal",
+      "options": [
+        {
+          "value": "schnell",
+          "label": "Schnell"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "langsam",
+          "label": "Langsam"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Kicker-Zeile",
+      "default": "Dein Angebot"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Überschrift (kursiv = <em>)",
+      "default": "Dein Angebot mit <em>drei starken Argumenten.</em>"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Einleitungstext",
+      "default": "Beschreibe hier dein Kernangebot in zwei bis drei Sätzen."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button-Beschriftung",
+      "default": "Jetzt anfragen"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button-Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover",
+      "label": "Begleitbild (optional)"
+    },
+    {
+      "type": "text",
+      "id": "method_title",
+      "label": "Titel der Methoden-Karte",
+      "default": "Unsere Methode"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "punkt",
+      "name": "Lernpunkt",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Zusammenhänge verstehen"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "methode",
+      "name": "Methoden-Buchstabe",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "letter",
+          "label": "Buchstabe/Initial",
+          "default": "M"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Muskelversorgung"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chelonaki – Ausbildung",
+      "blocks": [
+        {
+          "type": "punkt",
+          "settings": {
+            "title": "Zusammenhänge verstehen",
+            "text": "Wie Blutzucker, Insulin, Entzündungen und Stoffwechsel zusammenwirken – klar erklärt statt kompliziert."
+          }
+        },
+        {
+          "type": "punkt",
+          "settings": {
+            "title": "Einfach erklären können",
+            "text": "Typische Ernährungsprobleme erkennen und Menschen unterstützen, ohne sie zu überfordern."
+          }
+        },
+        {
+          "type": "punkt",
+          "settings": {
+            "title": "Alltagstaugliche Lösungen",
+            "text": "Moderne Ernährungsbildung: verständlich, präventiv, praxisorientiert und nah am Menschen."
+          }
+        },
+        {
+          "type": "methode",
+          "settings": {
+            "letter": "M",
+            "title": "Muskelversorgung",
+            "text": "Eiweiß, Nährstoffe und Mahlzeiten, die den Körper wirklich versorgen."
+          }
+        },
+        {
+          "type": "methode",
+          "settings": {
+            "letter": "G",
+            "title": "Gelenke & Gesundheit",
+            "text": "Beweglichkeit, Wohlbefinden und langfristige Stärke im Blick behalten."
+          }
+        },
+        {
+          "type": "methode",
+          "settings": {
+            "letter": "U",
+            "title": "Umsetzung im Alltag",
+            "text": "Routinen und Rezepte, die in ein echtes Leben passen – Tag für Tag."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

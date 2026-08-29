@@ -1,0 +1,14 @@
+{%- comment -%}
+  Shopify controls authentication and session state. No customer data is copied
+  into the DOM or browser storage. The link remains a progressive fallback.
+{%- endcomment -%}
+{%- if shop.customer_accounts_enabled -%}
+  <shopify-account
+    class="ch-account-entry"
+    menu="{{ menu_handle | default: 'customer-account-main-menu' | escape }}"
+    style="--shopify-account-color-accent: var(--ch-accent); --shopify-account-color-background: var(--ch-surface); --shopify-account-color-text: var(--ch-ink); --shopify-account-font-body: var(--ch-font-body); --shopify-account-font-heading: var(--ch-font-heading); --shopify-account-radius-base: var(--ch-radius);"
+  >
+    <span slot="signed-out-avatar" class="ch-account-entry__label">{{ label | default: 'Konto' | escape }}</span>
+  </shopify-account>
+  <noscript><a href="{{ routes.account_login_url }}" rel="nofollow">{{ label | default: 'Konto' | escape }}</a></noscript>
+{%- endif -%}

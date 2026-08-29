@@ -1,0 +1,340 @@
+{{ 'ch-sticky-scrollytelling.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ch-sticky-scrollytelling.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign story_anchor_base = section.settings.anchor | handle
+  if story_anchor_base == blank
+    assign story_anchor_base = 'sticky-scrollytelling'
+  endif
+  assign story_anchor = story_anchor_base | append: '-' | append: section.id
+  assign heading_tag = section.settings.heading_level | default: 'h2'
+  assign default_active_seen = false
+-%}
+
+<section
+  id="{{ story_anchor }}"
+  class="ch-sticky-story ch-sticky-story--ratio-{{ section.settings.column_ratio }} ch-sticky-story--breakpoint-{{ section.settings.desktop_breakpoint }} ch-sticky-story--mobile-{{ section.settings.mobile_layout }}{% if section.settings.mirror_columns %} ch-sticky-story--mirrored{% endif %}"
+  data-ch-sticky-story
+  data-section-id="{{ section.id }}"
+  data-animations="{{ section.settings.enable_animations }}"
+  data-activation-percent="{{ section.settings.activation_percent | default: 30 }}"
+  style="
+    --ch-story-bg: {{ section.settings.background_color }};
+    --ch-story-text: {{ section.settings.text_color }};
+    --ch-story-muted: {{ section.settings.muted_text_color }};
+    --ch-story-accent: {{ section.settings.accent_color }};
+    --ch-story-turn: {{ section.settings.turning_point_color }};
+    --ch-story-line: {{ section.settings.line_color }};
+    --ch-story-card: {{ section.settings.card_background }};
+    --ch-story-radius: {{ section.settings.card_radius }}px;
+    --ch-story-max-width: {{ section.settings.max_width }}px;
+    --ch-story-sticky-offset: {{ section.settings.sticky_offset }}px;
+    --ch-story-padding-top: {{ section.settings.padding_top }}px;
+    --ch-story-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --ch-story-padding-inline: {{ section.settings.padding_inline }}px;
+    --ch-story-padding-inline-mobile: {{ section.settings.padding_inline_mobile }}px;
+  "
+>
+  <div class="ch-sticky-story__inner">
+    <header class="ch-sticky-story__header{% if section.settings.show_family_feature %} has-family-feature{% endif %}">
+      <div class="ch-sticky-story__header-copy">
+        {%- if section.settings.kicker != blank -%}
+          <p class="ch-sticky-story__kicker">{{ section.settings.kicker | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <{{ heading_tag }} class="ch-sticky-story__heading">{{ section.settings.heading }}</{{ heading_tag }}>
+        {%- endif -%}
+        {%- if section.settings.intro != blank -%}
+          <div class="ch-sticky-story__intro rte">{{ section.settings.intro }}</div>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.show_family_feature -%}
+        <figure class="ch-sticky-story__family-feature">
+          <div
+            class="ch-sticky-story__family-image"
+            role="img"
+            aria-label="{{ section.settings.family_feature_alt | escape }}"
+            style="background-image:url({{ 'fi-markus-family-original.jpg' | asset_url }});"
+          ><span class="visually-hidden">{{ section.settings.family_feature_alt | escape }}</span></div>
+          {%- if section.settings.family_feature_caption != blank -%}
+            <figcaption>{{ section.settings.family_feature_caption | escape }}</figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="ch-sticky-story__grid">
+        <div class="ch-sticky-story__visual-column" aria-label="{{ section.settings.visual_region_label | escape }}">
+          <div class="ch-sticky-story__visual">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign is_default_active = false
+                assign curated_asset = blank
+                case block.settings.curated_visual
+                  when 'heritage'
+                    assign curated_asset = 'fi-markus-origin-v2.jpg'
+                  when 'sport'
+                    assign curated_asset = 'fi-markus-sport-v2.jpg'
+                  when 'insight'
+                    assign curated_asset = 'fi-markus-insight-v2.jpg'
+                  when 'education'
+                    assign curated_asset = 'fi-markus-education-v2.jpg'
+                  when 'foundation'
+                    assign curated_asset = 'fi-markus-foundation-v2.jpg'
+                  when 'today'
+                    assign curated_asset = 'fi-markus-today-v2.jpg'
+                endcase
+                if block.settings.default_active and default_active_seen == false
+                  assign is_default_active = true
+                  assign default_active_seen = true
+                elsif forloop.first and default_active_seen == false
+                  assign is_default_active = true
+                  assign default_active_seen = true
+                endif
+              -%}
+              <figure
+                class="ch-sticky-story__visual-panel ch-sticky-story__visual-panel--{{ block.settings.visual_variant }}{% if is_default_active %} is-active{% endif %}"
+                data-visual-for="{{ block.id }}"
+                {% unless is_default_active %}hidden{% endunless %}
+              >
+                {%- if curated_asset != blank -%}
+                  <img
+                    class="ch-sticky-story__image is-curated"
+                    src="{{ curated_asset | asset_url }}"
+                    width="1600"
+                    height="1200"
+                    loading="eager"
+                    fetchpriority="low"
+                    alt="{{ block.settings.image_alt | escape }}"
+                  >
+                {%- elsif block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1600
+                    | image_tag:
+                      class: 'ch-sticky-story__image',
+                      widths: '360, 540, 720, 960, 1200, 1600',
+                      sizes: '(min-width: 990px) 52vw, 100vw',
+                      loading: 'eager',
+                      fetchpriority: 'low',
+                      alt: block.settings.image_alt
+                  }}
+                {%- else -%}
+                  <div class="ch-sticky-story__placeholder" aria-hidden="true">
+                    {{ 'image' | placeholder_svg_tag }}
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.metric != blank -%}
+                  <figcaption class="ch-sticky-story__metric">
+                    <strong>{{ block.settings.metric | escape }}</strong>
+                    {%- if block.settings.metric_label != blank -%}
+                      <span>{{ block.settings.metric_label | escape }}</span>
+                    {%- endif -%}
+                  </figcaption>
+                {%- endif -%}
+              </figure>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="ch-sticky-story__steps">
+          {%- if section.settings.show_progress -%}
+            <div class="ch-sticky-story__progress" aria-hidden="true">
+              <span class="ch-sticky-story__progress-value" data-story-progress></span>
+            </div>
+          {%- endif -%}
+
+          {%- assign default_active_seen = false -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign is_default_active = false
+              if block.settings.default_active and default_active_seen == false
+                assign is_default_active = true
+                assign default_active_seen = true
+              elsif forloop.first and default_active_seen == false
+                assign is_default_active = true
+                assign default_active_seen = true
+              endif
+              assign status_text = block.settings.status_label
+              assign curated_asset = blank
+              case block.settings.curated_visual
+                when 'heritage'
+                  assign curated_asset = 'fi-markus-origin-v2.jpg'
+                when 'sport'
+                  assign curated_asset = 'fi-markus-sport-v2.jpg'
+                when 'insight'
+                  assign curated_asset = 'fi-markus-insight-v2.jpg'
+                when 'education'
+                  assign curated_asset = 'fi-markus-education-v2.jpg'
+                when 'foundation'
+                  assign curated_asset = 'fi-markus-foundation-v2.jpg'
+                when 'today'
+                  assign curated_asset = 'fi-markus-today-v2.jpg'
+              endcase
+              if status_text == blank
+                case block.settings.status
+                  when 'confirmed'
+                    assign status_text = 'Bestätigt'
+                  when 'statement'
+                    assign status_text = 'Aussage'
+                  when 'open'
+                    assign status_text = 'Offen'
+                  when 'highlight'
+                    assign status_text = 'Hervorgehoben'
+                endcase
+              endif
+            -%}
+            <article
+              class="ch-sticky-story__step{% if is_default_active %} is-active{% endif %}{% if block.settings.turning_point %} is-breakpoint{% endif %} ch-sticky-story__step--{{ block.settings.alignment }}"
+              data-story-step
+              data-block-id="{{ block.id }}"
+              data-breakpoint="{{ block.settings.turning_point }}"
+              data-accent="{{ block.settings.accent_color }}"
+              {% if is_default_active %}aria-current="step"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              <div class="ch-sticky-story__mobile-visual">
+                {%- if curated_asset != blank -%}
+                  <img
+                    class="ch-sticky-story__image is-curated"
+                    src="{{ curated_asset | asset_url }}"
+                    width="1600"
+                    height="1200"
+                    loading="lazy"
+                    alt="{{ block.settings.image_alt | escape }}"
+                  >
+                {%- elsif block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 960
+                    | image_tag:
+                      class: 'ch-sticky-story__image',
+                      widths: '320, 480, 640, 800, 960',
+                      sizes: '100vw',
+                      loading: 'lazy',
+                      alt: block.settings.image_alt
+                  }}
+                {%- else -%}
+                  <div class="ch-sticky-story__placeholder" aria-hidden="true">{{ 'image' | placeholder_svg_tag }}</div>
+                {%- endif -%}
+              </div>
+              <div class="ch-sticky-story__step-meta">
+                {%- if section.settings.show_numbers -%}
+                  <span class="ch-sticky-story__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                {%- endif -%}
+                {%- if block.settings.date_label != blank -%}
+                  <span class="ch-sticky-story__date">{{ block.settings.date_label | escape }}</span>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
+              {%- if block.settings.text != blank -%}<div class="ch-sticky-story__text rte">{{ block.settings.text }}</div>{%- endif -%}
+              <p class="ch-sticky-story__status ch-sticky-story__status--{{ block.settings.status }}">
+                {%- if block.settings.turning_point -%}<span class="ch-sticky-story__turn-label">Wendepunkt</span><span aria-hidden="true"> · </span>{%- endif -%}
+                <span>{{ status_text | escape }}</span>
+              </p>
+              {%- if block.settings.metric != blank -%}
+                <p class="ch-sticky-story__mobile-metric"><strong>{{ block.settings.metric | escape }}</strong>{% if block.settings.metric_label != blank %} <span>{{ block.settings.metric_label | escape }}</span>{% endif %}</p>
+              {%- endif -%}
+              {%- if section.settings.show_sources and block.settings.source_name != blank and block.settings.source_url != blank -%}
+                <p class="ch-sticky-story__source">
+                  <a href="{{ block.settings.source_url }}" {% if block.settings.source_url contains 'http' %}rel="noopener noreferrer"{% endif %}>
+                    {{ block.settings.source_name | escape }}
+                  </a>
+                </p>
+              {%- endif -%}
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- else -%}
+      <p class="ch-sticky-story__empty">{{ section.settings.empty_text | escape }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Chelonaki · Sticky Story",
+  "tag": "section",
+  "class": "ch-sticky-scrollytelling-section",
+  "max_blocks": 12,
+  "settings": [
+    {"type":"header","content":"Inhalt"},
+    {"type":"text","id":"anchor","label":"Sprungziel / Anchor","info":"Nur Buchstaben, Zahlen und Bindestriche verwenden."},
+    {"type":"text","id":"kicker","label":"Kicker","default":"Unsere Geschichte"},
+    {"type":"inline_richtext","id":"heading","label":"Hauptüberschrift","default":"Von der ersten Idee <em>bis zum Ergebnis.</em>"},
+    {"type":"select","id":"heading_level","label":"Überschriftenebene","default":"h2","options":[{"value":"h1","label":"H1 – Seitentitel"},{"value":"h2","label":"H2"},{"value":"h3","label":"H3"}]},
+    {"type":"richtext","id":"intro","label":"Einleitungstext","default":"<p>Erzähle deine Entwicklung Schritt für Schritt.</p>"},
+    {"type":"text","id":"visual_region_label","label":"Bezeichnung des Bildbereichs","default":"Bilder zur Geschichte"},
+    {"type":"text","id":"empty_text","label":"Hinweis ohne Schritte","default":"Füge Story-Schritte hinzu, um die Geschichte anzuzeigen."},
+    {"type":"header","content":"Familienmotiv"},
+    {"type":"checkbox","id":"show_family_feature","label":"Familienmotiv neben der Einleitung zeigen","default":false},
+    {"type":"text","id":"family_feature_alt","label":"Alternativtext Familienmotiv","default":"Markus Riebel mit seiner Familie und persönlichen Erinnerungen"},
+    {"type":"text","id":"family_feature_caption","label":"Bildunterschrift","default":"Familie, gemeinsame Erinnerungen und echte Werte."},
+    {"type":"header","content":"Farben"},
+    {"type":"color","id":"background_color","label":"Hintergrundfarbe","default":"#F3EDDF"},
+    {"type":"color","id":"text_color","label":"Textfarbe","default":"#24352B"},
+    {"type":"color","id":"muted_text_color","label":"Gedämpfte Textfarbe","default":"#5D685F"},
+    {"type":"color","id":"accent_color","label":"Standard-Akzentfarbe","default":"#B9912F"},
+    {"type":"color","id":"turning_point_color","label":"Wendepunktfarbe","default":"#8C3F2B"},
+    {"type":"color","id":"line_color","label":"Linienfarbe","default":"#C8BFAE"},
+    {"type":"color","id":"card_background","label":"Kartenhintergrund","default":"#FFFDF8"},
+    {"type":"header","content":"Layout"},
+    {"type":"range","id":"card_radius","label":"Kartenradius","min":0,"max":48,"step":2,"unit":"px","default":24},
+    {"type":"range","id":"max_width","label":"Maximale Inhaltsbreite","min":800,"max":1600,"step":40,"unit":"px","default":1200},
+    {"type":"select","id":"column_ratio","label":"Spaltenverhältnis","default":"42-58","options":[{"value":"42-58","label":"42 / 58"},{"value":"50-50","label":"50 / 50"},{"value":"58-42","label":"58 / 42"}]},
+    {"type":"range","id":"sticky_offset","label":"Sticky-Abstand nach oben","min":0,"max":240,"step":4,"unit":"px","default":32},
+    {"type":"range","id":"activation_percent","label":"Bildwechsel-Linie","info":"Je kleiner der Wert, desto später wechselt das Bild beim Scrollen.","min":20,"max":60,"step":5,"unit":"%","default":30},
+    {"type":"select","id":"desktop_breakpoint","label":"Desktop-Breakpoint","default":"990","options":[{"value":"900","label":"900 px"},{"value":"990","label":"990 px"},{"value":"1100","label":"1100 px"}]},
+    {"type":"checkbox","id":"mirror_columns","label":"Spalten spiegeln","default":false},
+    {"type":"select","id":"mobile_layout","label":"Mobile Darstellungsart","default":"cards","options":[{"value":"cards","label":"Karten"},{"value":"compact","label":"Kompakt"}]},
+    {"type":"header","content":"Abstände"},
+    {"type":"range","id":"padding_top","label":"Abstand oben","min":0,"max":240,"step":4,"unit":"px","default":80},
+    {"type":"range","id":"padding_bottom","label":"Abstand unten","min":0,"max":240,"step":4,"unit":"px","default":80},
+    {"type":"range","id":"padding_inline","label":"Abstand links und rechts","min":0,"max":160,"step":4,"unit":"px","default":32},
+    {"type":"range","id":"padding_inline_mobile","label":"Seitlicher Abstand mobil","min":0,"max":64,"step":2,"unit":"px","default":20},
+    {"type":"header","content":"Anzeige"},
+    {"type":"checkbox","id":"show_progress","label":"Fortschrittslinie anzeigen","default":true},
+    {"type":"checkbox","id":"show_numbers","label":"Laufende Nummer anzeigen","default":true},
+    {"type":"checkbox","id":"show_sources","label":"Quellen anzeigen","default":true},
+    {"type":"checkbox","id":"enable_animations","label":"Animationen aktivieren","default":true}
+  ],
+  "blocks": [
+    {
+      "type":"timeline_step",
+      "name":"Story-Schritt",
+      "settings":[
+        {"type":"text","id":"date_label","label":"Datum oder Kicker","default":"Schritt"},
+        {"type":"text","id":"heading","label":"Überschrift","default":"Ein wichtiger Schritt"},
+        {"type":"richtext","id":"text","label":"Text","default":"<p>Beschreibe, was in diesem Schritt passiert.</p>"},
+        {"type":"select","id":"status","label":"Status","default":"statement","options":[{"value":"confirmed","label":"Bestätigt"},{"value":"statement","label":"Aussage"},{"value":"open","label":"Offen"},{"value":"highlight","label":"Hervorgehoben"}]},
+        {"type":"text","id":"status_label","label":"Eigene Statusbeschriftung"},
+        {"type":"text","id":"source_name","label":"Quellenname"},
+        {"type":"url","id":"source_url","label":"Quellenlink"},
+        {"type":"select","id":"curated_visual","label":"Kuratiertes MGU-Motiv","default":"none","options":[{"value":"none","label":"Eigenes Bild verwenden"},{"value":"heritage","label":"Herkunft & natürliche Lebensmittel"},{"value":"sport","label":"Sport & Leistung"},{"value":"insight","label":"Erkenntnis & bewusste Ernährung"},{"value":"education","label":"Wissen & Kochhandwerk"},{"value":"foundation","label":"Gründung & Konzeptarbeit"},{"value":"today","label":"Ernährungsarbeit heute"}]},
+        {"type":"image_picker","id":"image","label":"Bild"},
+        {"type":"text","id":"image_alt","label":"Bild-Alt-Text","default":"Bild zu diesem Story-Schritt"},
+        {"type":"text","id":"metric","label":"Optionale Kennzahl"},
+        {"type":"text","id":"metric_label","label":"Beschriftung der Kennzahl"},
+        {"type":"color","id":"accent_color","label":"Akzentfarbe","default":"#B9912F"},
+        {"type":"checkbox","id":"turning_point","label":"Als Wendepunkt kennzeichnen","default":false},
+        {"type":"select","id":"visual_variant","label":"Visual-Variante","default":"standard","options":[{"value":"standard","label":"Standard"},{"value":"framed","label":"Gerahmt"},{"value":"soft","label":"Weich"}]},
+        {"type":"select","id":"alignment","label":"Ausrichtung","default":"left","options":[{"value":"left","label":"Links"},{"value":"center","label":"Zentriert"}]},
+        {"type":"checkbox","id":"default_active","label":"Standardmäßig aktiv","default":false,"info":"Falls mehrere Schritte aktiviert sind, wird nur der erste verwendet."}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name":"Chelonaki – Sticky Scrollytelling",
+      "blocks":[
+        {"type":"timeline_step","settings":{"date_label":"01 · Ausgangspunkt","heading":"Die Idee entsteht","status":"confirmed"}},
+        {"type":"timeline_step","settings":{"date_label":"02 · Entwicklung","heading":"Das Konzept nimmt Form an","status":"statement"}},
+        {"type":"timeline_step","settings":{"date_label":"03 · Wendepunkt","heading":"Eine Entscheidung verändert den Weg","status":"highlight","turning_point":true}},
+        {"type":"timeline_step","settings":{"date_label":"04 · Ergebnis","heading":"Die Geschichte geht weiter","status":"open"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

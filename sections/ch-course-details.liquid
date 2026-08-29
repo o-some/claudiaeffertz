@@ -1,0 +1,197 @@
+{{ 'ch-course.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign has_content = false
+  if section.blocks.size > 0 or section.settings.preview_video != blank or section.settings.trainer_name != blank or section.settings.intro != blank
+    assign has_content = true
+  endif
+%}
+
+{% if has_content %}
+  <section class="ch-course ch-section" id="ChCourse-{{ section.id }}" aria-labelledby="ChCourseHeading-{{ section.id }}">
+    <div class="ch-shell">
+      <header class="ch-course__header">
+        {% if section.settings.eyebrow != blank %}<p class="ch-badge">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+        <h2 id="ChCourseHeading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {% if section.settings.intro != blank %}<div class="rte ch-course__intro">{{ section.settings.intro }}</div>{% endif %}
+      </header>
+
+      {% if section.settings.preview_video != blank %}
+        <div class="ch-course__preview">
+          {{ section.settings.preview_video | video_tag: controls: true, image_size: '1600x', preload: 'metadata' }}
+        </div>
+        {% if section.settings.video_transcript != blank %}
+          <details class="ch-course__transcript">
+            <summary>{{ section.settings.transcript_heading | escape }}</summary>
+            <div class="rte">{{ section.settings.video_transcript }}</div>
+          </details>
+        {% endif %}
+      {% endif %}
+
+      {% assign outcomes = section.blocks | where: 'type', 'outcome' %}
+      {% if outcomes.size > 0 %}
+        <div class="ch-course__group" aria-labelledby="ChOutcomes-{{ section.id }}">
+          <h3 id="ChOutcomes-{{ section.id }}">{{ section.settings.outcomes_heading | escape }}</h3>
+          <ul class="ch-course__outcomes" role="list">
+            {% for block in outcomes %}<li {{ block.shopify_attributes }}><span aria-hidden="true">✓</span>{{ block.settings.text | escape }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% assign lessons = section.blocks | where: 'type', 'lesson' %}
+      {% if lessons.size > 0 %}
+        <div class="ch-course__group" aria-labelledby="ChCurriculum-{{ section.id }}">
+          <h3 id="ChCurriculum-{{ section.id }}">{{ section.settings.curriculum_heading | escape }}</h3>
+          <div class="ch-course__curriculum">
+            {% for block in lessons %}
+              <details class="ch-course__lesson" {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first_lesson %} open{% endif %}>
+                <summary><span>{{ block.settings.title | escape }}</span>{% if block.settings.duration != blank %}<span class="ch-muted">{{ block.settings.duration | escape }}</span>{% endif %}</summary>
+                {% if block.settings.description != blank %}<div class="rte">{{ block.settings.description }}</div>{% endif %}
+              </details>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="ch-course__columns">
+        {% if section.settings.trainer_name != blank %}
+          <article class="ch-course__trainer ch-card">
+            {% if section.settings.trainer_image != blank %}
+              {{ section.settings.trainer_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '240, 360, 540, 800', sizes: '(max-width: 749px) 35vw, 240px', alt: section.settings.trainer_image_alt }}
+            {% endif %}
+            <div class="ch-card__content"><p class="ch-muted">{{ section.settings.trainer_label | escape }}</p><h3>{{ section.settings.trainer_name | escape }}</h3>{% if section.settings.trainer_bio != blank %}<div class="rte">{{ section.settings.trainer_bio }}</div>{% endif %}</div>
+          </article>
+        {% endif %}
+
+        {% assign requirements = section.blocks | where: 'type', 'requirement' %}
+        {% if requirements.size > 0 %}
+          <div class="ch-course__requirements ch-card"><div class="ch-card__content"><h3>{{ section.settings.requirements_heading | escape }}</h3><ul>{% for block in requirements %}<li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>{% endfor %}</ul></div></div>
+        {% endif %}
+      </div>
+
+      {% assign faqs = section.blocks | where: 'type', 'faq' %}
+      {% if faqs.size > 0 %}
+        <div class="ch-course__group" aria-labelledby="ChFaq-{{ section.id }}">
+          <h3 id="ChFaq-{{ section.id }}">{{ section.settings.faq_heading | escape }}</h3>
+          {% for block in faqs %}<details class="ch-course__lesson" {{ block.shopify_attributes }}><summary>{{ block.settings.question | escape }}</summary><div class="rte">{{ block.settings.answer }}</div></details>{% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if product != blank %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": {{ product.title | json }},
+        "description": {{ product.description | strip_html | json }},
+        "inLanguage": {{ request.locale.iso_code | json }},
+        "provider": { "@id": {{ request.origin | append: '/#organization' | json }} }
+        {%- if section.settings.course_mode != blank -%},
+          "courseMode": {{ section.settings.course_mode | json }}
+        {%- endif -%}
+        {%- if section.settings.educational_level != blank -%},
+          "educationalLevel": {{ section.settings.educational_level | json }}
+        {%- endif -%}
+        {%- if section.settings.time_required != blank -%},
+          "timeRequired": {{ section.settings.time_required | json }}
+        {%- endif -%}
+        {%- if outcomes.size > 0 -%},
+          "teaches": [
+            {%- for outcome in outcomes -%}{{ outcome.settings.text | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}
+          ]
+        {%- endif -%}
+        {%- if section.settings.trainer_name != blank -%},
+          "instructor": {
+            "@type": "Person",
+            "name": {{ section.settings.trainer_name | json }}
+            {%- if section.settings.trainer_profile_url != blank -%},
+              "url": {{ section.settings.trainer_profile_url | json }}
+            {%- endif -%}
+          }
+        {%- endif -%}
+      }
+    </script>
+  {% endif %}
+
+  {% liquid
+    assign video_source = blank
+    if section.settings.preview_video != blank
+      assign video_source = section.settings.preview_video.sources | where: 'format', 'mp4' | first
+    endif
+  %}
+  {% if video_source != blank and section.settings.video_name != blank and section.settings.video_description != blank and section.settings.video_upload_date != blank %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": {{ section.settings.video_name | json }},
+        "description": {{ section.settings.video_description | strip_html | json }},
+        "uploadDate": {{ section.settings.video_upload_date | json }},
+        "contentUrl": {{ video_source.url | json }}
+        {%- if section.settings.preview_video.preview_image != blank -%},
+          "thumbnailUrl": {{ section.settings.preview_video.preview_image | image_url: width: 1600 | prepend: 'https:' | json }}
+        {%- endif -%}
+      }
+    </script>
+  {% endif %}
+{% endif %}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Kursdetails",
+  "tag": "section",
+  "class": "ch-course-section",
+  "max_blocks": 40,
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "text", "id": "eyebrow", "label": "Kleine Bezeichnung", "default": "Onlinekurs" },
+    { "type": "text", "id": "heading", "label": "Überschrift", "default": "Das erwartet dich" },
+    { "type": "richtext", "id": "intro", "label": "Einleitung" },
+    { "type": "video", "id": "preview_video", "label": "Vorschauvideo", "info": "Shopify-gehostetes Video. Externe Videos bitte über das Consent-Modul einbinden." },
+    { "type": "text", "id": "video_name", "label": "Videotitel für Suchmaschinen" },
+    { "type": "textarea", "id": "video_description", "label": "Videobeschreibung für Suchmaschinen" },
+    { "type": "text", "id": "video_upload_date", "label": "Veröffentlichungsdatum des Videos", "info": "ISO-Format, zum Beispiel 2026-07-15. Nur das echte Veröffentlichungsdatum eintragen." },
+    { "type": "text", "id": "transcript_heading", "label": "Überschrift Transkript", "default": "Videoinhalt als Text" },
+    { "type": "richtext", "id": "video_transcript", "label": "Transkript / textliche Zusammenfassung" },
+    { "type": "text", "id": "course_mode", "label": "Kursmodus", "default": "Online, selbstbestimmt" },
+    { "type": "text", "id": "educational_level", "label": "Niveau / Zielgruppe" },
+    { "type": "text", "id": "time_required", "label": "Gesamtdauer im ISO-Format", "info": "Zum Beispiel PT6H für sechs Stunden." },
+    { "type": "text", "id": "outcomes_heading", "label": "Lernergebnisse", "default": "Nach dem Kurs kannst du" },
+    { "type": "text", "id": "curriculum_heading", "label": "Curriculum", "default": "Inhalte und Lektionen" },
+    { "type": "checkbox", "id": "open_first_lesson", "label": "Erste Lektion geöffnet", "default": true },
+    { "type": "text", "id": "trainer_label", "label": "Trainer-Bezeichnung", "default": "Dein Trainer" },
+    { "type": "text", "id": "trainer_name", "label": "Trainername" },
+    { "type": "url", "id": "trainer_profile_url", "label": "Öffentliche Trainer-Profilseite" },
+    { "type": "image_picker", "id": "trainer_image", "label": "Trainerbild" },
+    { "type": "text", "id": "trainer_image_alt", "label": "Bildbeschreibung" },
+    { "type": "richtext", "id": "trainer_bio", "label": "Trainerbeschreibung" },
+    { "type": "text", "id": "requirements_heading", "label": "Voraussetzungen", "default": "Voraussetzungen" },
+    { "type": "text", "id": "faq_heading", "label": "FAQ", "default": "Häufige Fragen" }
+  ],
+  "blocks": [
+    { "type": "outcome", "name": "Lernergebnis", "settings": [{ "type": "text", "id": "text", "label": "Ergebnis", "default": "Das Gelernte sicher im Alltag anwenden" }] },
+    { "type": "lesson", "name": "Lektion/Modul", "settings": [
+      { "type": "text", "id": "title", "label": "Titel", "default": "Modul 1 – Grundlagen" },
+      { "type": "text", "id": "duration", "label": "Dauer", "default": "30 Minuten" },
+      { "type": "richtext", "id": "description", "label": "Beschreibung" }
+    ] },
+    { "type": "requirement", "name": "Voraussetzung", "settings": [{ "type": "text", "id": "text", "label": "Voraussetzung", "default": "Keine Vorkenntnisse erforderlich" }] },
+    { "type": "faq", "name": "Frage", "settings": [
+      { "type": "text", "id": "question", "label": "Frage", "default": "Wie lange habe ich Zugriff?" },
+      { "type": "richtext", "id": "answer", "label": "Antwort", "default": "<p>Trage hier die bestätigten Zugangsbedingungen ein.</p>" }
+    ] }
+  ],
+  "presets": [{ "name": "Chelonaki – Kursdetails", "blocks": [{ "type": "outcome" }, { "type": "lesson" }, { "type": "requirement" }, { "type": "faq" }] }]
+}
+{% endschema %}

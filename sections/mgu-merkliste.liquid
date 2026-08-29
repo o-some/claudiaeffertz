@@ -1,0 +1,36 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+<section class="mgu mgu-block" style="background:#FBF8F0">
+  <div class="mgu-wrap">
+    <div class="mgu-sec-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div data-mgu-wishlist-grid></div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Merkliste",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "text", "id": "eyebrow", "label": "Kicker-Zeile", "default": "Deine Auswahl" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Deine <em>Merkliste.</em>" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Alles, was du dir gemerkt hast – gespeichert auf diesem Gerät." }
+  ],
+  "presets": [{ "name": "Chelonaki – Merkliste" }]
+}
+{% endschema %}

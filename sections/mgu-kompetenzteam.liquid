@@ -1,0 +1,176 @@
+{% comment %} Chelonaki / Food Instructor – Modulares Kompetenzteam {% endcomment %}
+
+{%- liquid
+  assign section_anchor = section.settings.anchor_id | strip | handleize
+  if section_anchor == blank
+    assign section_anchor = 'kompetenzteam'
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --team-bg: {{ section.settings.bg }};
+    --team-heading: {{ section.settings.heading_color }};
+    --team-text: {{ section.settings.text_color }};
+    --team-accent: {{ section.settings.accent_color }};
+    --team-card-bg: {{ section.settings.card_bg }};
+    --team-card-border: {{ section.settings.card_border }};
+    --team-button-bg: {{ section.settings.button_bg }};
+    --team-button-text: {{ section.settings.button_text }};
+    --team-button-hover-bg: {{ section.settings.button_hover_bg }};
+    --team-button-hover-text: {{ section.settings.button_hover_text }};
+  }
+  #shopify-section-{{ section.id }} .mgu-team {
+    padding: {{ section.settings.padding_top }}px clamp(18px, 4vw, 48px) {{ section.settings.padding_bottom }}px;
+    background: var(--team-bg);
+    color: var(--team-text);
+  }
+  #shopify-section-{{ section.id }} .mgu-team__wrap { max-width: {{ section.settings.max_width }}px; margin: 0 auto; }
+  #shopify-section-{{ section.id }} .mgu-team__head { max-width: 760px; margin: 0 auto clamp(34px, 5vw, 64px); text-align: {{ section.settings.text_align }}; }
+  #shopify-section-{{ section.id }} .mgu-team__eyebrow { margin: 0 0 12px; color: color-mix(in srgb, var(--team-accent) 50%, var(--team-heading)); font-size: 12px; font-weight: 750; letter-spacing: .22em; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .mgu-team__title { margin: 0; color: var(--team-heading); font-family: var(--mgu-font-heading, Georgia, serif); font-size: clamp(2.1rem, 4.5vw, 4rem); line-height: 1.06; }
+  #shopify-section-{{ section.id }} .mgu-team__title em { color: color-mix(in srgb, var(--team-accent) 50%, var(--team-heading)); font-weight: 400; }
+  #shopify-section-{{ section.id }} .mgu-team__intro { margin: 18px 0 0; color: var(--team-text); font-size: clamp(1rem, 1.5vw, 1.15rem); }
+  #shopify-section-{{ section.id }} .mgu-team__grid { display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr)); gap: {{ section.settings.gap }}px; }
+  #shopify-section-{{ section.id }} .mgu-team-card { overflow: hidden; display: flex; flex-direction: column; min-width: 0; background: var(--team-card-bg); border: 1px solid var(--team-card-border); border-radius: {{ section.settings.card_radius }}px; box-shadow: 0 18px 50px rgba(16, 45, 31, .08); }
+  #shopify-section-{{ section.id }} .mgu-team-card__media { position: relative; aspect-ratio: {{ section.settings.image_ratio }}; overflow: hidden; background: rgba(23, 58, 42, .06); }
+  #shopify-section-{{ section.id }} .mgu-team-card__media img { width: 100%; height: 100%; object-fit: cover; object-position: center 24%; transition: transform .45s ease; }
+  #shopify-section-{{ section.id }} .mgu-team-card:hover .mgu-team-card__media img { transform: scale(1.035); }
+  #shopify-section-{{ section.id }} .mgu-team-card__placeholder { width: 100%; height: 100%; display: grid; place-items: center; color: var(--team-accent); }
+  #shopify-section-{{ section.id }} .mgu-team-card__body { padding: clamp(22px, 3vw, 32px); display: flex; flex: 1; flex-direction: column; }
+  #shopify-section-{{ section.id }} .mgu-team-card__role { max-width: 46ch; margin: 0 0 7px; color: color-mix(in srgb, var(--team-accent) 50%, var(--team-heading)); font-size: 11px; font-weight: 800; letter-spacing: .12em; line-height: 1.55; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .mgu-team-card__name { margin: 0 0 12px; color: var(--team-heading); font-family: var(--mgu-font-heading, Georgia, serif); font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.12; }
+  #shopify-section-{{ section.id }} .mgu-team-card__text { color: var(--team-text); }
+  #shopify-section-{{ section.id }} .mgu-team-card__text > *:first-child { margin-top: 0; }
+  #shopify-section-{{ section.id }} .mgu-team-card__text > *:last-child { margin-bottom: 0; }
+  #shopify-section-{{ section.id }} .mgu-team-card__skills { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .mgu-team-card__skills li { padding: 7px 11px; border: 1px solid var(--team-card-border); border-radius: 999px; color: var(--team-text); font-size: 12px; }
+  #shopify-section-{{ section.id }} .mgu-team-card__links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 22px; }
+  #shopify-section-{{ section.id }} .mgu-team-card__button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 999px; background: var(--team-button-bg); color: var(--team-button-text); font-weight: 700; text-decoration: none; transition: .2s ease; }
+  #shopify-section-{{ section.id }} .mgu-team-card__button:hover { background: var(--team-button-hover-bg); color: var(--team-button-hover-text); transform: translateY(-1px); }
+  #shopify-section-{{ section.id }} .mgu-team-card__social { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 15px; border: 1px solid var(--team-card-border); border-radius: 999px; color: var(--team-heading); text-decoration: none; font-size: 13px; font-weight: 650; }
+  @media (max-width: 990px) { #shopify-section-{{ section.id }} .mgu-team__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    #shopify-section-{{ section.id }} .mgu-team { padding-top: calc({{ section.settings.padding_top }}px * .72); padding-bottom: calc({{ section.settings.padding_bottom }}px * .72); }
+    #shopify-section-{{ section.id }} .mgu-team__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section id="{{ section_anchor }}" class="mgu-team" data-mgu-team>
+  <div class="mgu-team__wrap">
+    <header class="mgu-team__head">
+      {%- if section.settings.eyebrow != blank -%}<p class="mgu-team__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="mgu-team__title">{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.intro != blank -%}<div class="mgu-team__intro rte">{{ section.settings.intro }}</div>{%- endif -%}
+    </header>
+
+    <div class="mgu-team__grid">
+      {%- for block in section.blocks -%}
+        <article class="mgu-team-card" {{ block.shopify_attributes }}>
+          {%- if block.settings.image_asset != blank or block.settings.image != blank or section.settings.show_placeholders -%}
+            <div class="mgu-team-card__media">
+              {%- if block.settings.image_asset != blank or block.settings.image != blank -%}
+                {%- assign team_image_alt = block.settings.image_alt | default: block.settings.name -%}
+                {%- if block.settings.image_asset != blank -%}
+                  <img src="{{ block.settings.image_asset | asset_url }}" width="1200" height="900" loading="lazy" decoding="async" alt="{{ team_image_alt | escape }}">
+                {%- elsif section.settings.use_curated_team_assets and block.settings.name == 'Claudia Effertz' -%}
+                  <img src="{{ 'fi-team-claudia-v2.webp' | asset_url }}" width="1440" height="960" loading="lazy" decoding="async" alt="{{ team_image_alt | escape }}">
+                {%- else -%}
+                  {{ block.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900, 1000', sizes: '(max-width: 640px) 100vw, (max-width: 990px) 50vw, 33vw', alt: team_image_alt }}
+                {%- endif -%}
+              {%- else -%}
+                <div class="mgu-team-card__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          <div class="mgu-team-card__body">
+            {%- if block.settings.role != blank -%}<p class="mgu-team-card__role">{{ block.settings.role }}</p>{%- endif -%}
+            {%- if block.settings.name != blank -%}<h3 class="mgu-team-card__name">{{ block.settings.name }}</h3>{%- endif -%}
+            {%- if block.settings.bio != blank -%}<div class="mgu-team-card__text rte">{{ block.settings.bio }}</div>{%- endif -%}
+            {%- assign skills = block.settings.skills | split: ',' -%}
+            {%- if block.settings.skills != blank -%}
+              <ul class="mgu-team-card__skills" aria-label="{{ section.settings.skills_label | escape }}">
+                {%- for skill in skills -%}{%- assign clean_skill = skill | strip -%}{%- if clean_skill != blank -%}<li>{{ clean_skill }}</li>{%- endif -%}{%- endfor -%}
+              </ul>
+            {%- endif -%}
+            <div class="mgu-team-card__links">
+              {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}<a class="mgu-team-card__button" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>{%- endif -%}
+              {%- if block.settings.email != blank -%}<a class="mgu-team-card__social" href="mailto:{{ block.settings.email | escape }}">E-Mail</a>{%- endif -%}
+              {%- if block.settings.linkedin != blank -%}<a class="mgu-team-card__social" href="{{ block.settings.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{%- endif -%}
+              {%- if block.settings.instagram != blank -%}<a class="mgu-team-card__social" href="{{ block.settings.instagram }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+            </div>
+          </div>
+        </article>
+      {%- else -%}
+        <p>Füge im Theme-Editor Personen hinzu.</p>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Chelonaki – Kompetenzteam",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Menü-Anker / ID", "default": "kompetenzteam", "info": "Im Menü kannst du auf #kompetenzteam verlinken." },
+    { "type": "text", "id": "eyebrow", "label": "Kleine Überschrift", "default": "Menschen mit Erfahrung" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Unser <em>Kompetenzteam.</em>" },
+    { "type": "richtext", "id": "intro", "label": "Einleitung", "default": "<p>Fachwissen, Praxiserfahrung und persönliche Begleitung – gemeinsam für nachhaltige Veränderungen.</p>" },
+    { "type": "text", "id": "skills_label", "label": "Barrierefreie Bezeichnung der Kompetenzen", "default": "Kompetenzen" },
+    { "type": "select", "id": "text_align", "label": "Ausrichtung der Einleitung", "default": "center", "options": [{"value":"left","label":"Links"},{"value":"center","label":"Zentriert"}] },
+    { "type": "range", "id": "columns_desktop", "label": "Spalten auf Desktop", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "gap", "label": "Abstand zwischen Karten", "min": 12, "max": 48, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "max_width", "label": "Maximale Inhaltsbreite", "min": 900, "max": 1500, "step": 50, "unit": "px", "default": 1200 },
+    { "type": "select", "id": "image_ratio", "label": "Bildformat", "default": "4 / 3", "options": [{"value":"1 / 1","label":"Quadratisch"},{"value":"16 / 9","label":"Breites Querformat 16:9"},{"value":"4 / 3","label":"Querformat 4:3"},{"value":"3 / 4","label":"Hochformat 3:4"}] },
+    { "type": "checkbox", "id": "use_curated_team_assets", "label": "Abgestimmte Team-Porträts verwenden", "default": true },
+    { "type": "checkbox", "id": "show_placeholders", "label": "Platzhalter anzeigen, wenn kein Bild gewählt ist", "default": true },
+    { "type": "range", "id": "card_radius", "label": "Abrundung der Karten", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 22 },
+    { "type": "range", "id": "padding_top", "label": "Abstand oben", "min": 20, "max": 160, "step": 10, "unit": "px", "default": 90 },
+    { "type": "range", "id": "padding_bottom", "label": "Abstand unten", "min": 20, "max": 160, "step": 10, "unit": "px", "default": 90 },
+    { "type": "header", "content": "Farben" },
+    { "type": "color", "id": "bg", "label": "Hintergrund", "default": "#FBF8F0" },
+    { "type": "color", "id": "heading_color", "label": "Überschriften", "default": "#173A2A" },
+    { "type": "color", "id": "text_color", "label": "Fließtext", "default": "#66756D" },
+    { "type": "color", "id": "accent_color", "label": "Akzent", "default": "#B9912F" },
+    { "type": "color", "id": "card_bg", "label": "Karten-Hintergrund", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_border", "label": "Karten-Rahmen", "default": "#D8DED9" },
+    { "type": "color", "id": "button_bg", "label": "Button-Hintergrund", "default": "#173A2A" },
+    { "type": "color", "id": "button_text", "label": "Button-Schrift", "default": "#FFFFFF" },
+    { "type": "color", "id": "button_hover_bg", "label": "Button-Hover-Hintergrund", "default": "#B9912F" },
+    { "type": "color", "id": "button_hover_text", "label": "Button-Hover-Schrift", "default": "#10291D" }
+  ],
+  "blocks": [
+    {
+      "type": "person",
+      "name": "Person",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Porträt" },
+        { "type": "text", "id": "image_asset", "label": "Theme-Dateiname (optional)" },
+        { "type": "text", "id": "image_alt", "label": "Bildbeschreibung" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Vorname Nachname" },
+        { "type": "text", "id": "role", "label": "Funktion / Rolle", "default": "Fachbereich" },
+        { "type": "richtext", "id": "bio", "label": "Beschreibung", "default": "<p>Kurze Vorstellung, Erfahrung und Schwerpunkt der Person.</p>" },
+        { "type": "textarea", "id": "skills", "label": "Kompetenzen, mit Komma getrennt", "default": "Ernährung, Coaching, Praxis" },
+        { "type": "text", "id": "button_label", "label": "Button-Text", "default": "Mehr erfahren" },
+        { "type": "url", "id": "button_link", "label": "Button-Link" },
+        { "type": "text", "id": "email", "label": "E-Mail-Adresse" },
+        { "type": "url", "id": "linkedin", "label": "LinkedIn-Link" },
+        { "type": "url", "id": "instagram", "label": "Instagram-Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chelonaki – Kompetenzteam",
+      "blocks": [
+        { "type": "person", "settings": { "name": "Markus Riebel", "role": "Gründer & Food Instructor", "bio": "<p>Verbindet Sport, Küchenpraxis und verständliche Ernährungsbildung.</p>", "skills": "Ernährung, Ausbildung, Coaching" } },
+        { "type": "person", "settings": { "name": "Teammitglied zwei", "role": "Fachbereich", "bio": "<p>Hier kannst du die zweite Person und ihre Kompetenzen vorstellen.</p>", "skills": "Beratung, Praxis, Betreuung" } },
+        { "type": "person", "settings": { "name": "Teammitglied drei", "role": "Fachbereich", "bio": "<p>Hier kannst du die dritte Person und ihre Kompetenzen vorstellen.</p>", "skills": "Organisation, Wissen, Umsetzung" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,61 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "mgu_brot_landing": {
+      "type": "mgu-brot-landing",
+      "settings": {
+        "eyebrow": "Food Instructor MGU® Brot",
+        "heading": "Ohne Getreide. Ohne zugesetztes Gluten. <em>Voller Genuss.</em>",
+        "intro": "Echtes Brot für eine moderne, bewusste Ernährung – aus Mandelmehl, Sojamehl und Leinsamenmehl. Voller Geschmack, ganz ohne Verzicht.",
+        "use_editorial_asset": true,
+        "hero_image": "shopify://shop_images/mgu-brot-original.webp",
+        "image_alt": "Food Instructor MGU Brot – ohne Getreide und ohne zugesetztes Gluten",
+        "price": "5,90 €",
+        "order_button": "Jetzt per E-Mail bestellen",
+        "order_email_link": "mailto:rechnung@altstadtbaeckerei-braunwarth.de?subject=Bestellung%20Food%20Instructor%20MGU%C2%AE%20Brot",
+        "contact_link": "/pages/contact"
+      }
+    },
+    "mgu_brot_partnerbaeckerei": {
+      "type": "mgu-store-map",
+      "blocks": {
+        "braunwarth_obernburg": {
+          "type": "standort",
+          "settings": {
+            "name": "Altstadtbäckerei Braunwarth",
+            "adresse": "Obere Gasse 22\n63785 Obernburg am Main",
+            "zeiten": "Mo–Fr 06:30–13:00 Uhr · Sa 06:00–12:00 Uhr"
+          }
+        }
+      },
+      "block_order": [
+        "braunwarth_obernburg"
+      ],
+      "name": "MGU Brot · Partnerbäckerei",
+      "settings": {
+        "section_gap_top": 0,
+        "section_gap_bottom": 0,
+        "effect": "up",
+        "effect_speed": "normal",
+        "eyebrow": "Hier frisch erhältlich",
+        "heading": "Unsere <em>Partnerbäckerei.</em>",
+        "bg": "#F3EDDF",
+        "consent_text": "Beim Laden der Karte werden Daten an Google übertragen.",
+        "load_label": "Standort auf Google Maps laden",
+        "loaded_text": "Karte wurde geladen."
+      }
+    }
+  },
+  "order": [
+    "mgu_brot_landing",
+    "mgu_brot_partnerbaeckerei"
+  ]
+}

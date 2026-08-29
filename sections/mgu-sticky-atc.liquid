@@ -1,0 +1,48 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+{%- liquid
+  assign vjson = ''
+  for v in product.variants
+    assign row = '{"id":' | append: v.id | append: ',"title":"' | append: v.title | escape | append: '","price":' | append: v.price | append: ',"available":' | append: v.available | append: '}'
+    assign vjson = vjson | append: row
+    unless forloop.last
+      assign vjson = vjson | append: ','
+    endunless
+  endfor
+-%}
+
+<div class="mgu mgu-satc"
+     data-mgu-satc
+     data-variants='[{{ vjson }}]'
+     data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+     data-label-add="{{ section.settings.button_label | escape }}">
+  <div class="mgu-satc-inner">
+    {%- if product.featured_image -%}
+      <img width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" class="mgu-satc-img" src="{{ product.featured_image | image_url: width: 120 }}" alt="">
+    {%- endif -%}
+    <div class="mgu-satc-title">
+      <h4>{{ product.title }}</h4>
+      <span class="mgu-satc-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+    </div>
+    {%- if product.variants.size > 1 -%}
+      <select aria-label="{{ 'mgu.warenkorb.variante' | t }}">
+        {%- for v in product.variants -%}
+          <option value="{{ v.id }}" {% if v == product.selected_or_first_available_variant %}selected{% endif %}>{{ v.title }}</option>
+        {%- endfor -%}
+      </select>
+    {%- endif -%}
+    <button type="button" class="mgu-satc-btn"><span>{{ section.settings.button_label }}</span></button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Chelonaki · Sticky Kaufen",
+  "settings": [
+    { "type": "paragraph", "content": "Erscheint automatisch, sobald der Kunde am Kaufbereich vorbeigescrollt ist. Nur auf Produktseiten einfügbar." },
+    { "type": "text", "id": "button_label", "label": "Button-Beschriftung", "default": "In den Warenkorb" }
+  ],
+  "enabled_on": { "templates": ["product"] },
+  "presets": [{ "name": "Chelonaki – Sticky Kaufen-Leiste" }]
+}
+{% endschema %}

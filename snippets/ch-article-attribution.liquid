@@ -1,0 +1,25 @@
+{%- comment -%}Sichtbare, belegbare Autoren- und Prueferangaben fuer Fachinhalte.{%- endcomment -%}
+<div class="ch-article-attribution" aria-label="Verantwortliche Personen">
+  <p>
+    <strong>Autor:</strong>
+    {%- if settings.ch_expert_profile_url != blank and settings.ch_expert_name == article.author -%}
+      <a href="{{ settings.ch_expert_profile_url }}">{{ article.author | escape }}</a>
+    {%- else -%}
+      {{ article.author | escape }}
+    {%- endif -%}
+    {%- if settings.ch_expert_name == article.author and settings.ch_expert_role != blank -%}
+      <span> · {{ settings.ch_expert_role | escape }}</span>
+    {%- endif -%}
+  </p>
+  {%- if settings.ch_content_review_enabled and settings.ch_reviewer_name != blank -%}
+    <p>
+      <strong>Fachlich geprüft:</strong>
+      {%- if settings.ch_reviewer_profile_url != blank -%}
+        <a href="{{ settings.ch_reviewer_profile_url }}">{{ settings.ch_reviewer_name | escape }}</a>
+      {%- else -%}
+        {{ settings.ch_reviewer_name | escape }}
+      {%- endif -%}
+      {%- if settings.ch_reviewer_role != blank -%}<span> · {{ settings.ch_reviewer_role | escape }}</span>{%- endif -%}
+    </p>
+  {%- endif -%}
+</div>

@@ -1,0 +1,75 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+<style>
+  .mgu-ann{
+    background:{{ section.settings.bg }};color:{{ section.settings.textfarbe }};
+    text-align:center;font-size:13.5px;font-weight:600;letter-spacing:.02em;
+    padding:10px 44px;position:relative;overflow:hidden;min-height:20px;
+  }
+  .mgu-ann-slide{display:none;animation:mguAnnFade .5s ease}
+  .mgu-ann-slide.mgu-ann-active{display:block}
+  .mgu-ann-slide a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  @keyframes mguAnnFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .mgu-ann-dots{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;gap:0}
+  .mgu-ann-dots button{position:relative;width:28px;height:28px;border:0;background:transparent;color:inherit;padding:0;cursor:pointer}
+  .mgu-ann-dots button::after{content:"";position:absolute;inset:50% auto auto 50%;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.35;transform:translate(-50%,-50%)}
+  .mgu-ann-dots button.mgu-ann-dot-active::after{opacity:1}
+  @media(prefers-reduced-motion:reduce){.mgu-ann-slide{animation:none}}
+</style>
+{%- if section.blocks.size > 0 -%}
+<div class="mgu mgu-ann" data-mgu-ann data-intervall="{{ section.settings.intervall }}" role="region" aria-label="Ankündigungen">
+  {%- for block in section.blocks -%}
+    <div class="mgu-ann-slide {% if forloop.first %}mgu-ann-active{% endif %}" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>{%- else -%}{{ block.settings.text }}{%- endif -%}
+    </div>
+  {%- endfor -%}
+  {%- if section.blocks.size > 1 -%}
+    <div class="mgu-ann-dots">
+      {%- for block in section.blocks -%}<button type="button" class="{% if forloop.first %}mgu-ann-dot-active{% endif %}" data-mgu-ann-dot="{{ forloop.index0 }}" aria-label="Meldung {{ forloop.index }} von {{ forloop.length }} anzeigen"{% if forloop.first %} aria-current="true"{% endif %}></button>{%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+<script>
+(function(){
+  document.querySelectorAll('[data-mgu-ann]:not([data-init])').forEach(function(box){
+    box.dataset.init='1';
+    var slides=box.querySelectorAll('.mgu-ann-slide'), dots=box.querySelectorAll('[data-mgu-ann-dot]');
+    if(slides.length<2) return;
+    var i=0, ms=(parseInt(box.dataset.intervall,10)||5)*1000, timer;
+    function show(n){
+      slides[i].classList.remove('mgu-ann-active'); if(dots[i]) { dots[i].classList.remove('mgu-ann-dot-active'); dots[i].removeAttribute('aria-current'); }
+      i=(n+slides.length)%slides.length;
+      slides[i].classList.add('mgu-ann-active'); if(dots[i]) { dots[i].classList.add('mgu-ann-dot-active'); dots[i].setAttribute('aria-current','true'); }
+    }
+    function next(){ show(i+1); }
+    function start(){ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; stop(); timer=setInterval(next, ms); }
+    function stop(){ clearInterval(timer); }
+    start();
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', start);
+    box.addEventListener('focusin', stop);
+    box.addEventListener('focusout', function(e){ if(!box.contains(e.relatedTarget)) start(); });
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); else start(); });
+    dots.forEach(function(d,idx){ d.addEventListener('click', function(){ stop(); show(idx); start(); }); });
+  });
+})();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Chelonaki · Meldungen",
+  "settings": [
+    { "type": "paragraph", "content": "Mehrere rotierende Ankündigungen (z.B. über dem Header). Bei nur 1 Block läuft sie ohne Rotation als einfacher Banner." },
+    { "type": "range", "id": "intervall", "label": "Wechselintervall (Sekunden)", "min": 2, "max": 15, "step": 1, "default": 5 },
+    { "type": "color", "id": "bg", "label": "Hintergrund", "default": "#142519" },
+    { "type": "color", "id": "textfarbe", "label": "Textfarbe", "default": "#FCF9F1" }
+  ],
+  "blocks": [
+    { "type": "ankuendigung", "name": "Ankündigung",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Kostenloser Versand ab 50 €" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]}
+  ],
+  "presets": [{ "name": "Chelonaki – Ankündigungs-Slider", "blocks": [ { "type": "ankuendigung" }, { "type": "ankuendigung", "settings": { "text": "Neu: Jetzt auch als Videokurs" } } ] }]
+}
+{% endschema %}

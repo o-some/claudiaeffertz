@@ -1,0 +1,385 @@
+<section class="mgu-brot" id="MguBrot-{{ section.id }}">
+  <div class="mgu-brot__hero">
+    <div class="mgu-brot__wrap mgu-brot__hero-grid">
+      <div class="mgu-brot__hero-copy" data-mgb-reveal="up">
+        <span class="mgu-brot__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        <h1>{{ section.settings.heading }}</h1>
+        <p class="mgu-brot__lead">{{ section.settings.intro | escape }}</p>
+        <div class="mgu-brot__actions">
+          <a class="mgu-brot__button mgu-brot__button--gold" href="#MguBrotBestellen-{{ section.id }}">
+            {{ section.settings.order_button | escape }} <span aria-hidden="true">→</span>
+          </a>
+          <a class="mgu-brot__button mgu-brot__button--outline" href="#MguBrotVorteile-{{ section.id }}">
+            Vorteile ansehen
+          </a>
+        </div>
+      </div>
+
+      <div class="mgu-brot__visual" data-mgb-reveal="scale">
+        {% if section.settings.use_editorial_asset %}
+          <img
+            src="{{ 'mgu-brot-editorial-v2.webp' | asset_url }}"
+            class="mgu-brot__image"
+            width="1254"
+            height="1254"
+            loading="eager"
+            alt="{{ section.settings.image_alt | escape }}"
+          >
+        {% elsif section.settings.hero_image != blank %}
+          {{
+            section.settings.hero_image
+            | image_url: width: 1200
+            | image_tag:
+              widths: '480, 720, 960, 1200',
+              sizes: '(max-width: 800px) 92vw, 46vw',
+              loading: 'eager',
+              class: 'mgu-brot__image',
+              alt: section.settings.image_alt
+          }}
+        {% else %}
+          <div class="mgu-brot__placeholder">
+            {{ 'image' | placeholder_svg_tag }}
+            <span>Brotbild im Theme-Editor auswählen</span>
+          </div>
+        {% endif %}
+        <div class="mgu-brot__badge">
+          <strong>&lt; 5 g</strong>
+          <span>Kohlenhydrate*</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mgu-brot__recipe" aria-label="Rezeptur">
+    <div class="mgu-brot__wrap mgu-brot__recipe-row" data-mgb-stagger>
+      <span>Die Rezeptur</span>
+      <b>Mandelmehl</b>
+      <b>Sojamehl</b>
+      <b>Leinsamenmehl</b>
+      <span>Natürlich nährstoffreich</span>
+    </div>
+  </div>
+
+  <div class="mgu-brot__section" id="MguBrotVorteile-{{ section.id }}">
+    <div class="mgu-brot__wrap mgu-brot__split">
+      <div data-mgb-reveal="up">
+        <span class="mgu-brot__eyebrow">Das Brot</span>
+        <h2>Brot für eine <em>bewusste Ernährung.</em></h2>
+        <p class="mgu-brot__lead">Das Food Instructor MGU® Brot wurde für Menschen entwickelt, die ihre Ernährung aktiv gestalten möchten – ohne auf Genuss zu verzichten.</p>
+        <p>Anders als herkömmliche Brote kommt es ganz ohne Getreide und ohne zugesetztes Gluten aus. Die Rezeptur aus Mandel-, Soja- und Leinsamenmehl macht es zu einer wertvollen Alternative für eine bewusste Ernährung.</p>
+      </div>
+
+      <div class="mgu-brot__benefits" data-mgb-reveal="up">
+        <span class="mgu-brot__eyebrow">Die Vorteile auf einen Blick</span>
+        <ul data-mgb-stagger>
+          <li>Deutlich unter 5 g Kohlenhydrate*</li>
+          <li>Hoher Proteingehalt</li>
+          <li>Reich an Ballaststoffen</li>
+          <li>Lang anhaltende Sättigung</li>
+          <li>Für eine bewusste Ernährung</li>
+          <li>Unterstützt ausgewogene Mahlzeiten</li>
+          <li>Getreidefrei und ohne zugesetztes Gluten</li>
+          <li>Ideal für aktives Gewichtsmanagement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mgu-brot__section mgu-brot__section--soft">
+    <div class="mgu-brot__wrap">
+      <div class="mgu-brot__section-head" data-mgb-reveal="up">
+        <span class="mgu-brot__eyebrow">Warum das wichtig ist</span>
+        <h2>Protein & Ballaststoffe – <em>die Basis für Lebensqualität.</em></h2>
+      </div>
+      <div class="mgu-brot__cards" data-mgb-stagger>
+        <article>
+          <span class="mgu-brot__card-icon" aria-hidden="true">P</span>
+          <h3>Hochwertiges Protein</h3>
+          <p>Eine ausreichende Eiweißversorgung spielt eine wichtige Rolle für den Erhalt von Muskulatur und Leistungsfähigkeit. Das MGU® Brot liefert hochwertiges pflanzliches Protein – für aktive Menschen wie für Senioren.</p>
+        </article>
+        <article>
+          <span class="mgu-brot__card-icon" aria-hidden="true">B</span>
+          <h3>Wertvolle Ballaststoffe</h3>
+          <p>Die enthaltenen Ballaststoffe tragen zu einer langanhaltenden Sättigung bei und unterstützen eine abwechslungsreiche, ausgewogene Ernährung im Alltag.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="mgu-brot__section mgu-brot__philosophy">
+    <div class="mgu-brot__wrap" data-mgb-stagger>
+      <span class="mgu-brot__eyebrow">Die MGU® Philosophie</span>
+      <h2>Bewusst essen – <em>Lebensqualität erhalten.</em></h2>
+      <blockquote>„Nicht verbieten – sondern Lebensmittel so gestalten, dass sie dem Menschen guttun.“</blockquote>
+      <p>Das Food Instructor MGU® Brot hilft dabei, die tägliche Ernährung bewusst, genussvoll und alltagstauglich zu gestalten. Es eignet sich für Menschen, die aktiv etwas für ihre Ernährung und ihr Wohlbefinden tun möchten.</p>
+    </div>
+  </div>
+
+  <div class="mgu-brot__section" id="MguBrotBestellen-{{ section.id }}">
+    <div class="mgu-brot__wrap mgu-brot__order-grid">
+      <div data-mgb-reveal="up">
+        <span class="mgu-brot__eyebrow">Kooperationspartner-Bäckerei</span>
+        <h2>Frisch gebacken – <em>direkt zu Ihnen.</em></h2>
+        <p class="mgu-brot__lead">Das Food Instructor MGU® Brot wird von unserem Partner, der Altstadtbäckerei Braunwarth, frisch für Sie gebacken und bequem zu Ihnen nach Hause geliefert.</p>
+        <ol class="mgu-brot__steps" data-mgb-stagger>
+          <li><span>1</span><div><b>Bestellung per E-Mail</b><p>Lieferadresse und gewünschte Menge mitteilen.</p></div></li>
+          <li><span>2</span><div><b>Frisch gebacken</b><p>Das Brot wird eigens für Sie zubereitet.</p></div></li>
+          <li><span>3</span><div><b>Lieferung nach Hause</b><p>Frisch verpackt direkt an Ihre Tür.</p></div></li>
+        </ol>
+      </div>
+
+      <aside class="mgu-brot__order-card" data-mgb-reveal="scale">
+        <span class="mgu-brot__eyebrow">MGU® Brot · 1 Laib</span>
+        <div class="mgu-brot__price">{{ section.settings.price | escape }}</div>
+        <p>pro Laib · inkl. MwSt. · zzgl. Versandkosten</p>
+        <div class="mgu-brot__fresh">Wird frisch für Sie gebacken und direkt nach Hause geliefert.</div>
+        <a class="mgu-brot__button mgu-brot__button--gold" href="{{ section.settings.order_email_link }}">
+          {{ section.settings.order_button | escape }} <span aria-hidden="true">→</span>
+        </a>
+        <small>Altstadtbäckerei Braunwarth<br>Kooperationspartner für das frisch gebackene MGU® Brot.</small>
+      </aside>
+    </div>
+  </div>
+
+  <div class="mgu-brot__section mgu-brot__partners">
+    <div class="mgu-brot__wrap mgu-brot__split">
+      <div data-mgb-reveal="up">
+        <span class="mgu-brot__eyebrow">Für Bäckereien</span>
+        <h2>Lizenzpartner <em>gesucht.</em></h2>
+        <p class="mgu-brot__lead">Das MGU® Brot ist Teil eines ganzheitlichen Ernährungssystems, das Menschen dabei unterstützt, ihre Ernährung langfristig bewusst zu gestalten.</p>
+        <p>Das Konzept eignet sich für handwerkliche Bäckereien ebenso wie für größere Backbetriebe.</p>
+      </div>
+      <div class="mgu-brot__partner-benefits" data-mgb-reveal="up">
+        <h3>Ihre Vorteile als Partner</h3>
+        <ul data-mgb-stagger>
+          <li>Erschließung neuer Kundengruppen</li>
+          <li>Positionierung im Zukunftsmarkt Gesundheit und Longevity</li>
+          <li>Ein innovatives, klar differenziertes Produkt</li>
+          <li>Nutzung der etablierten Marke Food Instructor MGU®</li>
+          <li>Unterstützung bei Vermarktung und Positionierung</li>
+          <li>Nationale und internationale Entwicklungsmöglichkeiten</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mgu-brot__section mgu-brot__final">
+    <div class="mgu-brot__wrap" data-mgb-stagger>
+      <span class="mgu-brot__eyebrow">Werden Sie zertifizierter Lizenzpartner</span>
+      <h2>Ernährung neu denken – <em>gemeinsam.</em></h2>
+      <p>Mit dem Food Instructor MGU® Brot bieten Sie Ihren Kunden einen genussvollen und alltagstauglichen Einstieg in eine bewusstere Ernährung.</p>
+      <a class="mgu-brot__button mgu-brot__button--gold" href="{{ section.settings.contact_link }}">
+        Kontakt aufnehmen <span aria-hidden="true">→</span>
+      </a>
+      <div class="mgu-brot__closing">
+        <span>Für mehr Genuss.</span><span>Für mehr Gesundheit.</span><span>Für mehr Lebensqualität.</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="mgu-brot__footnote mgu-brot__wrap">* Angabe gemäß vorhandener Produktkommunikation. Verbindliche Nährwerte bitte der Produktkennzeichnung entnehmen.</p>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    --mgb-forest: #142519;
+    --mgb-forest-soft: #1f3a2a;
+    --mgb-cream: #fbf8f0;
+    --mgb-sand: #f3eddf;
+    --mgb-gold: #b9912f;
+    --mgb-gold-soft: #d9bc6a;
+    --mgb-text: #5c6b60;
+  }
+  #shopify-section-{{ section.id }} .mgu-brot { background: var(--mgb-cream); color: var(--mgb-text); overflow: hidden; }
+  #shopify-section-{{ section.id }} .mgu-brot__wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+  #shopify-section-{{ section.id }} .mgu-brot__hero { padding: clamp(64px, 9vw, 126px) 0; background: radial-gradient(circle at 82% 18%, rgba(217,188,106,.18), transparent 34%), var(--mgb-cream); }
+  #shopify-section-{{ section.id }} .mgu-brot__hero-grid,
+  #shopify-section-{{ section.id }} .mgu-brot__split,
+  #shopify-section-{{ section.id }} .mgu-brot__order-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(40px, 7vw, 90px); }
+  #shopify-section-{{ section.id }} .mgu-brot__eyebrow { display: block; margin-bottom: 14px; color: var(--mgb-gold); font-size: 1.2rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} h1,
+  #shopify-section-{{ section.id }} h2 { margin: 0 0 22px; color: var(--mgb-forest-soft); line-height: 1.02; }
+  #shopify-section-{{ section.id }} h1 { font-size: clamp(4.2rem, 6.5vw, 8rem); }
+  #shopify-section-{{ section.id }} h2 { font-size: clamp(3.3rem, 5vw, 5.8rem); }
+  #shopify-section-{{ section.id }} h1 em,
+  #shopify-section-{{ section.id }} h2 em { color: var(--mgb-gold); font-weight: inherit; }
+  #shopify-section-{{ section.id }} h3 { color: var(--mgb-forest-soft); font-size: 2rem; }
+  #shopify-section-{{ section.id }} p { font-size: 1.6rem; line-height: 1.7; }
+  #shopify-section-{{ section.id }} .mgu-brot__lead { color: var(--mgb-forest-soft); font-size: clamp(1.7rem, 2vw, 2.1rem); }
+  #shopify-section-{{ section.id }} .mgu-brot__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  #shopify-section-{{ section.id }} .mgu-brot__button { display: inline-flex; align-items: center; justify-content: space-between; gap: 22px; min-height: 52px; padding: 0 22px; border: 1px solid transparent; border-radius: 999px; font-size: 1.45rem; font-weight: 800; text-decoration: none; transition: transform .2s ease, background-color .2s ease; }
+  #shopify-section-{{ section.id }} .mgu-brot__button:hover { transform: translateY(-2px); }
+  #shopify-section-{{ section.id }} .mgu-brot__button--gold { background: var(--mgb-gold); color: var(--mgb-forest); }
+  #shopify-section-{{ section.id }} .mgu-brot__button--gold:hover { background: var(--mgb-gold-soft); }
+  #shopify-section-{{ section.id }} .mgu-brot__button--outline { border-color: var(--mgb-forest-soft); color: var(--mgb-forest-soft); }
+  #shopify-section-{{ section.id }} .mgu-brot__visual {
+    position: relative;
+    padding: clamp(9px, 1vw, 14px);
+    border: 1px solid rgba(185,145,47,.28);
+    border-radius: 30px;
+    background: linear-gradient(145deg, rgba(255,253,247,.96), rgba(243,237,223,.92));
+    box-shadow:
+      0 28px 64px -40px rgba(20,37,25,.58),
+      inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  #shopify-section-{{ section.id }} .mgu-brot__image,
+  #shopify-section-{{ section.id }} .mgu-brot__placeholder { width: 100%; border-radius: 21px; }
+  #shopify-section-{{ section.id }} .mgu-brot__image {
+    display: block;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(20,37,25,.08);
+    background: var(--mgb-sand);
+    object-fit: cover;
+    object-position: center;
+    box-sizing: border-box;
+  }
+  #shopify-section-{{ section.id }} .mgu-brot__placeholder { display: grid; aspect-ratio: 1 / 1; place-items: center; overflow: hidden; border: 1px solid #d8ded9; background: var(--mgb-sand); text-align: center; }
+  #shopify-section-{{ section.id }} .mgu-brot__placeholder svg { width: 62%; height: 62%; }
+  #shopify-section-{{ section.id }} .mgu-brot__placeholder span { position: absolute; bottom: 24px; }
+  #shopify-section-{{ section.id }} .mgu-brot__badge { position: absolute; right: -18px; bottom: -18px; display: grid; width: 132px; height: 132px; place-content: center; border: 5px solid var(--mgb-cream); border-radius: 50%; background: var(--mgb-gold); color: var(--mgb-forest); box-shadow: 0 16px 34px -20px rgba(20,37,25,.72); text-align: center; transform: rotate(-6deg); }
+  #shopify-section-{{ section.id }} .mgu-brot__badge strong { font-size: 2.7rem; line-height: 1; }
+  #shopify-section-{{ section.id }} .mgu-brot__badge span { font-size: 1rem; font-weight: 800; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .mgu-brot__recipe { padding: 22px 0; background: var(--mgb-forest); color: var(--mgb-cream); }
+  #shopify-section-{{ section.id }} .mgu-brot__recipe-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 30px; text-align: center; }
+  #shopify-section-{{ section.id }} .mgu-brot__recipe-row span { color: var(--mgb-gold-soft); font-style: italic; }
+  #shopify-section-{{ section.id }} .mgu-brot__recipe-row b::before { margin-right: 10px; color: var(--mgb-gold); content: "•"; }
+  #shopify-section-{{ section.id }} .mgu-brot__section { padding: clamp(70px, 9vw, 118px) 0; }
+  #shopify-section-{{ section.id }} .mgu-brot__section--soft { background: var(--mgb-sand); }
+  #shopify-section-{{ section.id }} .mgu-brot__benefits { padding: clamp(28px, 4vw, 48px); border-radius: 24px; background: #fff; box-shadow: 0 25px 60px -45px rgba(20,37,25,.45); }
+  #shopify-section-{{ section.id }} .mgu-brot__benefits ul,
+  #shopify-section-{{ section.id }} .mgu-brot__partner-benefits ul { display: grid; gap: 14px; margin: 18px 0 0; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .mgu-brot__benefits li,
+  #shopify-section-{{ section.id }} .mgu-brot__partner-benefits li { display: flex; gap: 12px; font-size: 1.55rem; }
+  #shopify-section-{{ section.id }} .mgu-brot__benefits li::before,
+  #shopify-section-{{ section.id }} .mgu-brot__partner-benefits li::before { display: grid; flex: 0 0 24px; width: 24px; height: 24px; place-content: center; border-radius: 50%; background: var(--mgb-gold); color: var(--mgb-forest); content: "✓"; font-size: 1.2rem; font-weight: 900; }
+  #shopify-section-{{ section.id }} .mgu-brot__section-head { max-width: 850px; margin-bottom: 42px; }
+  #shopify-section-{{ section.id }} .mgu-brot__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  #shopify-section-{{ section.id }} .mgu-brot__cards article { padding: clamp(28px, 4vw, 44px); border: 1px solid #d8ded9; border-radius: 22px; background: #fff; }
+  #shopify-section-{{ section.id }} .mgu-brot__card-icon { display: grid; width: 54px; height: 54px; margin-bottom: 20px; place-content: center; border-radius: 50%; background: var(--mgb-forest); color: var(--mgb-gold-soft); font-size: 2rem; font-weight: 900; }
+  #shopify-section-{{ section.id }} .mgu-brot__philosophy { background: var(--mgb-forest); color: #efead9; }
+  #shopify-section-{{ section.id }} .mgu-brot__philosophy h2 {
+    max-width: 850px;
+    background: none;
+    color: var(--mgb-cream) !important;
+    -webkit-text-fill-color: var(--mgb-cream);
+  }
+  #shopify-section-{{ section.id }} .mgu-brot__philosophy h2 em {
+    color: var(--mgb-gold-soft) !important;
+    -webkit-text-fill-color: var(--mgb-gold-soft);
+  }
+  #shopify-section-{{ section.id }} .mgu-brot__philosophy p { max-width: 760px; }
+  #shopify-section-{{ section.id }} .mgu-brot__philosophy blockquote { max-width: 850px; margin: 30px 0; color: var(--mgb-gold-soft); font-size: clamp(2.4rem, 4vw, 4.6rem); font-style: italic; line-height: 1.2; }
+  #shopify-section-{{ section.id }} .mgu-brot__steps { display: grid; gap: 22px; margin: 34px 0 0; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .mgu-brot__steps li { display: flex; gap: 16px; }
+  #shopify-section-{{ section.id }} .mgu-brot__steps li > span { display: grid; flex: 0 0 36px; width: 36px; height: 36px; place-content: center; border-radius: 50%; background: var(--mgb-forest); color: var(--mgb-gold-soft); font-weight: 900; }
+  #shopify-section-{{ section.id }} .mgu-brot__steps b { color: var(--mgb-forest-soft); font-size: 1.65rem; }
+  #shopify-section-{{ section.id }} .mgu-brot__steps p { margin: 2px 0 0; font-size: 1.45rem; }
+  #shopify-section-{{ section.id }} .mgu-brot__order-card { padding: clamp(30px, 5vw, 54px); border-radius: 26px; background: var(--mgb-forest); color: var(--mgb-cream); box-shadow: 0 30px 70px -42px rgba(20,37,25,.7); }
+  #shopify-section-{{ section.id }} .mgu-brot__price { margin: 16px 0 4px; color: #fff; font-size: clamp(4.8rem, 7vw, 7rem); font-weight: 800; line-height: 1; }
+  #shopify-section-{{ section.id }} .mgu-brot__fresh { margin: 28px 0; padding: 18px; border: 1px solid rgba(255,255,255,.14); border-radius: 14px; background: rgba(255,255,255,.06); font-size: 1.45rem; }
+  #shopify-section-{{ section.id }} .mgu-brot__order-card .mgu-brot__button { width: 100%; }
+  #shopify-section-{{ section.id }} .mgu-brot__order-card small { display: block; margin-top: 25px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.14); color: #d4d9d5; font-size: 1.25rem; }
+  #shopify-section-{{ section.id }} .mgu-brot__partners { background: var(--mgb-sand); }
+  #shopify-section-{{ section.id }} .mgu-brot__partner-benefits { padding: clamp(28px, 4vw, 44px); border-radius: 22px; background: var(--mgb-cream); }
+  #shopify-section-{{ section.id }} .mgu-brot__final { text-align: center; }
+  #shopify-section-{{ section.id }} .mgu-brot__final .mgu-brot__wrap { max-width: 900px; }
+  #shopify-section-{{ section.id }} .mgu-brot__closing { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px; margin-top: 46px; color: var(--mgb-gold); font-size: 1.7rem; font-style: italic; }
+  #shopify-section-{{ section.id }} .mgu-brot__footnote { padding-bottom: 36px; font-size: 1.1rem; opacity: .75; }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-reveal],
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-stagger] > * {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition:
+      opacity .82s cubic-bezier(.22, 1, .36, 1),
+      transform .92s cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--mgb-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-reveal="scale"] {
+    transform: translate3d(0, 22px, 0) scale(.975);
+  }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-reveal].is-visible,
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-stagger].is-visible > * {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-stagger].is-visible > * {
+    transition-delay: calc(var(--mgb-order, 0) * 72ms);
+  }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready .mgu-brot__visual.is-visible .mgu-brot__image {
+    animation: mgb-image-settle-{{ section.id }} 1.2s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready .mgu-brot__badge {
+    transition: opacity .7s ease .35s, transform .9s cubic-bezier(.22, 1, .36, 1) .28s;
+  }
+  #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready .mgu-brot__visual:not(.is-visible) .mgu-brot__badge {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) rotate(-10deg) scale(.9);
+  }
+  @keyframes mgb-image-settle-{{ section.id }} {
+    from { transform: scale(1.025); }
+    to { transform: scale(1); }
+  }
+  @media screen and (max-width: 800px) {
+    #shopify-section-{{ section.id }} .mgu-brot__hero-grid,
+    #shopify-section-{{ section.id }} .mgu-brot__split,
+    #shopify-section-{{ section.id }} .mgu-brot__order-grid,
+    #shopify-section-{{ section.id }} .mgu-brot__cards { grid-template-columns: 1fr; }
+    #shopify-section-{{ section.id }} .mgu-brot__visual { order: -1; }
+    #shopify-section-{{ section.id }} .mgu-brot__image {
+      height: auto;
+      aspect-ratio: auto;
+      padding: 0;
+      background: transparent;
+      object-fit: contain;
+      object-position: center;
+    }
+    #shopify-section-{{ section.id }} .mgu-brot__badge { right: -6px; bottom: -12px; width: 108px; height: 108px; }
+  }
+  @media screen and (max-width: 520px) {
+    #shopify-section-{{ section.id }} .mgu-brot__wrap { width: min(100% - 28px, 1180px); }
+    #shopify-section-{{ section.id }} .mgu-brot__actions { align-items: stretch; flex-direction: column; }
+    #shopify-section-{{ section.id }} .mgu-brot__button { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-reveal],
+    #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready [data-mgb-stagger] > * {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      animation: none;
+      will-change: auto;
+    }
+    #shopify-section-{{ section.id }} .mgu-brot.is-motion-ready .mgu-brot__badge {
+      opacity: 1;
+      transform: rotate(-6deg);
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<script src="{{ 'mgu-brot-motion.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Chelonaki · MGU Brot",
+  "tag": "section",
+  "class": "mgu-brot-landing-section",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Kleine Überschrift","default":"Food Instructor MGU® Brot"},
+    {"type":"inline_richtext","id":"heading","label":"Hauptüberschrift","default":"Ohne Getreide. Ohne zugesetztes Gluten. <em>Voller Genuss.</em>"},
+    {"type":"textarea","id":"intro","label":"Einleitung","default":"Echtes Brot für eine moderne, bewusste Ernährung – aus Mandelmehl, Sojamehl und Leinsamenmehl. Voller Geschmack, ganz ohne Verzicht."},
+    {"type":"checkbox","id":"use_editorial_asset","label":"Food-Instructor-Designbild verwenden","default":true},
+    {"type":"image_picker","id":"hero_image","label":"Brotbild"},
+    {"type":"text","id":"image_alt","label":"Bildbeschreibung","default":"Food Instructor MGU Brot"},
+    {"type":"text","id":"price","label":"Preis","default":"5,90 €"},
+    {"type":"text","id":"order_button","label":"Bestellbutton","default":"Jetzt per E-Mail bestellen"},
+    {"type":"url","id":"order_email_link","label":"Bestelllink"},
+    {"type":"url","id":"contact_link","label":"Kontaktseite"}
+  ],
+  "presets": [
+    {"name":"Chelonaki · MGU Brot"}
+  ]
+}
+{% endschema %}

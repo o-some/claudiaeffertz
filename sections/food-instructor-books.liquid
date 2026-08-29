@@ -1,0 +1,270 @@
+<section class="fi-block fi-books" id="FiBooks" data-fi-reveal-scope style="--fi-module-bg:{{ section.settings.module_bg }};--fi-heading-color:{{ section.settings.heading_color }};--fi-text-color:{{ section.settings.text_color }};--fi-accent-color:{{ section.settings.accent_color }};--fi-card-bg:{{ section.settings.card_bg }};--fi-card-heading:{{ section.settings.card_heading }};--fi-card-text:{{ section.settings.card_text }};--fi-card-border:{{ section.settings.card_border }};--fi-link-color:{{ section.settings.link_color }};--fi-link-hover:{{ section.settings.link_hover }};--fi-tag-bg:{{ section.settings.tag_bg }};--fi-tag-text:{{ section.settings.tag_text }};--fi-tag-border:{{ section.settings.tag_border }}">
+  <div class="fi-wrap">
+    <div class="fi-section-head fi-reveal">
+      {% if section.settings.eyebrow != blank %}<span class="fi-eyebrow">{{ section.settings.eyebrow | escape }}</span>{% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="rte">{{ section.settings.text }}</div>
+    </div>
+
+    <div class="fi-book-grid">
+      {% for block in section.blocks %}
+        {% liquid
+          assign card_link = block.settings.link
+          if card_link == blank and block.settings.link_target != blank
+            assign card_link = block.settings.link_target
+          endif
+        %}
+        <article class="fi-card fi-reveal" style="--fi-reveal-delay:{{ forloop.index0 | times: 0.08 }}s" {{ block.shopify_attributes }}>
+          {% if block.settings.tag != blank %}<span class="fi-tag">{{ block.settings.tag | escape }}</span>{% endif %}
+          <div class="fi-cover">
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 900 | image_tag: widths: '320, 480, 640, 900', sizes: '(max-width: 960px) 80vw, 28vw', loading: 'lazy', alt: block.settings.image_alt }}
+            {% else %}
+              {% case forloop.index %}
+                {% when 1 %}<img src="{{ 'fi-static-002.jpg' | asset_url }}" width="538" height="760" loading="lazy" decoding="async" alt="{{ block.settings.image_alt | escape }}">
+                {% when 2 %}<img src="{{ 'fi-static-003.jpg' | asset_url }}" width="538" height="760" loading="lazy" decoding="async" alt="{{ block.settings.image_alt | escape }}">
+                {% else %}<img src="{{ 'fi-static-004.jpg' | asset_url }}" width="538" height="760" loading="lazy" decoding="async" alt="{{ block.settings.image_alt | escape }}">
+              {% endcase %}
+            {% endif %}
+          </div>
+          <h3>{{ block.settings.title | escape }}</h3>
+          <div class="fi-card-text rte">{{ block.settings.text }}</div>
+          {% if card_link != blank and block.settings.link_label != blank %}
+            <a class="fi-card-cta" href="{{ card_link | escape }}">{{ block.settings.link_label | escape }}{% render 'fi-arrow-icon' %}</a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+    {% if section.settings.shop_button_label != blank and section.settings.shop_button_link != blank %}
+      <div class="fi-books-shop">
+        <a class="fi-books-shop__button" href="{{ section.settings.shop_button_link }}">
+          {{ section.settings.shop_button_label | escape }}{% render 'fi-arrow-icon' %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+  #shopify-section-{{ section.id }} .fi-books-shop { display: flex; justify-content: center; margin-top: clamp(28px, 4vw, 48px); }
+  #shopify-section-{{ section.id }} .fi-books-shop__button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    min-height: 52px; padding: 0 26px; border-radius: 999px;
+    background: var(--fi-heading-color); color: #fff; font-weight: 750; text-decoration: none;
+    box-shadow: 0 14px 34px -18px rgba(20,37,25,.7); transition: transform .2s ease, background .2s ease;
+  }
+  #shopify-section-{{ section.id }} .fi-books-shop__button:hover { background: var(--fi-accent-color); color: #142519; transform: translateY(-2px); }
+  #shopify-section-{{ section.id }} .fi-books-shop__button svg { width: 18px; }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Web Bücher",
+  "tag": "section",
+  "class": "fi-books-section",
+  "max_blocks": 6,
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Kleine Überschrift",
+      "default": "Die Bücher"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Wissen, das auf den Teller kommt – <em>nicht ins Regal.</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Beschreibung",
+      "default": "<p>Eine wachsende Buchwelt, ein Anspruch: bewusste Ernährung verständlich machen und in den Alltag bringen.</p>"
+    },
+    { "type": "text", "id": "shop_button_label", "label": "Shop-Button Text", "default": "Hier geht’s zum Shop" },
+    { "type": "url", "id": "shop_button_link", "label": "Shop-Button Link" },
+    {
+      "type": "header",
+      "content": "Farben dieses Moduls"
+    },
+    {
+      "type": "color",
+      "id": "module_bg",
+      "label": "Modul-Hintergrund",
+      "default": "#F3EDDF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Bereichsüberschrift",
+      "default": "#1F3A2A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Einleitungstext",
+      "default": "#5C6B60"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Akzenttext",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Karten-Hintergrund",
+      "default": "#FBF8F0"
+    },
+    {
+      "type": "color",
+      "id": "card_heading",
+      "label": "Karten-Überschrift",
+      "default": "#1F3A2A"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Karten-Fließtext",
+      "default": "#5C6B60"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Karten-Rahmen",
+      "default": "#D9D2C3"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Karten-Link",
+      "default": "#1F3A2A"
+    },
+    {
+      "type": "color",
+      "id": "link_hover",
+      "label": "Karten-Link bei Hover",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "tag_bg",
+      "label": "Tag-Hintergrund",
+      "default": "#FBF8F0"
+    },
+    {
+      "type": "color",
+      "id": "tag_text",
+      "label": "Tag-Schrift",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "tag_border",
+      "label": "Tag-Rahmen",
+      "default": "#D9BC6A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "book",
+      "name": "Buch",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Kategorie"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Buchcover"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Bildbeschreibung"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Buchtitel"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Beschreibung",
+          "default": "<p>Kurze Beschreibung des Buches.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Linktext",
+          "default": "Buch ansehen"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Shopify- oder externe URL"
+        },
+        {
+          "type": "text",
+          "id": "link_target",
+          "label": "Alternativer Seitenanker",
+          "info": "Optional, z. B. #FiTraining. Wird nur genutzt, wenn keine URL gewählt wurde."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chelonaki · Web Bücher",
+      "blocks": [
+        {
+          "type": "book",
+          "settings": {
+            "tag": "Kochbuch",
+            "image_alt": "Die Longevity-Küche neu gedacht – Buchcover",
+            "title": "Die Longevity-Küche neu gedacht",
+            "text": "<p>Der moderne, bewusste Kochstil: natürliche Zutaten, einfache Rezepte und genussvolle Routinen für einen ausgewogenen Ernährungsstil – ganz ohne Perfektionsdruck.</p>",
+            "link_label": "Buch ansehen",
+            "link_target": ""
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "tag": "Mit Lars Riedel",
+            "image_alt": "Stark ab 50 – Buchcover, in Zusammenarbeit mit Olympiasieger Lars Riedel",
+            "title": "Stark ab 50",
+            "text": "<p>Muskelversorgung, Gelenke &amp; Gesundheit, Umsetzung im Alltag: verständliches Ernährungswissen, alltagstaugliche Bewegung und Rezepte, die nach echtem Essen schmecken – mit Olympiasieger Lars Riedel.</p>",
+            "link_label": "Buch ansehen",
+            "link_target": ""
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "tag": "Schulungsbuch",
+            "image_alt": "Basis Coach Metabolic Nutrition – Schulungsbuch zur 2-Tages-Ausbildung",
+            "title": "Basis Coach Metabolic Nutrition",
+            "text": "<p>Das Schulungsbuch zur 2-Tages-Ausbildung: Blutzucker, Insulin, Entzündungen und Stoffwechsel verständlich erklärt – damit du Ernährungswissen sicher und praxisnah weitergeben kannst.</p>",
+            "link_label": "Zur Ausbildung",
+            "link_target": "#FiTraining"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

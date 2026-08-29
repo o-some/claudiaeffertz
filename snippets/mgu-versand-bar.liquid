@@ -1,0 +1,7 @@
+{% comment %}
+  Gratisversand-Fortschrittsbalken (Warenkorb + Cart-Drawer).
+  In layout/theme.liquid vor </body> einbinden:
+  {% render 'mgu-versand-bar', schwelle: 50 %}
+  schwelle = Betrag in ganzen Währungseinheiten (z.B. 50 = 50 €/CHF)
+{% endcomment %}
+<div data-mgu-ship data-schwelle="{{ schwelle | default: 50 }}" hidden></div>

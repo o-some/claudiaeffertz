@@ -1,0 +1,122 @@
+{%- comment -%}
+  Zentrales Entitaets-Schema fuer klassische und KI-gestuetzte Suche.
+  Die Ausgabe erfolgt nur auf der Startseite und ist unabhaengig vom aktiven Header.
+{%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  {%- liquid
+    assign entity_name = settings.ch_entity_name | default: settings.ch_brand_name | default: shop.name
+    assign entity_description = settings.ch_entity_description | default: shop.description
+    assign entity_type = settings.ch_entity_type | default: 'Organization'
+    assign organization_id = request.origin | append: '/#organization'
+    assign website_id = request.origin | append: '/#website'
+    assign expert_id = request.origin | append: '/#expert'
+    assign reviewer_id = request.origin | append: '/#reviewer'
+
+    assign entity_logo_url = blank
+    if settings.ch_entity_logo != blank
+      assign entity_logo_url = settings.ch_entity_logo | image_url: width: 1024 | prepend: 'https:'
+    elsif settings.logo != blank
+      assign entity_logo_url = settings.logo | image_url: width: 1024 | prepend: 'https:'
+    elsif settings.ch_generated_logo_asset != blank
+      assign entity_logo_url = settings.ch_generated_logo_asset | asset_url | prepend: 'https:'
+    endif
+
+    capture organization_links_source
+      echo settings.ch_entity_same_as_1
+      echo '|||'
+      echo settings.ch_entity_same_as_2
+      echo '|||'
+      echo settings.ch_entity_same_as_3
+      echo '|||'
+      echo settings.social_instagram_link
+      echo '|||'
+      echo settings.social_facebook_link
+      echo '|||'
+      echo settings.social_youtube_link
+      echo '|||'
+      echo settings.social_twitter_link
+      echo '|||'
+      echo settings.social_tiktok_link
+    endcapture
+    assign organization_links = organization_links_source | split: '|||'
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": {{ entity_type | json }},
+          "@id": {{ organization_id | json }},
+          "name": {{ entity_name | json }},
+          "url": {{ request.origin | json }}
+          {%- if settings.ch_entity_legal_name != blank -%},
+            "legalName": {{ settings.ch_entity_legal_name | json }}
+          {%- endif -%}
+          {%- if entity_description != blank -%},
+            "description": {{ entity_description | strip_html | json }}
+          {%- endif -%}
+          {%- if entity_logo_url != blank -%},
+            "logo": {
+              "@type": "ImageObject",
+              "url": {{ entity_logo_url | json }}
+            }
+          {%- endif -%}
+          {%- if settings.ch_entity_email != blank -%},
+            "email": {{ settings.ch_entity_email | json }}
+          {%- endif -%}
+          {%- if settings.ch_entity_phone != blank -%},
+            "telephone": {{ settings.ch_entity_phone | json }}
+          {%- endif -%},
+          "sameAs": [
+            {%- assign emitted_link = false -%}
+            {%- for organization_link in organization_links -%}
+              {%- assign clean_link = organization_link | strip -%}
+              {%- if clean_link != blank -%}
+                {%- if emitted_link -%},{%- endif -%}{{ clean_link | json }}
+                {%- assign emitted_link = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": {{ website_id | json }},
+          "url": {{ request.origin | json }},
+          "name": {{ entity_name | json }},
+          "inLanguage": {{ request.locale.iso_code | json }},
+          "publisher": { "@id": {{ organization_id | json }} }
+        }
+        {%- if settings.ch_expert_name != blank -%},
+          {
+            "@type": "Person",
+            "@id": {{ expert_id | json }},
+            "name": {{ settings.ch_expert_name | json }},
+            "worksFor": { "@id": {{ organization_id | json }} }
+            {%- if settings.ch_expert_role != blank -%},
+              "jobTitle": {{ settings.ch_expert_role | json }}
+            {%- endif -%}
+            {%- if settings.ch_expert_profile_url != blank -%},
+              "url": {{ settings.ch_expert_profile_url | json }}
+            {%- endif -%}
+            {%- if settings.ch_expert_same_as != blank -%},
+              "sameAs": [{{ settings.ch_expert_same_as | json }}]
+            {%- endif -%}
+          }
+        {%- endif -%}
+        {%- if settings.ch_content_review_enabled and settings.ch_reviewer_name != blank -%},
+          {
+            "@type": "Person",
+            "@id": {{ reviewer_id | json }},
+            "name": {{ settings.ch_reviewer_name | json }}
+            {%- if settings.ch_reviewer_role != blank -%},
+              "jobTitle": {{ settings.ch_reviewer_role | json }}
+            {%- endif -%}
+            {%- if settings.ch_reviewer_profile_url != blank -%},
+              "url": {{ settings.ch_reviewer_profile_url | json }}
+            {%- endif -%}
+          }
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endif -%}

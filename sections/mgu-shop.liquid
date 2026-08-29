@@ -1,0 +1,131 @@
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign selected_collection = section.settings.collection
+  assign product_limit = section.settings.products_to_show
+  assign has_manual_products = false
+  for block in section.blocks
+    if block.settings.product != blank
+      assign has_manual_products = true
+      break
+    endif
+  endfor
+-%}
+
+<section
+  id="{{ section.settings.anchor_id | default: 'shop' | escape }}"
+  class="mgu-shop fi-block"
+  style="
+    --shop-bg: {{ section.settings.background }};
+    --shop-heading: {{ section.settings.heading_color }};
+    --shop-text: {{ section.settings.text_color }};
+    --shop-accent: {{ section.settings.accent_color }};
+    --shop-card-bg: {{ section.settings.card_background }};
+    --shop-card-border: {{ section.settings.card_border }};
+    --shop-button-bg: {{ section.settings.button_background }};
+    --shop-button-text: {{ section.settings.button_text }};
+    --shop-button-hover-bg: {{ section.settings.button_hover_background }};
+    --shop-button-hover-text: {{ section.settings.button_hover_text }};
+    --shop-columns: {{ section.settings.columns_desktop }};
+  "
+>
+  <div class="fi-wrap">
+    <header class="mgu-shop__header{% if section.settings.center_heading %} mgu-shop__header--center{% endif %}">
+      {% if section.settings.eyebrow != blank %}<div class="fi-eyebrow">{{ section.settings.eyebrow | escape }}</div>{% endif %}
+      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+      {% if section.settings.text != blank %}<div class="rte mgu-shop__intro">{{ section.settings.text }}</div>{% endif %}
+    </header>
+
+    <div class="mgu-shop__grid">
+      {%- if has_manual_products -%}
+        {%- for block in section.blocks -%}
+          {%- assign product = block.settings.product -%}
+          {%- if product != blank -%}
+            {% render 'mgu-shop-card', product: product, section: section, block: block %}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elsif selected_collection != blank -%}
+        {%- for product in selected_collection.products limit: product_limit -%}
+          {% render 'mgu-shop-card', product: product, section: section %}
+        {%- else -%}
+          <p class="mgu-shop__empty">{{ section.settings.empty_text | escape }}</p>
+        {%- endfor -%}
+      {%- elsif request.design_mode -%}
+        {%- for i in (1..3) -%}
+          <article class="mgu-shop-card mgu-shop-card--placeholder">
+            <div class="mgu-shop-card__media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            <div class="mgu-shop-card__body"><p class="mgu-shop-card__meta">{{ section.settings.placeholder_kicker | escape }}</p><h3>{{ section.settings.placeholder_title | escape }}</h3><p>{{ section.settings.placeholder_text | escape }}</p></div>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {% if section.settings.show_view_all and selected_collection != blank %}
+      <div class="mgu-shop__footer">
+        <a class="fi-btn mgu-shop__view-all" href="{{ selected_collection.url }}">{{ section.settings.view_all_label | escape }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Shop",
+  "tag": "section",
+  "class": "section-mgu-shop",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"text","id":"anchor_id","label":"Anker-ID für das Menü","default":"shop","info":"Im Menü als #shop verlinkbar."},
+    {"type":"text","id":"eyebrow","label":"Kleine Überschrift","default":"Food Instructor Shop"},
+    {"type":"inline_richtext","id":"heading","label":"Überschrift","default":"Produkte für deinen <em>bewussten Alltag.</em>"},
+    {"type":"richtext","id":"text","label":"Einleitung","default":"<p>Entdecke Bücher, Kurse und ausgewählte Produkte von Food Instructor MGU®.</p>"},
+    {"type":"checkbox","id":"center_heading","label":"Überschrift zentrieren","default":true},
+    {"type":"collection","id":"collection","label":"Shopify-Kollektion","info":"Produkte und Preise werden automatisch mit Shopify synchronisiert. Einzelne Produkt-Blöcke haben Vorrang."},
+    {"type":"range","id":"products_to_show","label":"Produkte aus der Kollektion","min":2,"max":12,"step":1,"default":4},
+    {"type":"range","id":"columns_desktop","label":"Spalten auf Desktop","min":2,"max":4,"step":1,"default":4},
+    {"type":"checkbox","id":"show_vendor","label":"Hersteller anzeigen","default":false},
+    {"type":"checkbox","id":"show_description","label":"Kurzbeschreibung anzeigen","default":true},
+    {"type":"checkbox","id":"show_quick_add","label":"Direkt in den Warenkorb ermöglichen","default":true,"info":"Bei Produkten mit mehreren Varianten führt der Button zur Produktseite."},
+    {"type":"text","id":"add_to_cart_label","label":"Button: In den Warenkorb","default":"In den Warenkorb"},
+    {"type":"text","id":"choose_options_label","label":"Button: Varianten auswählen","default":"Optionen auswählen"},
+    {"type":"text","id":"sold_out_label","label":"Text bei Ausverkauf","default":"Ausverkauft"},
+    {"type":"checkbox","id":"show_view_all","label":"Link zur ganzen Kollektion anzeigen","default":true},
+    {"type":"text","id":"view_all_label","label":"Text des Kollektion-Links","default":"Alle Produkte ansehen"},
+    {"type":"text","id":"empty_text","label":"Text bei leerer Kollektion","default":"In dieser Kollektion sind noch keine Produkte vorhanden."},
+    {"type":"header","content":"Vorschau im Theme-Editor"},
+    {"type":"text","id":"placeholder_kicker","label":"Platzhalter-Kategorie","default":"Produkt"},
+    {"type":"text","id":"placeholder_title","label":"Platzhalter-Titel","default":"Kollektion oder Produkte auswählen"},
+    {"type":"text","id":"placeholder_text","label":"Platzhalter-Text","default":"Wähle rechts eine Shopify-Kollektion oder füge Produkt-Blöcke hinzu."},
+    {"type":"header","content":"Farben dieses Moduls"},
+    {"type":"color","id":"background","label":"Bereichshintergrund","default":"#FBF8F0"},
+    {"type":"color","id":"heading_color","label":"Überschrift","default":"#1F3A2A"},
+    {"type":"color","id":"text_color","label":"Text","default":"#5C6B60"},
+    {"type":"color","id":"accent_color","label":"Akzent und Preis","default":"#B9912F"},
+    {"type":"color","id":"card_background","label":"Kartenhintergrund","default":"#FFFFFF"},
+    {"type":"color","id":"card_border","label":"Kartenrahmen","default":"#DDD5C5"},
+    {"type":"color","id":"button_background","label":"Button-Hintergrund","default":"#1F3A2A"},
+    {"type":"color","id":"button_text","label":"Button-Schrift","default":"#FBF8F0"},
+    {"type":"color","id":"button_hover_background","label":"Button-Hintergrund bei Hover","default":"#142519"},
+    {"type":"color","id":"button_hover_text","label":"Button-Schrift bei Hover","default":"#FFFFFF"}
+  ],
+  "blocks": [
+    {
+      "type":"product",
+      "name":"Produkt",
+      "limit":8,
+      "settings":[{"type":"product","id":"product","label":"Shopify-Produkt"}]
+    }
+  ],
+  "presets":[{"name":"Chelonaki – Shop","blocks":[{"type":"product"},{"type":"product"},{"type":"product"}]}]
+}
+{% endschema %}

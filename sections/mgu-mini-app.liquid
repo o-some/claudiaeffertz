@@ -1,0 +1,144 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+<style>
+  .mgu-ma{border:1px solid var(--mgu-line);border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 20px 44px -28px rgba(20,37,25,.28)}
+  .mgu-ma-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:var(--mgu-cream);border-bottom:1px solid var(--mgu-line)}
+  .mgu-ma-head b{font-size:14px;color:var(--mgu-forest);font-weight:600}
+  .mgu-ma-badge{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mgu-gold);border:1px solid var(--mgu-gold-soft);border-radius:99px;padding:3px 10px}
+  .mgu-ma-frame-wrap{position:relative;width:100%}
+  .mgu-ma iframe{display:block;width:100%;border:0;background:#fff}
+  .mgu-ma-fallback{padding:24px;text-align:center;color:var(--mgu-ink-soft);font-size:14px}
+  .mgu-ma-reset{border:none;background:transparent;color:var(--mgu-ink-soft);font-size:12.5px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .mgu-ma-reset:hover{color:var(--mgu-gold)}
+</style>
+
+<section class="mgu" style="max-width:{{ section.settings.max_breite }}px;margin:clamp(20px,3vw,40px) auto;padding:0 clamp(16px,3vw,20px)">
+  {%- if section.settings.titel != blank or section.settings.badge != blank -%}
+    <div class="mgu-ma-head" style="border-radius:20px 20px 0 0">
+      <b>{{ section.settings.titel }}</b>
+      <div style="display:flex;align-items:center;gap:10px">
+        {%- if section.settings.badge != blank -%}<span class="mgu-ma-badge">{{ section.settings.badge }}</span>{%- endif -%}
+        {%- if section.settings.reset_button -%}<button type="button" class="mgu-ma-reset" data-mgu-ma-reset>{{ section.settings.reset_text }}</button>{%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+  <div class="mgu-ma" style="{% if section.settings.titel == blank and section.settings.badge == blank %}border-radius:20px{% else %}border-radius:0 0 20px 20px;border-top:0{% endif %}">
+    <div class="mgu-ma-frame-wrap">
+      {%- if section.settings.html == blank and section.settings.js == blank -%}
+        <div class="mgu-ma-fallback">{{ section.settings.leer_text }}</div>
+      {%- else -%}
+        <iframe
+          data-mgu-mini-app
+          title="{{ section.settings.titel | default: 'Eingebettete App' | escape }}"
+          height="{{ section.settings.hoehe }}"
+          sandbox="allow-scripts{% if section.settings.formulare %} allow-forms{% endif %}{% if section.settings.popups %} allow-popups{% endif %}"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          {% if section.settings.externe_lib != blank %}{% unless section.settings.externe_lib_vertrauenswuerdig %}hidden{% endunless %}{% endif %}
+        ></iframe>
+        {%- if section.settings.externe_lib != blank -%}{%- unless section.settings.externe_lib_vertrauenswuerdig -%}
+          <div class="mgu-ma-fallback" data-mgu-ma-library-consent>
+            <p>{{ section.settings.externe_lib_consent_text | escape }}</p>
+            <button class="mgu-btn mgu-btn--primary" type="button" data-mgu-ma-library-load>{{ section.settings.externe_lib_consent_button | escape }}</button>
+            <p role="status" aria-live="polite" data-mgu-ma-library-status></p>
+          </div>
+        {%- endunless -%}{%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- capture mgu_ma_doc -%}
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html,body{margin:0;padding:12px;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#22312A}
+  *{box-sizing:border-box}
+  {{ section.settings.css }}
+</style>
+<!--CHELONAKI_EXTERNAL_LIBRARY-->
+</head>
+<body>
+{{ section.settings.html }}
+<script>
+{{ section.settings.js }}
+</script>
+</body>
+</html>
+{%- endcapture -%}
+
+{%- if section.settings.html != blank or section.settings.js != blank -%}
+<script type="text/plain" data-mgu-mini-app-src="{{ section.id }}" data-library="{{ section.settings.externe_lib | escape }}" data-domains="{{ section.settings.externe_lib_domains | escape }}" data-auto-load="{{ section.settings.externe_lib_vertrauenswuerdig }}">{{ mgu_ma_doc | escape }}</script>
+<script>
+(function(){
+  var host = document.currentScript.previousElementSibling;
+  var frame = document.currentScript.closest('section').querySelector('[data-mgu-mini-app]');
+  if(!host || !frame) return;
+  var consent=document.currentScript.closest('section').querySelector('[data-mgu-ma-library-consent]');
+  var loadButton=consent&&consent.querySelector('[data-mgu-ma-library-load]');
+  var status=consent&&consent.querySelector('[data-mgu-ma-library-status]');
+  function libraryTag(){
+    var raw=(host.dataset.library||'').trim(); if(!raw) return '';
+    var domains=(host.dataset.domains||'').split(',').map(function(v){return v.trim().toLowerCase();}).filter(Boolean);
+    var url;
+    try{url=new URL(raw);}
+    catch(error){throw new Error('invalid library url');}
+    var allowed=url.protocol==='https:'&&domains.some(function(domain){return url.hostname===domain||url.hostname.endsWith('.'+domain);});
+    if(!allowed) throw new Error('blocked library domain');
+    var safe=url.href.replace(/[&"'<>]/g,function(c){return {'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'}[c];});
+    return '<scr'+'ipt src="'+safe+'"></scr'+'ipt>';
+  }
+  function lade(){
+    try{
+      var doc=host.textContent.replace('<!--CHELONAKI_EXTERNAL_LIBRARY-->',libraryTag());
+      frame.srcdoc=doc; frame.hidden=false; if(consent) consent.remove();
+    }catch(error){if(status)status.textContent='Die externe Bibliothek wurde aus Sicherheitsgründen blockiert.';}
+  }
+  if(!host.dataset.library||host.dataset.autoLoad==='true') lade();
+  else if(loadButton) loadButton.addEventListener('click',lade);
+  var resetBtn = document.currentScript.closest('section').querySelector('[data-mgu-ma-reset]');
+  if(resetBtn) resetBtn.addEventListener('click', lade);
+})();
+</script>
+{%- endif -%}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Mini-App",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "paragraph", "content": "Für eigene interaktive Mini-Apps (z.B. ein Graphenrechner für eine Lernplattform). Dein Code läuft in einer isolierten Sandbox (iframe, kein eigenes Fenster/kein Zugriff auf den Rest deines Shops) — ein Fehler in deinem Code kann den Shop NICHT beeinträchtigen. HTML/CSS/JS werden getrennt eingegeben und automatisch zu einer eigenständigen Mini-Seite zusammengesetzt." },
+    { "type": "text", "id": "titel", "label": "Titel (im Kopfbereich)", "default": "Interaktiver Graphenrechner" },
+    { "type": "text", "id": "badge", "label": "Badge-Text (optional)", "default": "Mini-App" },
+    { "type": "range", "id": "hoehe", "label": "Höhe (px)", "min": 200, "max": 1200, "step": 20, "default": 480 },
+    { "type": "range", "id": "max_breite", "label": "Maximale Breite (px)", "min": 400, "max": 1400, "step": 20, "default": 900 },
+    { "type": "checkbox", "id": "reset_button", "label": "„Zurücksetzen“-Button anzeigen", "default": true },
+    { "type": "text", "id": "reset_text", "label": "Reset-Button-Text", "default": "Zurücksetzen" },
+    { "type": "header", "content": "Dein Code" },
+    { "type": "liquid", "id": "html", "label": "HTML", "info": "z.B. <canvas id=\"graph\"></canvas> <input id=\"a\" type=\"range\">" },
+    { "type": "liquid", "id": "css", "label": "CSS (optional)" },
+    { "type": "liquid", "id": "js", "label": "JavaScript", "info": "Läuft isoliert in der Sandbox. document/window beziehen sich NUR auf die Mini-App, nicht auf den Shop." },
+    { "type": "url", "id": "externe_lib", "label": "Externe Bibliothek laden (optional)", "info": "z.B. https://cdn.jsdelivr.net/npm/chart.js — wird vor deinem Code geladen." },
+    { "type": "text", "id": "externe_lib_domains", "label": "Erlaubte Bibliotheks-Domains", "default": "cdn.jsdelivr.net,cdnjs.cloudflare.com,unpkg.com", "info": "Kommagetrennte Domainliste. Andere Ziele werden blockiert." },
+    { "type": "checkbox", "id": "externe_lib_vertrauenswuerdig", "label": "Bibliothek ohne Besucherklick laden", "default": false, "info": "Nur aktivieren, wenn Anbieter und Datenschutz geprüft wurden." },
+    { "type": "textarea", "id": "externe_lib_consent_text", "label": "Hinweis vor externer Bibliothek", "default": "Zum Starten wird eine externe Bibliothek geladen. Dabei kann eine Verbindung zum Anbieter entstehen." },
+    { "type": "text", "id": "externe_lib_consent_button", "label": "Button externe Bibliothek", "default": "Mini-App sicher starten" },
+    { "type": "header", "content": "Berechtigungen (nur bei Bedarf aktivieren)" },
+    { "type": "checkbox", "id": "formulare", "label": "Formulare erlauben (falls deine App <form> nutzt)", "default": false },
+    { "type": "checkbox", "id": "popups", "label": "Popups/neue Tabs erlauben", "default": false },
+    { "type": "text", "id": "leer_text", "label": "Platzhaltertext (wenn noch kein Code eingetragen ist)", "default": "Noch kein Code hinterlegt. Trage HTML/JS in den Section-Einstellungen ein." }
+  ],
+  "presets": [{ "name": "Chelonaki – Mini-App (eigener Code)" }]
+}
+{% endschema %}

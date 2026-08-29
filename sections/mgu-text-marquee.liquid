@@ -1,0 +1,84 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+<style>
+  .mgu-tm{display:block;overflow:hidden;padding:clamp(18px,2.5vw,28px) 0;border-top:1px solid var(--mgu-line);border-bottom:1px solid var(--mgu-line)}
+  .mgu-tm-track{display:flex;width:max-content;will-change:transform;animation:mguTextSlide {{ section.settings.speed }}s linear infinite}
+  .mgu-tm-set{display:flex;flex:0 0 auto;align-items:center}
+  .mgu-tm:hover .mgu-tm-track{animation-play-state:paused}
+  .mgu-tm span{
+    font-family:var(--mgu-font-heading);font-size:clamp(1.3rem,3vw,2.1rem);
+    color:{{ section.settings.textfarbe }};white-space:nowrap;padding:0 18px;
+  }
+  .mgu-tm i{font-style:normal;color:{{ section.settings.punktfarbe }};font-size:.8em;align-self:center}
+  @keyframes mguTextSlide{to{transform:translate3d(var(--mgu-tm-shift,-50%),0,0)}}
+  @media(prefers-reduced-motion:reduce){.mgu-tm-track{animation:none}}
+</style>
+<mgu-text-marquee class="mgu mgu-tm" style="background:{{ section.settings.bg }}" aria-label="Laufende Hinweise">
+  <div class="mgu-tm-track" data-mgu-tm-track>
+    <div class="mgu-tm-set" data-mgu-tm-set>
+      {%- for block in section.blocks -%}
+        <span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</span><i aria-hidden="true">◆</i>
+      {%- endfor -%}
+    </div>
+  </div>
+</mgu-text-marquee>
+<script>
+if (!customElements.get('mgu-text-marquee')) customElements.define('mgu-text-marquee', class extends HTMLElement {
+  connectedCallback() {
+    if (this.ready) return;
+    this.ready = true;
+    this.track = this.querySelector('[data-mgu-tm-track]');
+    this.original = this.querySelector('[data-mgu-tm-set]');
+    if (!this.track || !this.original) return;
+    this.layout = () => {
+      this.track.querySelectorAll('[data-mgu-tm-clone]').forEach((clone) => clone.remove());
+      const setWidth = Math.ceil(this.original.getBoundingClientRect().width);
+      if (!setWidth) return;
+      const copies = Math.max(2, Math.ceil(this.clientWidth / setWidth) + 2);
+      for (let index = 1; index < copies; index += 1) {
+        const clone = this.original.cloneNode(true);
+        clone.dataset.mguTmClone = 'true';
+        clone.removeAttribute('data-mgu-tm-set');
+        clone.setAttribute('aria-hidden', 'true');
+        clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+        clone.querySelectorAll('[data-shopify-editor-block]').forEach((element) => element.removeAttribute('data-shopify-editor-block'));
+        this.track.appendChild(clone);
+      }
+      this.track.style.setProperty('--mgu-tm-shift', `-${setWidth}px`);
+    };
+    this.resizeObserver = new ResizeObserver(this.layout);
+    this.resizeObserver.observe(this);
+    if (document.fonts?.ready) document.fonts.ready.then(this.layout);
+    requestAnimationFrame(this.layout);
+  }
+  disconnectedCallback() {
+    this.resizeObserver?.disconnect();
+    this.ready = false;
+  }
+});
+</script>
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Text-Laufband",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "range", "id": "speed", "label": "Geschwindigkeit (Sek. pro Durchlauf)", "min": 10, "max": 80, "step": 5, "default": 30 },
+    { "type": "color", "id": "bg", "label": "Hintergrund", "default": "#142519" },
+    { "type": "color", "id": "textfarbe", "label": "Textfarbe", "default": "#FCF9F1" },
+    { "type": "color", "id": "punktfarbe", "label": "Trennzeichen-Farbe", "default": "#D9BC6A" }
+  ],
+  "blocks": [
+    { "type": "wort", "name": "Textbaustein",
+      "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Kostenloser Versand ab 50 €" } ]}
+  ],
+  "presets": [{ "name": "Chelonaki – Text-Laufband", "blocks": [ { "type": "wort" }, { "type": "wort", "settings": { "text": "Handgemacht & geprüft" } }, { "type": "wort", "settings": { "text": "Über 10.000 zufriedene Kund:innen" } } ] }]
+}
+{% endschema %}

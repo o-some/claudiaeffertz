@@ -1,0 +1,16 @@
+{% comment %} Übergibt die Übersetzungen an das MGU-JavaScript. In layout/theme.liquid vor </head> einbinden: {% render 'mgu-i18n' %} {% endcomment %}
+<script>
+window.MGU_I18N = {
+  wishAdd: {{ 'mgu.merkliste.hinzufuegen' | t | json }},
+  wishRemove: {{ 'mgu.merkliste.entfernen' | t | json }},
+  wishEmpty: {{ 'mgu.merkliste.leer' | t | json }},
+  cartAdded: {{ 'mgu.warenkorb.hinzugefuegt' | t | json }},
+  soldOut: {{ 'mgu.warenkorb.ausverkauft' | t | json }},
+  loading: {{ 'mgu.allgemein.laedt' | t | json }},
+  qvLabel: {{ 'mgu.quickview.label' | t | json }},
+  qvFull: {{ 'mgu.quickview.alle_details' | t | json }},
+  cartAddLabel: {{ 'mgu.warenkorb.hinzufuegen' | t | json }},
+  shipLeft: {{ 'mgu.versand.noch' | t | json }},
+  shipDone: {{ 'mgu.versand.erreicht' | t | json }}
+};
+</script>

@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "about_markus": {
+      "type": "ch-sticky-scrollytelling",
+      "blocks": {
+        "origin": {
+          "type": "timeline_step",
+          "settings": {
+            "date_label": "Kindheit & Herkunft",
+            "heading": "Natürlichkeit war von Anfang an Teil meines Lebens",
+            "text": "<p>Werte, Traditionen, Gemeinschaft und natürliche Lebensmittel prägten meine Kindheit.</p>",
+            "status": "confirmed",
+            "status_label": "Herkunft",
+            "image": "shopify://shop_images/Familie.jpg",
+            "image_alt": "Markus Riebel mit seiner Familie",
+            "metric": "Familie",
+            "metric_label": "Werte und Gemeinschaft",
+            "accent_color": "#B9912F",
+            "turning_point": false,
+            "visual_variant": "soft",
+            "alignment": "left",
+            "default_active": true
+          }
+        },
+        "sport": {
+          "type": "timeline_step",
+          "settings": {
+            "date_label": "Sport & Leistung",
+            "heading": "Sport zeigte mir, was Ernährung bewirken kann",
+            "text": "<p>Leistungssport machte den Zusammenhang zwischen Ernährung, Energie und körperlicher Entwicklung unmittelbar sichtbar.</p>",
+            "status": "highlight",
+            "status_label": "Prägende Jahre",
+            "image": "shopify://shop_images/Markus_Riebel.png",
+            "image_alt": "Markus Riebel – Gründer von Food Instructor MGU",
+            "metric": "2. Bundesliga",
+            "metric_label": "Handball",
+            "accent_color": "#B9912F",
+            "turning_point": false,
+            "visual_variant": "framed",
+            "alignment": "left",
+            "default_active": false
+          }
+        },
+        "foundation": {
+          "type": "timeline_step",
+          "settings": {
+            "date_label": "Gründung & Heute",
+            "heading": "Food Instructor MGU® entsteht",
+            "text": "<p>Seit über 15 Jahren verbinde ich Ernährungswissen, Kochhandwerk und alltagstaugliche Begleitung.</p>",
+            "status": "open",
+            "status_label": "Der Weg geht weiter",
+            "image": "shopify://shop_images/Coach_Ausbildung.png",
+            "image_alt": "Food Instructor MGU Ausbildung",
+            "metric": "15+ Jahre",
+            "metric_label": "Food Instructor MGU",
+            "accent_color": "#8C3F2B",
+            "turning_point": true,
+            "visual_variant": "standard",
+            "alignment": "left",
+            "default_active": false
+          }
+        }
+      },
+      "block_order": ["origin", "sport", "foundation"],
+      "settings": {
+        "anchor": "markus-geschichte",
+        "kicker": "Über Markus Riebel",
+        "heading": "Ernährung wurde zu <em>meinem Weg.</em>",
+        "heading_level": "h1",
+        "intro": "<p>Von natürlichen Lebensmitteln, Leistungssport und Kochhandwerk bis zu Food Instructor MGU®.</p>",
+        "visual_region_label": "Bilder aus dem Leben von Markus Riebel",
+        "background_color": "#F3EDDF",
+        "text_color": "#24352B",
+        "muted_text_color": "#5D685F",
+        "accent_color": "#B9912F",
+        "turning_point_color": "#8C3F2B",
+        "line_color": "#C8BFAE",
+        "card_background": "#FFFDF8",
+        "card_radius": 24,
+        "max_width": 1200,
+        "column_ratio": "50-50",
+        "sticky_offset": 148,
+        "desktop_breakpoint": "990",
+        "mirror_columns": false,
+        "mobile_layout": "cards",
+        "padding_top": 72,
+        "padding_bottom": 96,
+        "padding_inline": 32,
+        "padding_inline_mobile": 18,
+        "show_progress": true,
+        "show_numbers": true,
+        "show_sources": false,
+        "enable_animations": true
+      }
+    }
+  },
+  "order": ["about_markus"]
+}

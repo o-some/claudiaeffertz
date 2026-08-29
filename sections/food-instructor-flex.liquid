@@ -1,0 +1,88 @@
+<section
+  class="fi-flex"
+  data-fi-reveal-scope
+  style="
+    --fi-flex-bg:{{ section.settings.module_bg }};
+    --fi-flex-heading:{{ section.settings.heading_color }};
+    --fi-flex-text:{{ section.settings.text_color }};
+    --fi-flex-accent:{{ section.settings.accent_color }};
+    --fi-flex-button-bg:{{ section.settings.button_bg }};
+    --fi-flex-button-text:{{ section.settings.button_text }};
+    --fi-flex-button-hover-bg:{{ section.settings.button_hover_bg }};
+    --fi-flex-button-hover-text:{{ section.settings.button_hover_text }};
+    --fi-flex-max:{{ section.settings.content_width }}px;
+    --fi-flex-align:{{ section.settings.alignment }};
+    --fi-flex-pad-top:{{ section.settings.padding_top }}px;
+    --fi-flex-pad-bottom:{{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="fi-flex__inner">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'eyebrow' %}
+          <div class="fi-flex__eyebrow fi-reveal" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</div>
+        {% when 'heading' %}
+          <h2 class="fi-flex__heading fi-reveal" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+        {% when 'text' %}
+          <div class="fi-flex__text rte fi-reveal" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {% when 'image' %}
+          <div class="fi-flex__image fi-reveal fi-flex__image--{{ block.settings.width }}" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 1800 | image_tag: widths: '480, 720, 960, 1200, 1600, 1800', sizes: '(max-width: 749px) 92vw, 1100px', loading: 'lazy', alt: block.settings.alt_text }}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+        {% when 'buttons' %}
+          <div class="fi-flex__buttons fi-reveal" {{ block.shopify_attributes }}>
+            {% if block.settings.label_1 != blank and block.settings.link_1 != blank %}<a class="fi-btn fi-btn--flex" href="{{ block.settings.link_1 }}">{{ block.settings.label_1 | escape }}</a>{% endif %}
+            {% if block.settings.label_2 != blank and block.settings.link_2 != blank %}<a class="fi-btn fi-btn--flex-secondary" href="{{ block.settings.link_2 }}">{{ block.settings.label_2 | escape }}</a>{% endif %}
+          </div>
+        {% when 'divider' %}
+          <hr class="fi-flex__divider" {{ block.shopify_attributes }}>
+        {% when 'spacer' %}
+          <div class="fi-flex__spacer" style="height:{{ block.settings.height }}px" aria-hidden="true" {{ block.shopify_attributes }}></div>
+        {% when '@app' %}
+          {% render block %}
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Chelonaki · Web Inhalt",
+  "tag": "section",
+  "class": "fi-flex-section",
+  "max_blocks": 20,
+  "settings": [
+    {"type":"header","content":"Layout"},
+    {"type":"select","id":"alignment","label":"Ausrichtung","default":"center","options":[{"value":"left","label":"Links"},{"value":"center","label":"Mittig"},{"value":"right","label":"Rechts"}]},
+    {"type":"range","id":"content_width","label":"Maximale Inhaltsbreite","min":600,"max":1400,"step":50,"unit":"px","default":1000},
+    {"type":"range","id":"padding_top","label":"Abstand oben","min":0,"max":180,"step":4,"unit":"px","default":80},
+    {"type":"range","id":"padding_bottom","label":"Abstand unten","min":0,"max":180,"step":4,"unit":"px","default":80},
+    {"type":"header","content":"Farben dieses Moduls"},
+    {"type":"color","id":"module_bg","label":"Hintergrund","default":"#FBF8F0"},
+    {"type":"color","id":"heading_color","label":"Überschriften","default":"#1F3A2A"},
+    {"type":"color","id":"text_color","label":"Fließtext","default":"#5C6B60"},
+    {"type":"color","id":"accent_color","label":"Akzent","default":"#B9912F"},
+    {"type":"color","id":"button_bg","label":"Button – Hintergrund","default":"#1F3A2A"},
+    {"type":"color","id":"button_text","label":"Button – Schrift","default":"#FBF8F0"},
+    {"type":"color","id":"button_hover_bg","label":"Button – Hover-Hintergrund","default":"#B9912F"},
+    {"type":"color","id":"button_hover_text","label":"Button – Hover-Schrift","default":"#142519"}
+  ],
+  "blocks": [
+    {"type":"eyebrow","name":"Kleine Überschrift","settings":[{"type":"text","id":"text","label":"Text","default":"FOOD INSTRUCTOR MGU®"}]},
+    {"type":"heading","name":"Überschrift","settings":[{"type":"inline_richtext","id":"text","label":"Text","default":"Eine neue <em>Überschrift</em>"}]},
+    {"type":"text","name":"Text","settings":[{"type":"richtext","id":"text","label":"Text","default":"<p>Hier kannst du deinen eigenen Inhalt ergänzen.</p>"}]},
+    {"type":"image","name":"Bild","settings":[{"type":"image_picker","id":"image","label":"Bild"},{"type":"text","id":"alt_text","label":"Bildbeschreibung"},{"type":"select","id":"width","label":"Bildbreite","default":"wide","options":[{"value":"small","label":"Klein"},{"value":"medium","label":"Mittel"},{"value":"wide","label":"Breit"},{"value":"full","label":"Volle Breite"}]}]},
+    {"type":"buttons","name":"Buttons","settings":[{"type":"text","id":"label_1","label":"Button 1 – Text","default":"Mehr erfahren"},{"type":"url","id":"link_1","label":"Button 1 – Link"},{"type":"text","id":"label_2","label":"Button 2 – Text"},{"type":"url","id":"link_2","label":"Button 2 – Link"}]},
+    {"type":"divider","name":"Trennlinie","settings":[]},
+    {"type":"spacer","name":"Abstand","settings":[{"type":"range","id":"height","label":"Höhe","min":8,"max":160,"step":8,"unit":"px","default":40}]},
+    {"type":"@app"}
+  ],
+  "presets": [
+    {"name":"Chelonaki · Web Inhalt","blocks":[{"type":"eyebrow"},{"type":"heading"},{"type":"text"},{"type":"buttons"}]}
+  ]
+}
+{% endschema %}

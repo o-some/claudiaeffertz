@@ -1,0 +1,41 @@
+<section class="ch-section ch-membership" aria-labelledby="ChMembershipHeading-{{ section.id }}">
+  <div class="ch-shell">
+    <h2 id="ChMembershipHeading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+    {% if section.settings.intro != blank %}<div class="rte">{{ section.settings.intro }}</div>{% endif %}
+    {% if product.selling_plan_groups.size > 0 %}
+      <div class="ch-membership__plans">
+        {% for group in product.selling_plan_groups %}
+          <article class="ch-card ch-membership__plan"><h3>{{ group.name | escape }}</h3><ul>
+            {% for plan in group.selling_plans %}<li>{{ plan.name | escape }}</li>{% endfor %}
+          </ul></article>
+        {% endfor %}
+      </div>
+      <p>{{ section.settings.checkout_notice | escape }}</p>
+    {% else %}<p>{{ section.settings.one_time_notice | escape }}</p>{% endif %}
+    {% if section.settings.management_url != blank %}<a class="ch-button ch-button--secondary" href="{{ section.settings.management_url }}" rel="nofollow">{{ section.settings.management_label | escape }}</a>{% endif %}
+  </div>
+</section>
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Membership",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "text", "id": "heading", "label": "Überschrift", "default": "Zugang und Mitgliedschaft" },
+    { "type": "richtext", "id": "intro", "label": "Erklärung" },
+    { "type": "textarea", "id": "checkout_notice", "label": "Abo-Hinweis", "default": "Preis, Intervall und Bedingungen werden vor dem Kauf im Shopify-Kaufbereich verbindlich angezeigt." },
+    { "type": "textarea", "id": "one_time_notice", "label": "Hinweis Einmalkauf", "default": "Dieses Produkt besitzt aktuell keinen wiederkehrenden Verkaufsplan." },
+    { "type": "url", "id": "management_url", "label": "Offizieller Verwaltungslink" },
+    { "type": "text", "id": "management_label", "label": "Verwaltungsaktion", "default": "Mitgliedschaft verwalten" }
+  ],
+  "presets": [{ "name": "Chelonaki – Membership" }]
+}
+{% endschema %}

@@ -1,0 +1,213 @@
+{{ 'mgu-contact-experience.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="mgu-contact"
+  id="MguContact-{{ section.id }}"
+  style="
+    --mgu-contact-bg: {{ section.settings.background }};
+    --mgu-contact-card: {{ section.settings.card_background }};
+    --mgu-contact-forest: {{ section.settings.forest }};
+    --mgu-contact-gold: {{ section.settings.gold }};
+  "
+>
+  <div class="mgu-contact__halo" aria-hidden="true"></div>
+
+  <div class="mgu-contact__shell">
+    <header class="mgu-contact__intro" data-contact-reveal>
+      <span class="mgu-contact__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h1>{{ section.settings.heading }}</h1>
+      <div class="mgu-contact__lead">{{ section.settings.intro }}</div>
+    </header>
+
+    <div class="mgu-contact__grid">
+      <aside class="mgu-contact__story" data-contact-reveal="scale">
+        <div class="mgu-contact__visual">
+          {%- if section.settings.image != blank -%}
+            {{
+              section.settings.image
+              | image_url: width: 1400
+              | image_tag:
+                widths: '480, 720, 960, 1200, 1400',
+                sizes: '(max-width: 899px) calc(100vw - 36px), 42vw',
+                loading: 'eager',
+                class: 'mgu-contact__image',
+                alt: section.settings.image_alt
+            }}
+          {%- else -%}
+            <img
+              src="{{ 'mgu-contact-still-life-v1.webp' | asset_url }}"
+              class="mgu-contact__image"
+              width="1122"
+              height="1402"
+              loading="eager"
+              alt="{{ section.settings.image_alt | escape }}"
+            >
+          {%- endif -%}
+          <div class="mgu-contact__visual-note">
+            <span aria-hidden="true">✦</span>
+            {{ section.settings.image_note | escape }}
+          </div>
+        </div>
+
+        <div class="mgu-contact__details" data-contact-stagger>
+          <a class="mgu-contact__detail" href="mailto:{{ section.settings.email | escape }}">
+            <span class="mgu-contact__detail-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6.5h16v11H4zM4.5 7l7.5 6 7.5-6"/></svg>
+            </span>
+            <span><small>E-Mail</small><strong>{{ section.settings.email | escape }}</strong></span>
+          </a>
+          <a class="mgu-contact__detail" href="tel:{{ section.settings.phone_link | escape }}">
+            <span class="mgu-contact__detail-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7.2 3.8 10 7.6 8.3 9.3c1.1 2.6 3.1 4.6 5.7 5.7l1.7-1.7 3.8 2.8-.7 3.3c-.2.8-.9 1.3-1.7 1.3C9.5 20.7 3.3 14.5 3.3 6.9c0-.8.5-1.5 1.3-1.7z"/></svg>
+            </span>
+            <span><small>Telefon</small><strong>{{ section.settings.phone | escape }}</strong></span>
+          </a>
+          <div class="mgu-contact__detail">
+            <span class="mgu-contact__detail-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg>
+            </span>
+            <span><small>Vor Ort</small><strong>{{ section.settings.address | escape | newline_to_br }}</strong></span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="mgu-contact__form-card" data-contact-reveal>
+        <div class="mgu-contact__form-head">
+          <div>
+            <span class="mgu-contact__eyebrow">{{ section.settings.form_eyebrow | escape }}</span>
+            <h2>{{ section.settings.form_heading | escape }}</h2>
+          </div>
+        </div>
+
+        {%- form 'contact', id: 'MguContactForm', class: 'mgu-contact__form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="mgu-contact__status mgu-contact__status--success" tabindex="-1" autofocus>
+              <strong>Vielen Dank.</strong>
+              <p>{{ section.settings.success_text | escape }}</p>
+            </div>
+          {%- elsif form.errors -%}
+            <div class="mgu-contact__status mgu-contact__status--error" role="alert" tabindex="-1" autofocus>
+              <strong>Bitte prüfe deine Angaben.</strong>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="mgu-contact__field-row">
+            <div class="mgu-contact__field">
+              <label for="MguContact-name-{{ section.id }}">Name</label>
+              <input
+                id="MguContact-name-{{ section.id }}"
+                type="text"
+                name="contact[Name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                autocomplete="name"
+                placeholder="Dein Name"
+              >
+            </div>
+            <div class="mgu-contact__field">
+              <label for="MguContact-email-{{ section.id }}">E-Mail <span aria-hidden="true">*</span></label>
+              <input
+                id="MguContact-email-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                placeholder="name@beispiel.de"
+              >
+            </div>
+          </div>
+
+          <div class="mgu-contact__field-row">
+            <div class="mgu-contact__field">
+              <label for="MguContact-phone-{{ section.id }}">Telefon <small>optional</small></label>
+              <input
+                id="MguContact-phone-{{ section.id }}"
+                type="tel"
+                name="contact[Telefon]"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                autocomplete="tel"
+                placeholder="+49 …"
+              >
+            </div>
+            <div class="mgu-contact__field">
+              <label for="MguContact-topic-{{ section.id }}">Worum geht es?</label>
+              <select id="MguContact-topic-{{ section.id }}" name="contact[Thema]">
+                <option value="Allgemeine Anfrage">Allgemeine Anfrage</option>
+                <option value="Bücher und Produkte">Bücher & Produkte</option>
+                <option value="Kurse und Beratung">Kurse & Beratung</option>
+                <option value="Ausbildung">Ausbildung</option>
+                <option value="MGU Brot">MGU® Brot</option>
+                <option value="Kooperation">Kooperation</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mgu-contact__field">
+            <label for="MguContact-message-{{ section.id }}">Deine Nachricht <span aria-hidden="true">*</span></label>
+            <textarea
+              id="MguContact-message-{{ section.id }}"
+              name="contact[Nachricht]"
+              rows="6"
+              required
+              placeholder="Erzähl uns kurz, wie wir dich unterstützen können."
+            >{{- form.body -}}</textarea>
+          </div>
+
+          <div class="mgu-contact__submit-row">
+            <button class="mgu-contact__submit" type="submit">
+              Nachricht senden
+              <span aria-hidden="true">→</span>
+            </button>
+            <p>
+              Mit dem Absenden stimmst du der Verarbeitung gemäß unserer
+              <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a> zu.
+            </p>
+          </div>
+        {%- endform -%}
+
+        <div class="mgu-contact__promise">
+          <span class="mgu-contact__promise-mark" aria-hidden="true">✓</span>
+          <div>
+            <strong>{{ section.settings.promise_heading | escape }}</strong>
+            <p>{{ section.settings.promise_text | escape }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'mgu-contact-experience.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Chelonaki · Kontakt",
+  "tag": "section",
+  "class": "mgu-contact-experience-section",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Kleine Überschrift","default":"Lass uns ins Gespräch kommen"},
+    {"type":"inline_richtext","id":"heading","label":"Hauptüberschrift","default":"Deine Frage verdient eine <em>persönliche Antwort.</em>"},
+    {"type":"richtext","id":"intro","label":"Einleitung","default":"<p>Ob zu unseren Büchern, der Ausbildung oder dem MGU® Brot – wir hören zu und helfen dir gerne persönlich weiter.</p>"},
+    {"type":"image_picker","id":"image","label":"Kontaktbild","info":"Ohne Auswahl wird das passende MGU-Motiv verwendet."},
+    {"type":"text","id":"image_alt","label":"Bildbeschreibung","default":"Notizbuch, Tee und natürliche Lebensmittel für ein persönliches Gespräch"},
+    {"type":"text","id":"image_note","label":"Bild-Hinweis","default":"Persönlich. Verständlich. Auf Augenhöhe."},
+    {"type":"text","id":"email","label":"E-Mail","default":"info@food-instructor-mgu.de"},
+    {"type":"text","id":"phone","label":"Telefon – sichtbar","default":"+49 176 2210 2333"},
+    {"type":"text","id":"phone_link","label":"Telefon – Link","default":"+4917622102333"},
+    {"type":"textarea","id":"address","label":"Adresse","default":"Guntherstraße 4\n64625 Bensheim"},
+    {"type":"text","id":"form_eyebrow","label":"Formular – kleine Überschrift","default":"Deine Nachricht"},
+    {"type":"text","id":"form_heading","label":"Formular – Überschrift","default":"Wie können wir helfen?"},
+    {"type":"text","id":"success_text","label":"Erfolgsmeldung","default":"Deine Nachricht ist bei uns angekommen. Wir melden uns persönlich bei dir."},
+    {"type":"text","id":"promise_heading","label":"Versprechen – Überschrift","default":"Eine echte Antwort von einem echten Menschen."},
+    {"type":"text","id":"promise_text","label":"Versprechen – Text","default":"Wir lesen jede Nachricht persönlich und melden uns in der Regel innerhalb von 1–2 Werktagen."},
+    {"type":"color","id":"background","label":"Hintergrund","default":"#F3EDDF"},
+    {"type":"color","id":"card_background","label":"Formularkarte","default":"#FFFDF8"},
+    {"type":"color","id":"forest","label":"Dunkelgrün","default":"#142519"},
+    {"type":"color","id":"gold","label":"Gold","default":"#B9912F"}
+  ],
+  "presets": [{"name":"Chelonaki · Kontakt"}]
+}
+{% endschema %}

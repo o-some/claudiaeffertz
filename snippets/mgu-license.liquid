@@ -1,0 +1,9 @@
+{%- comment -%}
+  Build-Integritäts-Snippet. Einbinden in layout/theme.liquid vor </head>:
+  {% render 'mgu-license' %}
+  Die Kennung (build) wird pro Kundenprojekt mit dem Lizenz-Generator
+  erzeugt und hier sowie in den Asset-Kopfzeilen eingetragen.
+{%- endcomment -%}
+{%- assign build = 'CHELONAKI-BUILD-0000-MASTER' -%}
+<meta name="generator-build" content="{{ build }}">
+<style id="b-{{ build | downcase }}">:root{--b:0}</style>

@@ -1,0 +1,254 @@
+<section class="fi-block fi-courses" id="FiCourses" data-fi-reveal-scope style="--fi-module-bg:{{ section.settings.module_bg }};--fi-heading-color:{{ section.settings.heading_color }};--fi-text-color:{{ section.settings.text_color }};--fi-accent-color:{{ section.settings.accent_color }};--fi-banner-heading:{{ section.settings.banner_heading_color }};--fi-banner-emphasis:{{ section.settings.banner_emphasis_color }};--fi-banner-text:{{ section.settings.banner_text }};--fi-overlay-color:{{ section.settings.overlay_color }};--fi-badge-bg:{{ section.settings.badge_bg }};--fi-badge-text:{{ section.settings.badge_text }};--fi-input-bg:{{ section.settings.input_bg }};--fi-input-text:{{ section.settings.input_text }};--fi-input-placeholder:{{ section.settings.input_placeholder }};--fi-input-border:{{ section.settings.input_border }};--fi-button-bg:{{ section.settings.button_bg }};--fi-button-text:{{ section.settings.button_text }};--fi-button-hover-bg:{{ section.settings.button_hover_bg }};--fi-button-hover-text:{{ section.settings.button_hover_text }};--fi-success-text:{{ section.settings.success_color }};--fi-error-text:{{ section.settings.error_text }}">
+  <div class="fi-wrap">
+    <div class="fi-section-head fi-section-head--center fi-reveal">
+      {% if section.settings.eyebrow != blank %}<span class="fi-eyebrow">{{ section.settings.eyebrow | escape }}</span>{% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="fi-course-banner fi-reveal">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 2000 | image_tag: class: 'fi-course-image', widths: '600, 900, 1200, 1600, 2000', sizes: '(max-width: 1180px) 100vw, 1180px', loading: 'lazy', alt: section.settings.image_alt }}
+      {% else %}
+        <img class="fi-course-image" src="{{ 'fi-static-011.jpg' | asset_url }}" width="1280" height="720" loading="lazy" decoding="async" alt="{{ section.settings.image_alt | escape }}">
+      {% endif %}
+      <div class="fi-course-content">
+        {% if section.settings.badge != blank %}<span class="fi-badge-soon">{{ section.settings.badge | escape }}</span>{% endif %}
+        <h3>{{ section.settings.banner_heading }}</h3>
+        <div class="rte">{{ section.settings.text }}</div>
+
+        {%- assign fi_course_form_id = 'FiCourseForm-' | append: section.id -%}
+        {% form 'customer', id: fi_course_form_id, class: 'fi-course-form' %}
+          <input type="hidden" name="contact[tags]" value="{{ section.settings.customer_tags | escape }}">
+          {% if form.posted_successfully? %}
+            <p class="fi-form-success" role="status">{{ section.settings.success_text | escape }}</p>
+          {% else %}
+            <label class="visually-hidden" for="FiEmail-{{ section.id }}">{{ section.settings.email_label | escape }}</label>
+            <input id="FiEmail-{{ section.id }}" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ section.settings.email_placeholder | escape }}" value="{% if customer %}{{ customer.email | escape }}{% endif %}" {% if form.errors %}aria-invalid="true" aria-describedby="FiErrors-{{ section.id }}"{% endif %}>
+            <button class="fi-btn fi-btn--gold" type="submit">{{ section.settings.submit_label | escape }}</button>
+            {% if form.errors %}<div class="fi-form-errors" id="FiErrors-{{ section.id }}" role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+          {% endif %}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Web Kurse",
+  "tag": "section",
+  "class": "fi-courses-section",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Kleine Überschrift",
+      "default": "Demnächst"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Die Longevity-Küche – <em>bald als Videokurs.</em>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hintergrundbild"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Bildbeschreibung",
+      "default": "Kochszene aus dem kommenden Videokurs"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "Bald verfügbar"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "banner_heading",
+      "label": "Banner-Überschrift",
+      "default": "Schritt für Schritt mitkochen – <em>wann immer du willst.</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Beschreibung",
+      "default": "<p>Die Rezepte und das Wissen aus den Büchern als hochwertige Videokurse: zum Mitkochen, Nachschauen und Dranbleiben. Trag dich ein und erfahre als Erste:r vom Start.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Feldbezeichnung",
+      "default": "E-Mail-Adresse"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Platzhalter",
+      "default": "Deine E-Mail-Adresse"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Buttontext",
+      "default": "Benachrichtigen"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Erfolgsmeldung",
+      "default": "Danke! Wir melden uns zum Start."
+    },
+    {
+      "type": "text",
+      "id": "customer_tags",
+      "label": "Shopify-Kundentags",
+      "default": "newsletter,food-instructor-videokurs"
+    },
+    {
+      "type": "header",
+      "content": "Farben dieses Moduls"
+    },
+    {
+      "type": "color",
+      "id": "module_bg",
+      "label": "Modul-Hintergrund",
+      "default": "#FBF8F0"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Bereichsüberschrift",
+      "default": "#1F3A2A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Bereichstext",
+      "default": "#5C6B60"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Akzenttext",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "banner_heading_color",
+      "label": "Banner-Überschrift – normale Schrift",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "banner_emphasis_color",
+      "label": "Banner-Überschrift – hervorgehobener/kursiver Text",
+      "default": "#E8CF8A"
+    },
+    {
+      "type": "color",
+      "id": "banner_text",
+      "label": "Banner-Fließtext",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Banner-Overlay",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg",
+      "label": "Badge-Hintergrund",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "badge_text",
+      "label": "Badge-Schrift",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "E-Mail-Feld – Hintergrund",
+      "default": "#263D2C"
+    },
+    {
+      "type": "color",
+      "id": "input_text",
+      "label": "E-Mail-Feld – Schrift",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_placeholder",
+      "label": "E-Mail-Feld – Platzhalter",
+      "default": "#D4D9D5"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "E-Mail-Feld – Rahmen",
+      "default": "#CFC7B6"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button-Hintergrund",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button-Schrift",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Button-Hintergrund bei Hover",
+      "default": "#D9BC6A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button-Schrift bei Hover",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "success_color",
+      "label": "Erfolgsmeldung – Schrift",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "error_text",
+      "label": "Fehlermeldung",
+      "default": "#FFD9D9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chelonaki · Web Kurse"
+    }
+  ]
+}
+{% endschema %}

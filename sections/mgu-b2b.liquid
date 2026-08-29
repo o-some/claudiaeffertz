@@ -1,0 +1,112 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+<style>
+  .mgu-b2b-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,6vw,80px);align-items:start}
+  @media(max-width:900px){.mgu-b2b-grid{grid-template-columns:1fr}}
+  .mgu-b2b-arg{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(239,234,217,.15)}
+  .mgu-b2b-arg:last-child{border:none}
+  .mgu-b2b-arg .mgu-dot{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid var(--mgu-gold-soft);color:var(--mgu-gold-soft);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .mgu-b2b-arg h4{margin:0;font-size:16px;font-weight:600;color:#FCF9F1}
+  .mgu-b2b-arg p{margin:3px 0 0;font-size:14.5px;color:rgba(239,234,217,.7)}
+  .mgu-b2b-form{background:var(--mgu-paper);border-radius:22px;padding:clamp(24px,3.5vw,40px);box-shadow:0 40px 80px -35px rgba(0,0,0,.5)}
+  .mgu-b2b-form h3{font-size:1.3rem;color:var(--mgu-forest);margin:0 0 18px}
+  .mgu-b2b-form label{display:block;font-size:13px;font-weight:600;color:var(--mgu-ink);margin:14px 0 5px}
+  .mgu-b2b-form input,.mgu-b2b-form textarea{
+    width:100%;box-sizing:border-box;padding:12px 16px;border-radius:14px;
+    border:1.5px solid rgba(31,58,42,.2);background:#fff;font-family:inherit;font-size:14.5px;
+  }
+  .mgu-b2b-form input:focus,.mgu-b2b-form textarea:focus{outline:2px solid var(--mgu-gold);border-color:transparent}
+  .mgu-b2b-form .mgu-btn{margin-top:20px;width:100%;justify-content:center}
+  .mgu-b2b-erfolg{color:var(--mgu-forest);font-weight:600;padding:14px;background:var(--mgu-cream);border-radius:14px;margin-bottom:10px}
+  .mgu-b2b-fehler{color:#A8542B;font-size:14px;margin-top:10px}
+</style>
+
+<section data-mgu-effect="{{ section.settings.effect | default: 'up' }}" data-mgu-speed="{{ section.settings.effect_speed | default: 'normal' }}" class="mgu mgu-ausbildung mgu-block" id="mgu-b2b-{{ section.id }}">
+  <div class="mgu-wrap">
+    <div class="mgu-b2b-grid">
+      <div class="mgu-reveal">
+        {%- if section.settings.eyebrow != blank -%}<span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2>{{ section.settings.heading }}</h2>
+        <p class="mgu-aus-lead">{{ section.settings.text }}</p>
+        <div style="margin-top:24px">
+          {%- for block in section.blocks -%}
+            <div class="mgu-b2b-arg" {{ block.shopify_attributes }}>
+              <span class="mgu-dot">{{ block.settings.icon }}</span>
+              <div><h4>{{ block.settings.titel }}</h4><p>{{ block.settings.text }}</p></div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="mgu-b2b-form mgu-reveal" style="transition-delay:.12s">
+        <h3>{{ section.settings.form_titel }}</h3>
+        {%- form 'contact' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="mgu-b2b-erfolg" role="status" tabindex="-1">{{ section.settings.erfolg }}</p>
+          {%- endif -%}
+          <label for="b2b-firma-{{ section.id }}">Firma *</label>
+          <input id="b2b-firma-{{ section.id }}" type="text" name="contact[Firma]" required>
+          <label for="b2b-name-{{ section.id }}">Ansprechpartner:in *</label>
+          <input id="b2b-name-{{ section.id }}" type="text" name="contact[Name]" required autocomplete="name">
+          <label for="b2b-email-{{ section.id }}">E-Mail *</label>
+          <input id="b2b-email-{{ section.id }}" type="email" name="contact[email]" required autocomplete="email">
+          <label for="b2b-tel-{{ section.id }}">Telefon</label>
+          <input id="b2b-tel-{{ section.id }}" type="tel" name="contact[Telefon]" autocomplete="tel">
+          <label for="b2b-msg-{{ section.id }}">Nachricht *</label>
+          <textarea id="b2b-msg-{{ section.id }}" name="contact[body]" rows="4" required placeholder="{{ section.settings.platzhalter | escape }}"></textarea>
+          <input type="hidden" name="contact[Anfrage-Typ]" value="B2B / Händler">
+          <button type="submit" class="mgu-btn mgu-btn--gold">{{ section.settings.button }}</button>
+          {%- if form.errors -%}<div class="mgu-b2b-fehler" id="B2bErrors-{{ section.id }}" role="alert"><p>Bitte prüfe die markierten Felder.</p>{{ form.errors | default_errors }}</div>{%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · B2B-Anfrage",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "header", "content": "Scroll-Effekt" },
+    { "type": "select", "id": "effect", "label": "Erscheinen beim Scrollen", "default": "up", "options": [ { "value": "none", "label": "Kein Effekt" }, { "value": "fade", "label": "Einblenden" }, { "value": "up", "label": "Von unten (Standard)" }, { "value": "left", "label": "Von links" }, { "value": "right", "label": "Von rechts" }, { "value": "zoom", "label": "Sanfter Zoom" }, { "value": "blur", "label": "Aus der Unschärfe" } ] },
+    { "type": "select", "id": "effect_speed", "label": "Effekt-Tempo", "default": "normal", "options": [ { "value": "schnell", "label": "Schnell" }, { "value": "normal", "label": "Normal" }, { "value": "langsam", "label": "Langsam" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Kicker-Zeile", "default": "Für Händler & Partner" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Werde <em>Handelspartner.</em>" },
+    { "type": "textarea", "id": "text", "label": "Einleitung", "default": "Du möchtest unsere Produkte in deinem Sortiment führen? Wir freuen uns auf deine Anfrage." },
+    { "type": "text", "id": "form_titel", "label": "Formular-Titel", "default": "Händler-Anfrage stellen" },
+    { "type": "text", "id": "platzhalter", "label": "Nachricht-Platzhalter", "default": "Sortiment, Standort, geplante Abnahmemenge …" },
+    { "type": "text", "id": "button", "label": "Absende-Button", "default": "Anfrage senden" },
+    { "type": "text", "id": "erfolg", "label": "Erfolgsmeldung", "default": "Danke! Wir melden uns innerhalb von 2 Werktagen." }
+  ],
+  "blocks": [
+    {
+      "type": "argument",
+      "name": "Handelsargument",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Symbol (Emoji)", "default": "📦" },
+        { "type": "text", "id": "titel", "label": "Titel", "default": "Faire Konditionen" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Attraktive Handelsspannen und flexible Bestellmengen." }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Chelonaki – Händler-Anfrage (B2B)",
+      "blocks": [
+        { "type": "argument", "settings": { "icon": "📦", "titel": "Faire Konditionen", "text": "Attraktive Handelsspannen und flexible Bestellmengen." } },
+        { "type": "argument", "settings": { "icon": "🚚", "titel": "Zuverlässige Logistik", "text": "Schnelle Lieferung, saubere VE-Einheiten, planbare Nachbestellung." } },
+        { "type": "argument", "settings": { "icon": "🤝", "titel": "Persönlicher Kontakt", "text": "Fester Ansprechpartner statt Ticketsystem." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

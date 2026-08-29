@@ -1,0 +1,118 @@
+/*! Chelonaki Shop Theme · © Chelonaki · Lizenzpflichtig · Build: CHELONAKI-BUILD-0000-MASTER · Unerlaubte Nutzung, Vervielfältigung oder Weitergabe untersagt (§ 69a UrhG / §§ 97 ff. UrhG) */
+/* ============================================================
+   MGU Theme-Skin für Dawn – Food Instructor MGU®
+   Legt das komplette Markendesign über Dawn:
+   Typografie, Buttons, Karten, Header, Formulare, Produktseiten
+   Laden als letztes Stylesheet in layout/theme.liquid
+   ============================================================ */
+
+/* ---------- 1) Schriften global ersetzen ---------- */
+:root{
+  --font-heading-family: var(--mgu-font-heading, Georgia, serif);
+  --font-heading-style: normal;
+  --font-heading-weight: 400;
+  --font-body-family: var(--mgu-font-body, system-ui, sans-serif);
+  --font-body-style: normal;
+  --font-body-weight: 400;
+  --font-body-weight-bold: 600;
+
+  /* MGU-Markenfarben als Variablen für eigene Bauteile */
+  --mgu-paper:#FBF8F0;
+  --mgu-cream:#F3EDDF;
+  --mgu-forest:#1F3A2A;
+  --mgu-forest-deep:#142519;
+  --mgu-gold:#B9912F;
+  --mgu-gold-soft:#D9BC6A;
+  --mgu-ink:#22312A;
+  --mgu-ink-soft:#5C6B60;
+  --mgu-font-heading:Georgia,serif;
+  --mgu-font-body:system-ui,sans-serif;
+}
+body{letter-spacing:.005em}
+h1,h2,h3,.h0,.h1,.h2,.h3{letter-spacing:-.01em;font-weight:400}
+h1 em,h2 em,.h0 em,.h1 em,.h2 em,.title em{font-style:italic;color:var(--mgu-gold)}
+
+/* ---------- 2) Buttons: Pill-Form, sanfter Lift ---------- */
+.button,.shopify-challenge__button,.customer button,
+button.shopify-payment-button__button--unbranded{
+  border-radius:99px;
+  font-weight:500;
+  letter-spacing:.01em;
+  transition:transform .25s,box-shadow .25s,opacity .25s;
+}
+.button:not(.button--secondary):hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px -12px rgba(20,37,25,.5);
+}
+.button--secondary{border-radius:99px}
+
+/* ---------- 3) Inputs & Formulare ---------- */
+.field__input,.select__select,.customer .field input,
+input[type="email"],input[type="text"],input[type="tel"]{
+  border-radius:16px;
+}
+.field__input:focus,.select__select:focus{outline-color:var(--mgu-gold)}
+
+/* ---------- 4) Produktkarten ---------- */
+.card,.card--standard,.card--media{border-radius:22px}
+.card--standard .card__inner,.card__media,.card--media .card__inner{
+  border-radius:18px;overflow:hidden;
+}
+.card__media img{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.card:hover .card__media img{transform:scale(1.05)}
+.card-wrapper{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.card-wrapper:hover{transform:translateY(-6px)}
+.card__heading{font-family:var(--font-heading-family);font-size:1.15rem}
+.price{color:var(--mgu-gold);font-weight:600}
+.price--on-sale .price-item--regular{color:var(--mgu-ink-soft)}
+.badge{border-radius:99px;letter-spacing:.08em;text-transform:uppercase;font-size:11px;font-weight:600}
+
+/* ---------- 5) Header: Creme mit Blur beim Scrollen ---------- */
+.header-wrapper{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.header__heading-logo{max-height:52px;width:auto}
+.header__menu-item{letter-spacing:.02em;font-weight:500}
+.header__menu-item:hover span{text-decoration-color:var(--mgu-gold);text-underline-offset:5px}
+
+/* ---------- 6) Abschnitts-Titel im MGU-Stil ---------- */
+.title-wrapper-with-link .title,.collection__title .title,
+.section-header h2{line-height:1.12}
+
+/* ---------- 7) Produktseite ---------- */
+.product__title h1{font-size:clamp(1.9rem,3.4vw,2.8rem)}
+.product__media-wrapper .product__media{border-radius:22px;overflow:hidden}
+.product-form__input input[type="radio"]:checked + label{
+  background:var(--mgu-forest);border-color:var(--mgu-forest);color:#fff;
+}
+.product-form__input .form__label{font-weight:600;letter-spacing:.04em}
+.accordion{border-radius:14px}
+.product__tax,.product__sku{color:var(--mgu-ink-soft)}
+
+/* ---------- 8) Collections & Filter ---------- */
+.facets__form .facets__heading,.mobile-facets__heading{font-weight:600;letter-spacing:.04em}
+.active-facets__button{border-radius:99px}
+.facet-checkbox:hover{color:var(--mgu-gold)}
+.collection-hero__title{font-size:clamp(2rem,4vw,3.2rem)}
+
+/* ---------- 9) Warenkorb & Drawer ---------- */
+.cart-drawer,.drawer__inner{border-radius:0}
+.cart-item__media img,.cart-drawer .cart-item__image{border-radius:12px}
+.totals__total-value{color:var(--mgu-forest);font-weight:600}
+
+/* ---------- 10) Footer ---------- */
+.footer__heading,.footer-block__heading{
+  font-family:var(--font-heading-family);
+  letter-spacing:.02em;font-size:1.1rem;
+}
+.footer__list-social .list-social__link:hover svg{color:var(--mgu-gold-soft)}
+
+/* ---------- 11) Ankündigungsleiste ---------- */
+.announcement-bar__message{letter-spacing:.06em;font-weight:500;font-size:13px}
+
+/* ---------- 12) Feinschliff ---------- */
+::selection{background:var(--mgu-gold-soft);color:var(--mgu-forest-deep)}
+.loading-overlay__spinner .path{stroke:var(--mgu-gold)}
+.slider-button:hover .icon{color:var(--mgu-gold)}
+.quick-add__submit{border-radius:99px}
+@media (prefers-reduced-motion:reduce){
+  .card__media img,.card-wrapper,.button{transition:none!important}
+}

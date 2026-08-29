@@ -1,0 +1,187 @@
+<section class="fi-withdrawal" id="FiWithdrawal-{{ section.id }}">
+  <div class="fi-withdrawal__wrap">
+    <p class="fi-withdrawal__eyebrow">Elektronische Widerrufsfunktion</p>
+    <h1>Vertrag widerrufen</h1>
+    <p class="fi-withdrawal__intro">
+      Hier können Sie den Widerruf eines online geschlossenen Vertrags eindeutig übermitteln.
+      Bitte tragen Sie die Daten ein, mit denen wir den Vertrag sicher zuordnen können.
+    </p>
+
+    {% form 'contact', id: 'FiWithdrawalForm', class: 'fi-withdrawal__form', return_to: '/pages/vertrag-widerrufen#FiWithdrawalResult' %}
+      <input type="hidden" name="contact[tags]" value="widerruf,elektronischer-widerruf">
+      <input type="hidden" name="contact[Anliegen]" value="Vertrag widerrufen">
+      <input type="hidden" id="FiWithdrawalTimestamp-{{ section.id }}" name="contact[Zeitpunkt]">
+
+      {% if form.posted_successfully? %}
+        <div class="fi-withdrawal__success" id="FiWithdrawalResult" role="status" tabindex="-1">
+          <h2>Widerruf übermittelt</h2>
+          <p>Ihre Widerrufserklärung wurde an Food Instructor MGU übermittelt.</p>
+          <p>
+            Bitte bewahren Sie Ihre Bestelldaten auf. Bei Rückfragen erreichen Sie uns unter
+            <a href="mailto:info@food-instructor-mgu.de">info@food-instructor-mgu.de</a>.
+          </p>
+          <button class="fi-withdrawal__secondary" type="button" data-withdrawal-receipt>
+            Eingangsbeleg herunterladen
+          </button>
+        </div>
+      {% else %}
+        {% if form.errors %}
+          <div class="fi-withdrawal__errors" role="alert">
+            <strong>Der Widerruf konnte noch nicht übermittelt werden.</strong>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="fi-withdrawal__fields">
+          <label>
+            <span>Name des Verbrauchers *</span>
+            <input type="text" name="contact[Name]" required autocomplete="name">
+          </label>
+          <label>
+            <span>E-Mail für die Eingangsbestätigung *</span>
+            <input type="email" name="contact[email]" required autocomplete="email">
+          </label>
+          <label class="fi-withdrawal__wide">
+            <span>Bestellnummer oder andere Vertragsidentifikation *</span>
+            <input type="text" name="contact[Vertragsidentifikation]" required autocomplete="off"
+              placeholder="z. B. Bestellnummer #1234">
+          </label>
+          <label class="fi-withdrawal__wide">
+            <span>Welchen Vertrag oder Vertragsteil möchten Sie widerrufen? *</span>
+            <textarea name="contact[body]" rows="5" required
+              placeholder="Bitte Produkt, Kurs oder Dienstleistung eindeutig benennen."></textarea>
+          </label>
+        </div>
+
+        <p class="fi-withdrawal__notice">
+          Mit der folgenden Schaltfläche übermitteln Sie Ihre Widerrufserklärung verbindlich.
+        </p>
+        <button class="fi-withdrawal__submit" type="submit">Widerruf bestätigen</button>
+      {% endif %}
+    {% endform %}
+
+    <div class="fi-withdrawal__help">
+      <h2>Weitere Möglichkeiten</h2>
+      <p>
+        Ihr gesetzliches Widerrufsrecht kann auch auf anderem eindeutigen Weg ausgeübt werden,
+        zum Beispiel per E-Mail an
+        <a href="mailto:info@food-instructor-mgu.de">info@food-instructor-mgu.de</a>.
+        Maßgeblich sind die Voraussetzungen und Ausnahmen in der Widerrufsbelehrung.
+      </p>
+      <a href="/policies/refund-policy">Widerrufsbelehrung ansehen</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.getElementById('FiWithdrawal-{{ section.id }}');
+    if (!root) return;
+    const timestamp = root.querySelector('#FiWithdrawalTimestamp-{{ section.id }}');
+    const form = root.querySelector('form');
+    if (form && timestamp) {
+      form.addEventListener('submit', () => {
+        timestamp.value = new Date().toISOString();
+        try {
+          const data = Object.fromEntries(new FormData(form).entries());
+          sessionStorage.setItem('fiWithdrawalReceipt', JSON.stringify({
+            name: data['contact[Name]'] || '',
+            email: data['contact[email]'] || '',
+            contract: data['contact[Vertragsidentifikation]'] || '',
+            message: data['contact[body]'] || '',
+            submittedAt: timestamp.value
+          }));
+        } catch (_) {}
+      });
+    }
+    const receiptButton = root.querySelector('[data-withdrawal-receipt]');
+    if (receiptButton) {
+      receiptButton.addEventListener('click', () => {
+        let receipt = {};
+        try { receipt = JSON.parse(sessionStorage.getItem('fiWithdrawalReceipt') || '{}'); } catch (_) {}
+        const text = [
+          'Eingangsbeleg – elektronischer Widerruf',
+          'Food Instructor MGU',
+          '',
+          `Name: ${receipt.name || 'nicht gespeichert'}`,
+          `E-Mail: ${receipt.email || 'nicht gespeichert'}`,
+          `Vertragsidentifikation: ${receipt.contract || 'nicht gespeichert'}`,
+          `Widerruf: ${receipt.message || 'nicht gespeichert'}`,
+          `Übermittelt am: ${receipt.submittedAt || new Date().toISOString()}`,
+          `Seite: ${window.location.origin}/pages/vertrag-widerrufen`
+        ].join('\n');
+        const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'eingangsbeleg-widerruf.txt';
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+  })();
+</script>
+
+{% style %}
+  body:not(.fi-home-active) #MainContent > #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} {
+    display: block !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  #FiWithdrawal-{{ section.id }} {
+    display: block !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    padding: clamp(64px, 9vw, 120px) 20px;
+    background: #fbf8f0;
+    color: #22312a;
+  }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__wrap { width: min(820px, 100%); margin: 0 auto; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__eyebrow { margin: 0 0 12px; color: #8a691c; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  #FiWithdrawal-{{ section.id }} h1 { margin: 0 0 20px; color: #142519; font-size: clamp(3.8rem, 7vw, 6.8rem); line-height: 1; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__intro { max-width: 700px; margin-bottom: 36px; font-size: 1.8rem; line-height: 1.65; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__form { padding: clamp(24px, 5vw, 44px); border: 1px solid #d9d2c3; border-radius: 24px; background: #fff; box-shadow: 0 20px 55px rgba(20,37,25,.1); }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  #FiWithdrawal-{{ section.id }} label { display: grid; gap: 8px; color: #142519; font-size: 1.45rem; font-weight: 750; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__wide { grid-column: 1 / -1; }
+  #FiWithdrawal-{{ section.id }} input,
+  #FiWithdrawal-{{ section.id }} textarea { width: 100%; min-height: 50px; padding: 12px 14px; border: 1px solid #9ca79f; border-radius: 10px; background: #fff; color: #142519; font: inherit; }
+  #FiWithdrawal-{{ section.id }} textarea { min-height: 130px; resize: vertical; }
+  #FiWithdrawal-{{ section.id }} input:focus-visible,
+  #FiWithdrawal-{{ section.id }} textarea:focus-visible { outline: 3px solid #d9bc6a; outline-offset: 2px; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__notice { margin: 26px 0 14px; font-size: 1.35rem; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__submit,
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__secondary { min-height: 52px; padding: 13px 24px; border: 2px solid #142519; border-radius: 999px; background: #142519; color: #fff; font-size: 1.6rem; font-weight: 800; cursor: pointer; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__submit:hover,
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__submit:focus-visible { background: #b9912f; color: #142519; outline: 3px solid #d9bc6a; outline-offset: 2px; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__secondary { background: #fff; color: #142519; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__success { padding: 24px; border-left: 6px solid #2e6b45; background: #eef7f0; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__success h2 { color: #142519; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__errors { margin-bottom: 22px; padding: 18px; border-left: 6px solid #a62b2b; background: #fff0f0; color: #661717; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__help { margin-top: 36px; padding: 24px; border-radius: 18px; background: #f3eddf; }
+  #FiWithdrawal-{{ section.id }} .fi-withdrawal__help h2 { margin-top: 0; color: #142519; }
+  #FiWithdrawal-{{ section.id }} a { color: #244f36; font-weight: 750; }
+  @media (max-width: 640px) {
+    #FiWithdrawal-{{ section.id }} { padding: 42px 18px 56px; }
+    #FiWithdrawal-{{ section.id }} h1 { font-size: clamp(3rem, 11vw, 4.2rem); }
+    #FiWithdrawal-{{ section.id }} .fi-withdrawal__intro { margin-bottom: 26px; font-size: 1.6rem; }
+    #FiWithdrawal-{{ section.id }} .fi-withdrawal__form { padding: 22px 18px; border-radius: 18px; }
+    #FiWithdrawal-{{ section.id }} .fi-withdrawal__fields { grid-template-columns: 1fr; }
+    #FiWithdrawal-{{ section.id }} .fi-withdrawal__wide { grid-column: auto; }
+    #FiWithdrawal-{{ section.id }} .fi-withdrawal__submit { width: 100%; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Widerruf",
+  "tag": "section",
+  "class": "fi-withdrawal-section",
+  "settings": [],
+  "presets": [{"name":"Chelonaki · Widerruf"}]
+}
+{% endschema %}

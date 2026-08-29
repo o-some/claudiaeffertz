@@ -1,0 +1,323 @@
+<section class="fi-block fi-training" id="FiTraining" data-fi-reveal-scope style="--fi-module-bg:{{ section.settings.module_bg }};--fi-heading-color:{{ section.settings.heading_color }};--fi-text-color:{{ section.settings.text_color }};--fi-accent-color:{{ section.settings.accent_color }};--fi-line-color:{{ section.settings.line_color }};--fi-circle-bg:{{ section.settings.circle_bg }};--fi-circle-text:{{ section.settings.circle_text }};--fi-circle-border:{{ section.settings.circle_border }};--fi-button-bg:{{ section.settings.button_bg }};--fi-button-text:{{ section.settings.button_text }};--fi-button-hover-bg:{{ section.settings.button_hover_bg }};--fi-button-hover-text:{{ section.settings.button_hover_text }};--fi-card-bg:{{ section.settings.card_bg }};--fi-card-heading:{{ section.settings.card_heading }};--fi-card-text:{{ section.settings.card_text }};--fi-card-border:{{ section.settings.card_border }}">
+  <div class="fi-wrap fi-training-grid">
+    <div class="fi-reveal">
+      {% if section.settings.eyebrow != blank %}<span class="fi-eyebrow">{{ section.settings.eyebrow | escape }}</span>{% endif %}
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="fi-training-lead rte">{{ section.settings.text }}</div>
+
+      <div class="fi-training-points">
+        {% assign point_number = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'point' %}
+            {% assign point_number = point_number | plus: 1 %}
+            <div class="fi-training-point" {{ block.shopify_attributes }}>
+              <div class="fi-number" aria-hidden="true">{{ point_number }}</div>
+              <div><h3>{{ block.settings.title | escape }}</h3><div class="rte">{{ block.settings.text }}</div></div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% liquid
+        assign button_link = section.settings.button_link
+        if button_link == blank and section.settings.button_target != blank
+          assign button_link = section.settings.button_target
+        endif
+      %}
+      {% if button_link != blank and section.settings.button_label != blank %}
+        <a class="fi-btn fi-btn--gold" href="{{ button_link | escape }}">{{ section.settings.button_label | escape }}{% render 'fi-arrow-icon' %}</a>
+      {% endif %}
+    </div>
+
+    <div class="fi-training-side fi-reveal" style="--fi-reveal-delay:.15s">
+      <div class="fi-training-cover">
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: 900 | image_tag: widths: '320, 480, 640, 900', sizes: '(max-width: 900px) 70vw, 340px', loading: 'lazy', alt: section.settings.image_alt }}
+        {% else %}
+          <img src="{{ 'fi-static-004.jpg' | asset_url }}" width="538" height="760" loading="lazy" decoding="async" alt="{{ section.settings.image_alt | escape }}">
+        {% endif %}
+      </div>
+
+      <div class="fi-method-card">
+        {% if section.settings.method_title != blank %}<span class="fi-serif">{{ section.settings.method_title | escape }}</span>{% endif %}
+        {% for block in section.blocks %}
+          {% if block.type == 'method' %}
+            <div class="fi-method-row" {{ block.shopify_attributes }}>
+              <b aria-hidden="true">{{ block.settings.letter | escape }}</b>
+              <div><h3>{{ block.settings.title | escape }}</h3><div class="rte">{{ block.settings.text }}</div></div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Web Training",
+  "tag": "section",
+  "class": "fi-training-section",
+  "max_blocks": 10,
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Kleine Überschrift",
+      "default": "2-Tages-Ausbildung"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Überschrift",
+      "default": "Werde Basis Coach für <em>Metabolic Nutrition.</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Einleitung",
+      "default": "<p>Ernährung ist mehr als eine Mahlzeit. In der Food Instructor MGU® Ausbildung lernst du, Ernährung nicht nur zu verstehen, sondern sie verständlich, sicher und praxisnah an andere Menschen weiterzugeben.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Buttontext",
+      "default": "Platz anfragen"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Shopify- oder externe URL"
+    },
+    {
+      "type": "text",
+      "id": "button_target",
+      "label": "Alternativer Link oder Anker",
+      "info": "Optional, z. B. /pages/kontakt oder mailto:name@domain.de"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Bild / Schulungsbuch"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Bildbeschreibung",
+      "default": "Schulungsbuch zur 2-Tages-Ausbildung"
+    },
+    {
+      "type": "text",
+      "id": "method_title",
+      "label": "Titel der Methodenkarte",
+      "default": "Die MGU-Methode"
+    },
+    {
+      "type": "header",
+      "content": "Farben dieses Moduls"
+    },
+    {
+      "type": "color",
+      "id": "module_bg",
+      "label": "Modul-Hintergrund",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Überschriften",
+      "default": "#FBF8F0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Fließtext",
+      "default": "#EFEAD9"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Akzenttext",
+      "default": "#D9BC6A"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Trennlinien",
+      "default": "#526055"
+    },
+    {
+      "type": "color",
+      "id": "circle_bg",
+      "label": "Nummernkreis-Hintergrund",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "circle_text",
+      "label": "Nummernkreis-Schrift",
+      "default": "#D9BC6A"
+    },
+    {
+      "type": "color",
+      "id": "circle_border",
+      "label": "Nummernkreis-Rahmen",
+      "default": "#D9BC6A"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button-Hintergrund",
+      "default": "#B9912F"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button-Schrift",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Button-Hintergrund bei Hover",
+      "default": "#D9BC6A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Button-Schrift bei Hover",
+      "default": "#142519"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Methodenkarte-Hintergrund",
+      "default": "#1B3022"
+    },
+    {
+      "type": "color",
+      "id": "card_heading",
+      "label": "Methodenkarte-Überschrift",
+      "default": "#FBF8F0"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Methodenkarte-Fließtext",
+      "default": "#EFEAD9"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Methodenkarte-Rahmen",
+      "default": "#6E5B2A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Ausbildungs-Vorteil",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Vorteil"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Beschreibung",
+          "default": "<p>Kurze Beschreibung.</p>"
+        }
+      ]
+    },
+    {
+      "type": "method",
+      "name": "Chelonaki · Baustein",
+      "settings": [
+        {
+          "type": "text",
+          "id": "letter",
+          "label": "Buchstabe",
+          "default": "M"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Baustein"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Beschreibung",
+          "default": "<p>Kurze Beschreibung.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chelonaki · Web Training",
+      "blocks": [
+        {
+          "type": "point",
+          "settings": {
+            "title": "Zusammenhänge verstehen",
+            "text": "<p>Wie Blutzucker, Insulin, Entzündungen und Stoffwechsel zusammenwirken – klar erklärt statt kompliziert.</p>"
+          }
+        },
+        {
+          "type": "point",
+          "settings": {
+            "title": "Einfach erklären können",
+            "text": "<p>Typische Ernährungsprobleme erkennen und Menschen unterstützen, ohne sie zu überfordern.</p>"
+          }
+        },
+        {
+          "type": "point",
+          "settings": {
+            "title": "Alltagstaugliche Lösungen",
+            "text": "<p>Moderne Ernährungsbildung: verständlich, präventiv, praxisorientiert und nah am Menschen.</p>"
+          }
+        },
+        {
+          "type": "method",
+          "settings": {
+            "letter": "M",
+            "title": "Muskelversorgung",
+            "text": "<p>Eiweiß, Nährstoffe und Mahlzeiten, die den Körper wirklich versorgen.</p>"
+          }
+        },
+        {
+          "type": "method",
+          "settings": {
+            "letter": "G",
+            "title": "Gelenke & Gesundheit",
+            "text": "<p>Beweglichkeit, Wohlbefinden und langfristige Stärke im Blick behalten.</p>"
+          }
+        },
+        {
+          "type": "method",
+          "settings": {
+            "letter": "U",
+            "title": "Umsetzung im Alltag",
+            "text": "<p>Routinen und Rezepte, die in ein echtes Leben passen – Tag für Tag.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,81 @@
+{%- if section.blocks.size > 0 -%}
+  <section
+    id="ChSources-{{ section.id }}"
+    class="ch-source-list"
+    aria-labelledby="ChSourcesHeading-{{ section.id }}"
+    style="--ch-sources-top:{{ section.settings.spacing_top }}px;--ch-sources-bottom:{{ section.settings.spacing_bottom }}px;--ch-sources-inline:{{ section.settings.spacing_inline }}px"
+  >
+    <div class="page-width">
+      <header class="ch-source-list__header">
+        <h2 id="ChSourcesHeading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.intro != blank -%}<div class="rte">{{ section.settings.intro }}</div>{%- endif -%}
+      </header>
+      <ol class="ch-source-list__items">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>
+            {%- if block.settings.url != blank -%}
+              <a href="{{ block.settings.url }}"{% if block.settings.url contains 'http' %} rel="noopener noreferrer"{% endif %}>
+                <cite>{{ block.settings.title | escape }}</cite>
+              </a>
+            {%- else -%}
+              <cite>{{ block.settings.title | escape }}</cite>
+            {%- endif -%}
+            {%- if block.settings.publisher != blank -%}<span> · {{ block.settings.publisher | escape }}</span>{%- endif -%}
+            {%- if block.settings.note != blank -%}<div class="rte ch-source-list__note">{{ block.settings.note }}</div>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </section>
+{%- endif -%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .ch-source-list {
+    padding: var(--ch-sources-top) var(--ch-sources-inline) var(--ch-sources-bottom);
+  }
+  #shopify-section-{{ section.id }} .ch-source-list__header {
+    max-width: 72rem;
+    margin-block-end: 2.4rem;
+  }
+  #shopify-section-{{ section.id }} .ch-source-list__items {
+    display: grid;
+    gap: 1.4rem;
+    max-width: 90rem;
+    padding-inline-start: 2.4rem;
+  }
+  #shopify-section-{{ section.id }} .ch-source-list__items a {
+    text-underline-offset: .2em;
+  }
+  #shopify-section-{{ section.id }} .ch-source-list__note {
+    margin-block-start: .4rem;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Quellen",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 30,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Überschrift", "default": "Quellen und weiterführende Informationen" },
+    { "type": "richtext", "id": "intro", "label": "Einleitung" },
+    { "type": "range", "id": "spacing_top", "label": "Abstand oben", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 48 },
+    { "type": "range", "id": "spacing_bottom", "label": "Abstand unten", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 48 },
+    { "type": "range", "id": "spacing_inline", "label": "Abstand links und rechts", "min": 0, "max": 64, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "source",
+      "name": "Quelle",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titel", "default": "Titel der Quelle" },
+        { "type": "text", "id": "publisher", "label": "Herausgeber / Autor" },
+        { "type": "url", "id": "url", "label": "Link zur Quelle" },
+        { "type": "richtext", "id": "note", "label": "Kurze Einordnung" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Chelonaki – Quellen", "blocks": [{ "type": "source" }] }]
+}
+{% endschema %}

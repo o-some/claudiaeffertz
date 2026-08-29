@@ -1,0 +1,61 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+<style>
+  .mgu-zt{background:var(--mgu-paper);border:1px solid var(--mgu-line);border-radius:20px;padding:clamp(20px,3vw,30px);margin:24px 0}
+  .mgu-zt h3{font-size:1.05rem;color:var(--mgu-forest);margin:0 0 10px}
+  .mgu-zt p{font-size:14.5px;color:var(--mgu-ink);line-height:1.7;margin:0 0 14px}
+  .mgu-zt p:last-child{margin-bottom:0}
+  .mgu-zt .mgu-zt-label{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mgu-gold);font-weight:700;margin-bottom:3px}
+  .mgu-zt b{font-weight:800}
+</style>
+{%- liquid
+  assign mf = product.metafields.custom
+  assign hat = false
+  if mf.zutaten != blank or mf.allergene != blank or mf.fuellmenge != blank or mf.aufbewahrung != blank or mf.lebensmittelunternehmer != blank or mf.herkunft != blank
+    assign hat = true
+  endif
+-%}
+{%- if hat -%}
+<div class="mgu mgu-zt">
+  <h3>{{ section.settings.heading }}</h3>
+  {%- if mf.zutaten != blank -%}
+    {%- assign zutaten_text = mf.zutaten | escape -%}
+    {%- if mf.allergene != blank -%}
+      {%- assign allergen_liste = mf.allergene | split: ',' -%}
+      {%- for a in allergen_liste -%}
+        {%- assign a_clean = a | strip -%}
+        {%- if a_clean != blank -%}
+          {%- assign fett = '<b>' | append: a_clean | append: '</b>' -%}
+          {%- assign zutaten_text = zutaten_text | replace: a_clean, fett -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+    <p><span class="mgu-zt-label">{{ 'mgu.food.zutaten' | t }}</span>{{ zutaten_text }}</p>
+  {%- endif -%}
+  {%- if mf.allergene != blank -%}<p><span class="mgu-zt-label">{{ 'mgu.food.allergene' | t }}</span><b>{{ mf.allergene }}</b></p>{%- endif -%}
+  {%- if mf.fuellmenge != blank -%}<p><span class="mgu-zt-label">{{ 'mgu.food.fuellmenge' | t }}</span>{{ mf.fuellmenge }}</p>{%- endif -%}
+  {%- if mf.aufbewahrung != blank -%}<p><span class="mgu-zt-label">{{ 'mgu.food.aufbewahrung' | t }}</span>{{ mf.aufbewahrung }}</p>{%- endif -%}
+  {%- if mf.herkunft != blank -%}<p><span class="mgu-zt-label">{{ 'mgu.food.herkunft' | t }}</span>{{ mf.herkunft }}</p>{%- endif -%}
+  {%- if mf.lebensmittelunternehmer != blank -%}<p><span class="mgu-zt-label">{{ 'mgu.food.unternehmer' | t }}</span>{{ mf.lebensmittelunternehmer | newline_to_br }}</p>{%- endif -%}
+</div>
+{%- endif -%}
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Zutaten",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "paragraph", "content": "Zeigt Lebensmittel-Pflichtangaben aus Metafeldern: custom.zutaten (mehrzeilig), custom.allergene (kommagetrennt – wird automatisch in der Zutatenliste FETT hervorgehoben), custom.fuellmenge, custom.aufbewahrung, custom.herkunft, custom.lebensmittelunternehmer. Grundpreis: über Shopifys native Varianten-Einstellung 'Grundpreis' pflegen. Ersetzt keine rechtliche Prüfung." },
+    { "type": "text", "id": "heading", "label": "Überschrift", "default": "Produktinformationen" }
+  ],
+  "enabled_on": { "templates": ["product"] },
+  "presets": [{ "name": "Chelonaki – Zutaten & Allergene" }]
+}
+{% endschema %}

@@ -1,0 +1,75 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+
+<style>
+  .mgu-blog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+  .mgu-blog-card{
+    background:var(--mgu-paper);border:1px solid var(--mgu-line);border-radius:22px;overflow:hidden;
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;
+  }
+  .mgu-blog-card:hover{transform:translateY(-6px);box-shadow:0 26px 46px -26px rgba(20,37,25,.32)}
+  .mgu-blog-media{aspect-ratio:16/10;overflow:hidden;background:var(--mgu-cream)}
+  .mgu-blog-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .mgu-blog-card:hover .mgu-blog-media img{transform:scale(1.05)}
+  .mgu-blog-body{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+  .mgu-blog-meta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mgu-gold);font-weight:600;margin-bottom:10px}
+  .mgu-blog-body h3{font-size:1.25rem;color:var(--mgu-forest);line-height:1.3;margin:0 0 10px}
+  .mgu-blog-body p{color:var(--mgu-ink-soft);font-size:14.5px;flex:1}
+</style>
+
+<section data-mgu-effect="{{ section.settings.effect | default: 'up' }}" data-mgu-speed="{{ section.settings.effect_speed | default: 'normal' }}" class="mgu mgu-block" id="mgu-blog-{{ section.id }}" style="background:{{ section.settings.bg }}">
+  <div class="mgu-wrap">
+    <div class="mgu-sec-head mgu-reveal">
+      {%- if section.settings.eyebrow != blank -%}<span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    {%- assign blog = section.settings.blog -%}
+    {%- if blog != blank and blog.articles_count > 0 -%}
+      <div class="mgu-blog-grid">
+        {%- for article in blog.articles limit: section.settings.anzahl -%}
+          <a class="mgu-blog-card mgu-reveal" href="{{ article.url }}" {% if forloop.index > 1 %}style="transition-delay:{{ forloop.index0 | times: 0.08 }}s"{% endif %}>
+            <div class="mgu-blog-media">
+              {%- if article.image -%}
+                <img width="{{ article.image.width }}" height="{{ article.image.height }}" src="{{ article.image | image_url: width: 720 }}" alt="{{ article.image.alt | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="mgu-blog-body">
+              <span class="mgu-blog-meta">{{ article.published_at | date: "%d.%m.%Y" }}</span>
+              <h3>{{ article.title }}</h3>
+              <p>{{ article.excerpt_or_content | strip_html | truncate: 120 }}</p>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p style="color:var(--mgu-ink-soft)">Wähle in den Einstellungen einen Blog aus.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki – Blog-Teaser",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "header", "content": "Scroll-Effekt" },
+    { "type": "select", "id": "effect", "label": "Erscheinen beim Scrollen", "default": "up", "options": [ { "value": "none", "label": "Kein Effekt" }, { "value": "fade", "label": "Einblenden" }, { "value": "up", "label": "Von unten (Standard)" }, { "value": "left", "label": "Von links" }, { "value": "right", "label": "Von rechts" }, { "value": "zoom", "label": "Sanfter Zoom" }, { "value": "blur", "label": "Aus der Unschärfe" } ] },
+    { "type": "select", "id": "effect_speed", "label": "Effekt-Tempo", "default": "normal", "options": [ { "value": "schnell", "label": "Schnell" }, { "value": "normal", "label": "Normal" }, { "value": "langsam", "label": "Langsam" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Kicker-Zeile", "default": "Aus der Küche" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Frische <em>Rezepte & Tipps.</em>" },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "anzahl", "label": "Anzahl Beiträge", "min": 2, "max": 6, "step": 1, "default": 3 },
+    { "type": "color", "id": "bg", "label": "Hintergrundfarbe", "default": "#F3EDDF" }
+  ],
+  "presets": [{ "name": "Chelonaki – Blog-Teaser" }]
+}
+{% endschema %}

@@ -1,0 +1,60 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+<style>
+  .mgu-tl{position:relative;max-width:760px;margin:0 auto;padding-left:34px}
+  .mgu-tl::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--mgu-gold-soft),var(--mgu-line))}
+  .mgu-tl-item{position:relative;padding:0 0 34px}
+  .mgu-tl-item:last-child{padding-bottom:0}
+  .mgu-tl-item::before{content:"";position:absolute;left:-31px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--mgu-gold);box-shadow:0 0 0 4px var(--mgu-cream)}
+  .mgu-tl-jahr{font-family:var(--mgu-font-heading);font-size:1.3rem;color:var(--mgu-gold);line-height:1}
+  .mgu-tl-item h3{margin:6px 0 4px;font-size:17px;font-weight:600;color:var(--mgu-forest)}
+  .mgu-tl-item p{margin:0;font-size:15px;color:var(--mgu-ink-soft);line-height:1.65}
+</style>
+<section data-mgu-effect="{{ section.settings.effect | default: 'up' }}" data-mgu-speed="{{ section.settings.effect_speed | default: 'normal' }}" class="mgu mgu-block" style="background:{{ section.settings.bg }}">
+  <div class="mgu-wrap">
+    <div class="mgu-sec-head mgu-reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+      {%- if section.settings.eyebrow != blank -%}<span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div class="mgu-tl">
+      {%- for block in section.blocks -%}
+        <div class="mgu-tl-item mgu-reveal" {% if forloop.index > 1 %}style="transition-delay:{{ forloop.index0 | times: 0.08 }}s"{% endif %} {{ block.shopify_attributes }}>
+          <span class="mgu-tl-jahr">{{ block.settings.jahr }}</span>
+          <h3>{{ block.settings.titel }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% style %}
+  #shopify-section-{{ section.id }} {
+    margin-block-start: {{ section.settings.section_gap_top | default: 0 }}px;
+    margin-block-end: {{ section.settings.section_gap_bottom | default: 0 }}px;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Chelonaki · Timeline",
+  "settings": [
+    {"type":"header","content":"Abstand zum nächsten Abschnitt"},
+    {"type":"range","id":"section_gap_top","label":"Zusätzlicher Abstand oben","min":0,"max":200,"step":4,"unit":"px","default":0},
+    {"type":"range","id":"section_gap_bottom","label":"Zusätzlicher Abstand unten","min":0,"max":200,"step":4,"unit":"px","default":0},
+    { "type": "header", "content": "Scroll-Effekt" },
+    { "type": "select", "id": "effect", "label": "Erscheinen beim Scrollen", "default": "up", "options": [ { "value": "none", "label": "Kein Effekt" }, { "value": "fade", "label": "Einblenden" }, { "value": "up", "label": "Von unten (Standard)" }, { "value": "left", "label": "Von links" }, { "value": "right", "label": "Von rechts" }, { "value": "zoom", "label": "Sanfter Zoom" }, { "value": "blur", "label": "Aus der Unschärfe" } ] },
+    { "type": "select", "id": "effect_speed", "label": "Effekt-Tempo", "default": "normal", "options": [ { "value": "schnell", "label": "Schnell" }, { "value": "normal", "label": "Normal" }, { "value": "langsam", "label": "Langsam" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Kicker-Zeile", "default": "Unsere Geschichte" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Von der Idee <em>bis heute.</em>" },
+    { "type": "color", "id": "bg", "label": "Hintergrundfarbe", "default": "#F3EDDF" }
+  ],
+  "blocks": [
+    { "type": "station", "name": "Station",
+      "settings": [
+        { "type": "text", "id": "jahr", "label": "Jahr/Etikett", "default": "2020" },
+        { "type": "text", "id": "titel", "label": "Titel", "default": "Der Anfang" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Kurzer Text zu diesem Meilenstein." }
+      ]}
+  ],
+  "presets": [{ "name": "Chelonaki – Timeline / Story", "blocks": [ { "type": "station" }, { "type": "station", "settings": { "jahr": "2023", "titel": "Der Durchbruch" } }, { "type": "station", "settings": { "jahr": "Heute", "titel": "Und jetzt du" } } ] }]
+}
+{% endschema %}

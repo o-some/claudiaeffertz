@@ -1,0 +1,6 @@
+{% comment %}
+  Warenkorb-Upsell: empfiehlt Produkte aus einer Collection im Cart-Drawer.
+  In layout/theme.liquid vor </body>:
+  {% render 'mgu-upsell', collection: 'bestseller', titel: 'Passt dazu' %}
+{% endcomment %}
+<div data-mgu-upsell data-collection="{{ collection | default: 'all' }}" data-titel="{{ titel | default: 'Das könnte dir auch gefallen' }}" hidden></div>

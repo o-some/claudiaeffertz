@@ -1,0 +1,41 @@
+{% comment %} Chelonaki Shop Theme · © Chelonaki · Build: CHELONAKI-BUILD-0000-MASTER · Nutzung nur mit gültiger Lizenz {% endcomment %}
+<style>
+  .mgu-rt{max-width:{{ section.settings.breite }}px;margin:0 auto;text-align:{{ section.settings.ausrichtung }}}
+  .mgu-rt h2{font-size:clamp(1.9rem,3.4vw,2.8rem);color:var(--mgu-forest);line-height:1.14;margin:0 0 18px}
+  .mgu-rt h2 em{font-style:italic;color:var(--mgu-gold)}
+  .mgu-rt .mgu-rt-body{color:var(--mgu-ink-soft);font-size:17px;line-height:1.75}
+  .mgu-rt .mgu-rt-body p{margin:0 0 16px}
+  .mgu-rt .mgu-rt-body a{color:var(--mgu-gold);text-decoration:underline;text-underline-offset:3px}
+</style>
+<section data-mgu-effect="{{ section.settings.effect | default: 'up' }}" data-mgu-speed="{{ section.settings.effect_speed | default: 'normal' }}" class="mgu mgu-block" style="--mgu-space-top:{{ section.settings.spacing_top }}px;--mgu-space-bottom:{{ section.settings.spacing_bottom }}px;background:{{ section.settings.bg }}">
+  <div class="mgu-rt mgu-reveal">
+    {%- if section.settings.eyebrow != blank -%}<span class="mgu-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+    <div class="mgu-rt-body">{{ section.settings.text }}</div>
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+      <a class="mgu-btn mgu-btn--primary" style="margin-top:8px" href="{{ section.settings.button_link }}">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Chelonaki – Rich Text",
+  "settings": [
+    { "type": "header", "content": "Scroll-Effekt" },
+    { "type": "select", "id": "effect", "label": "Erscheinen beim Scrollen", "default": "up", "options": [ { "value": "none", "label": "Kein Effekt" }, { "value": "fade", "label": "Einblenden" }, { "value": "up", "label": "Von unten (Standard)" }, { "value": "left", "label": "Von links" }, { "value": "right", "label": "Von rechts" }, { "value": "zoom", "label": "Sanfter Zoom" }, { "value": "blur", "label": "Aus der Unschärfe" } ] },
+    { "type": "select", "id": "effect_speed", "label": "Effekt-Tempo", "default": "normal", "options": [ { "value": "schnell", "label": "Schnell" }, { "value": "normal", "label": "Normal" }, { "value": "langsam", "label": "Langsam" } ] },
+    { "type": "text", "id": "eyebrow", "label": "Kicker-Zeile" },
+    { "type": "inline_richtext", "id": "heading", "label": "Überschrift", "default": "Eine Überschrift mit <em>Charakter.</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Freier Textabschnitt für Storys, Erklärungen oder SEO-Inhalte – im Markenlook mit Serifen-Überschrift und Gold-Akzenten.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button (optional)" },
+    { "type": "url", "id": "button_link", "label": "Button-Link" },
+    { "type": "select", "id": "ausrichtung", "label": "Ausrichtung", "default": "center", "options": [ { "value": "left", "label": "Links" }, { "value": "center", "label": "Zentriert" } ] },
+    { "type": "range", "id": "breite", "label": "Maximale Textbreite (px)", "min": 560, "max": 1100, "step": 20, "default": 760 },
+    { "type": "header", "content": "Abstände zum nächsten Abschnitt" },
+    { "type": "range", "id": "spacing_top", "label": "Abstand oben", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 80 },
+    { "type": "range", "id": "spacing_bottom", "label": "Abstand unten", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 80 },
+    { "type": "color", "id": "bg", "label": "Hintergrundfarbe", "default": "#FBF8F0" }
+  ],
+  "presets": [{ "name": "Chelonaki – Rich Text" }]
+}
+{% endschema %}
