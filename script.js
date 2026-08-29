@@ -41,7 +41,7 @@
     const from = Number(element.dataset.countFrom);
     const to = Number(element.dataset.countTo);
     const suffix = element.dataset.countSuffix || '';
-    const duration = reduceMotion ? 450 : Math.min(1600, 900 + Math.abs(to - from) * 8);
+    const duration = reduceMotion ? 900 : Math.min(3200, 1800 + Math.abs(to - from) * 16);
     const started = performance.now();
     let previous;
     element.classList.add('is-counting');

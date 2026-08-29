@@ -259,7 +259,8 @@ h3 {
 .book__copy > p { max-width: 55ch; color: var(--muted); font-size: 1.12rem; }
 .book__facts { display: grid; grid-template-columns: repeat(3, 1fr); margin: 12px 0; border-block: 1px solid var(--line); }
 .book__facts div { padding: 24px 16px 24px 0; }
-.book__facts dt { color: var(--ink); font-family: var(--serif); font-size: 2.5rem; line-height: 1; }
+.book__facts dt { color: var(--ink); font-family: var(--serif); font-size: 2.5rem; font-variant-numeric: tabular-nums; line-height: 1; transition: color .25s ease; }
+.book__facts dt.is-counting { color: var(--accent-strong); }
 .book__facts dd { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.4; }
 .text-link { width: max-content; color: var(--ink); font-weight: 800; }
 
