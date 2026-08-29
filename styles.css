@@ -255,8 +255,8 @@ h3 {
 .book { background: var(--surface); }
 .book__grid { display: grid; grid-template-columns: minmax(320px, .78fr) minmax(0, 1.22fr); gap: clamp(4rem, 8vw, 8rem); align-items: center; }
 .book__media { width: min(100%, 480px); overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); }
-.book__media picture { display: block; }
-.book__media img { width: 100%; height: auto; aspect-ratio: .8; object-fit: cover; }
+.book__media picture { display: block; aspect-ratio: .8; }
+.book__media img { width: 100%; height: 100%; object-fit: cover; }
 .book__copy { display: grid; gap: 22px; }
 .book__copy > p:not(.eyebrow) { max-width: 55ch; color: var(--muted); font-size: 1.12rem; }
 .book__facts { display: grid; grid-template-columns: repeat(3, 1fr); margin: 12px 0; border-block: 1px solid var(--line); }
@@ -361,7 +361,7 @@ h3 {
   .method__list li { grid-template-columns: 1fr; gap: 7px; }
   .offers__grid { grid-template-columns: 1fr; }
   .offers article, .offers article:nth-child(odd), .offers article:nth-child(even) { min-height: auto; padding: 30px 0; border-right: 0; }
-  .book__media img { aspect-ratio: 900 / 674; }
+  .book__media picture { aspect-ratio: 900 / 674; }
   .book__facts { grid-template-columns: 1fr; }
   .book__facts div + div { border-top: 1px solid var(--line); }
   .contact__card .button { width: 100%; }
