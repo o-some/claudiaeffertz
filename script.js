@@ -1,4 +1,31 @@
 (() => {
+  const themeButtons = [...document.querySelectorAll('[data-theme-toggle]')];
+  const themeQuery = matchMedia('(prefers-color-scheme: dark)');
+  const currentTheme = () => document.documentElement.dataset.theme || (themeQuery.matches ? 'dark' : 'light');
+  const syncTheme = () => {
+    const dark = currentTheme() === 'dark';
+    themeButtons.forEach((button) => {
+      const label = dark ? 'Hellen Modus aktivieren' : 'Dunklen Modus aktivieren';
+      button.setAttribute('aria-pressed', String(dark));
+      button.setAttribute('aria-label', label);
+      button.title = label;
+      button.querySelector('[data-theme-sun]').hidden = !dark;
+      button.querySelector('[data-theme-moon]').hidden = dark;
+    });
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#112833' : '#f4eee1');
+  };
+
+  themeButtons.forEach((button) => button.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('ce-theme', next); } catch {}
+    syncTheme();
+  }));
+  themeQuery.addEventListener?.('change', () => {
+    if (!document.documentElement.dataset.theme) syncTheme();
+  });
+  syncTheme();
+
   const menuButton = document.querySelector('[data-menu-button]');
   const mobileMenu = document.querySelector('[data-mobile-menu]');
 

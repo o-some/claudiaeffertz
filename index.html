@@ -13,8 +13,9 @@
     <meta property="og:image" content="assets/ce-portrait-hero.webp">
     <title>Claudia Effertz | Die Brückenbauerin</title>
     <link rel="preload" href="assets/ce-portrait-hero.webp" as="image" fetchpriority="high">
-    <link rel="stylesheet" href="styles.css?v=20260830-13">
-    <script src="script.js?v=20260830-10" defer></script>
+    <script>try{const theme=localStorage.getItem('ce-theme');if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme}catch{}</script>
+    <link rel="stylesheet" href="styles.css?v=20260830-14">
+    <script src="script.js?v=20260830-11" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -51,7 +52,15 @@
         <a class="nav-cta" href="#kontakt">Kontakt</a>
       </nav>
 
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-button>Menü</button>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dunklen Modus aktivieren" title="Dunklen Modus aktivieren">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <g data-theme-sun hidden><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></g>
+            <path data-theme-moon d="M19.3 15.2A8 8 0 0 1 8.8 4.7 8 8 0 1 0 19.3 15.2Z"/>
+          </svg>
+        </button>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-button>Menü</button>
+      </div>
       <nav class="mobile-nav" id="mobile-menu" aria-label="Mobile Navigation" data-mobile-menu hidden>
         <a href="#claudia">Claudia</a>
         <a href="#angebote">Angebote</a>
