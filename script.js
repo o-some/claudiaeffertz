@@ -1,4 +1,98 @@
 (() => {
+  const consentKey = 'ce-consent-v1';
+  const analyticsId = ''; // Google Analytics erst nach Freigabe hier als G-XXXXXXXXXX eintragen.
+  const analyticsConfigured = /^G-[A-Z0-9]+$/i.test(analyticsId);
+
+  const readConsent = () => {
+    try {
+      return JSON.parse(localStorage.getItem(consentKey));
+    } catch {
+      return null;
+    }
+  };
+
+  const loadAnalytics = () => {
+    if (!analyticsConfigured || document.querySelector('[data-google-analytics]')) return;
+    window[`ga-disable-${analyticsId}`] = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', analyticsId, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      cookie_expires: 33696000
+    });
+    const script = document.createElement('script');
+    script.async = true;
+    script.dataset.googleAnalytics = '';
+    script.referrerPolicy = 'strict-origin-when-cross-origin';
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(analyticsId)}`;
+    document.head.append(script);
+  };
+
+  const disableAnalytics = () => {
+    if (!analyticsConfigured) return;
+    window[`ga-disable-${analyticsId}`] = true;
+    const measurementCookie = `_ga_${analyticsId.slice(2).replaceAll('-', '_')}`;
+    ['_ga', measurementCookie].forEach((name) => {
+      document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+    });
+  };
+
+  const saveConsent = (analytics) => {
+    try {
+      localStorage.setItem(consentKey, JSON.stringify({ analytics, decidedAt: new Date().toISOString() }));
+    } catch {
+      // Die Auswahl gilt für diesen Seitenaufruf, auch wenn Browserspeicher blockiert ist.
+    }
+    if (analytics) loadAnalytics();
+    else disableAnalytics();
+  };
+
+  let consentReturnFocus;
+  const openConsent = (returnFocus) => {
+    if (!analyticsConfigured) return;
+    consentReturnFocus = returnFocus;
+    let banner = document.querySelector('[data-consent-banner]');
+    if (!banner) {
+      banner = document.createElement('section');
+      banner.className = 'consent-banner';
+      banner.dataset.consentBanner = '';
+      banner.setAttribute('role', 'region');
+      banner.setAttribute('aria-label', 'Datenschutzeinstellungen');
+      banner.innerHTML = `
+        <div class="consent-banner__copy">
+          <strong>Ihre Privatsphäre</strong>
+          <p>Notwendige Funktionen laufen immer. Google Analytics wird nur nach Ihrer freiwilligen Zustimmung geladen. Ihre Auswahl können Sie jederzeit ändern. <a href="datenschutz.html#google-analytics">Mehr erfahren</a></p>
+        </div>
+        <div class="consent-banner__actions">
+          <button class="button button--secondary" type="button" data-consent-choice="necessary">Nur notwendig</button>
+          <button class="button button--secondary" type="button" data-consent-choice="analytics">Analyse erlauben</button>
+        </div>`;
+      document.body.append(banner);
+      banner.querySelectorAll('[data-consent-choice]').forEach((button) => {
+        button.addEventListener('click', () => {
+          saveConsent(button.dataset.consentChoice === 'analytics');
+          banner.hidden = true;
+          consentReturnFocus?.focus();
+        });
+      });
+    }
+    banner.hidden = false;
+    if (returnFocus) banner.querySelector('[data-consent-choice="necessary"]')?.focus({ preventScroll: true });
+  };
+
+  const consentSettings = document.querySelectorAll('[data-consent-settings]');
+  consentSettings.forEach((button) => {
+    button.hidden = !analyticsConfigured;
+    if (analyticsConfigured) button.addEventListener('click', () => openConsent(button));
+  });
+  if (analyticsConfigured) {
+    const consent = readConsent();
+    if (consent?.analytics === true) loadAnalytics();
+    if (typeof consent?.analytics !== 'boolean') openConsent();
+  }
+
   const menuButton = document.querySelector('[data-menu-button]');
   const mobileMenu = document.querySelector('[data-mobile-menu]');
 
