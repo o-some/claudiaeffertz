@@ -290,8 +290,8 @@ h3 {
 
 .section-head { max-width: 720px; display: grid; gap: 18px; margin-bottom: clamp(3rem, 6vw, 5rem); }
 .section-head::after { width: clamp(64px, 8vw, 96px); height: 7px; margin-top: 8px; background: radial-gradient(circle at calc(100% - 3px) center, var(--accent) 0 3px, transparent 3.5px), linear-gradient(var(--accent), var(--accent)) left center / calc(100% - 6px) 1px no-repeat; content: ""; transform-origin: left; }
-.reveal-enabled .section-head[data-reveal]::after { opacity: 0; transform: scaleX(.12); }
-.reveal-enabled .section-head[data-reveal].is-visible::after { opacity: 1; transform: scaleX(1); transition: opacity .35s var(--ease-out) .28s, transform .9s var(--ease-out) .28s; }
+.reveal-enabled .section-head[data-reveal]::after, .reveal-enabled .offers article[data-reveal]::before { opacity: 0; transform: scaleX(.12); }
+.reveal-enabled .section-head[data-reveal].is-visible::after, .reveal-enabled .offers article[data-reveal].is-visible::before { opacity: 1; transform: scaleX(1); transition: opacity .35s var(--ease-out) .28s, transform .9s var(--ease-out) .28s; }
 .section-head p { max-width: 58ch; color: var(--muted); font-size: 1.1rem; }
 
 .intro__grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(3rem, 8vw, 9rem); }
@@ -338,7 +338,7 @@ h3 {
 .offers article:nth-child(2), .offers article:nth-child(3), .offers article:nth-child(6) { grid-column: span 5; }
 .offers article:nth-child(4) { grid-column: span 7; }
 .offers article:nth-child(5) { grid-column: span 7; }
-.offers article::before { width: 44px; height: 7px; margin-bottom: 10px; background: radial-gradient(circle at calc(100% - 3px) center, var(--accent) 0 3px, transparent 3.5px), linear-gradient(var(--accent), var(--accent)) left center / calc(100% - 6px) 1px no-repeat; content: ""; }
+.offers article::before { width: 44px; height: 7px; margin-bottom: 10px; background: radial-gradient(circle at calc(100% - 3px) center, var(--accent) 0 3px, transparent 3.5px), linear-gradient(var(--accent), var(--accent)) left center / calc(100% - 6px) 1px no-repeat; content: ""; transform-origin: left; }
 .offers article:first-child { color: #fbf8f2; border-color: transparent; background: var(--secondary-deep); box-shadow: var(--shadow); }
 .offers article:first-child h3 { color: var(--accent); }
 .offers article:first-child p { color: #dce7e8; }
