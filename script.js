@@ -31,6 +31,25 @@
     item.textContent = new Date().getFullYear();
   });
 
+  const header = document.querySelector('[data-header]');
+  if (header) {
+    let headerFrame;
+    const updateHeader = () => {
+      const scrollTop = window.scrollY;
+      const scrollRange = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      header.classList.toggle('is-scrolled', scrollTop > 24);
+      header.style.setProperty('--page-progress', String(Math.min(1, scrollTop / scrollRange)));
+      headerFrame = undefined;
+    };
+    const requestHeaderUpdate = () => {
+      if (headerFrame) return;
+      headerFrame = requestAnimationFrame(updateHeader);
+    };
+    addEventListener('scroll', requestHeaderUpdate, { passive: true });
+    addEventListener('resize', requestHeaderUpdate);
+    updateHeader();
+  }
+
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const supportsObserver = 'IntersectionObserver' in window;
   const counters = [...document.querySelectorAll('[data-count-to]')];
