@@ -712,6 +712,26 @@ h3 {
   background-position: 70% center;
   background-size: cover;
 }
+.method, .offers, .training, .ecosystem, .values, .contact, .site-footer,
+.book-page .section:not(.page-cta), .podcast-page .section {
+  background-color: var(--bg);
+  background-image: linear-gradient(110deg, rgb(13 45 58 / 89%), rgb(20 57 69 / 82%)), url('assets/aquarell-nacht.webp');
+  background-position: center;
+  background-size: cover;
+}
+.method, .training, .contact { background-position: left center; }
+.offers, .ecosystem, .book-page .section:not(.page-cta) { background-position: right center; }
+.values {
+  background-image: radial-gradient(circle at 78% 34%, rgb(198 154 75 / 11%), transparent 32%),
+    linear-gradient(110deg, rgb(13 45 58 / 87%), rgb(20 57 69 / 83%)),
+    url('assets/aquarell-nacht.webp');
+}
+.voices {
+  background-color: var(--secondary-deep);
+  background-image: linear-gradient(90deg, rgb(38 92 105 / 90%), rgb(29 72 82 / 83%)), url('assets/aquarell-nacht.webp');
+  background-position: center 48%;
+  background-size: cover;
+}
 .keynote-section {
   background-color: #0c2632;
   background-image: linear-gradient(90deg, rgb(9 31 42 / 91%), rgb(9 31 42 / 72%)), url('assets/aquarell-nacht.webp');
@@ -776,6 +796,6 @@ h3 {
 }
 .book-page .page-cta .button--primary { color: #f4ead7; background: #153a49; border-color: #153a49; }
 @media (max-width: 640px) {
-  .hero, .keynote-section, .podcast, .engagement, .page-head { background-position: 75% center; }
+  .hero, .keynote-section, .podcast, .engagement, .page-head, .voices { background-position: 75% center; }
   .book, .book-page .page-head, .book-page .page-cta { background-position: 30% center; }
 }
