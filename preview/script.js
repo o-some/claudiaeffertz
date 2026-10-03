@@ -1,0 +1,246 @@
+(() => {
+  const consentKey = 'ce-consent-v1';
+  const analyticsId = ''; // Google Analytics erst nach Freigabe hier als G-XXXXXXXXXX eintragen.
+  const analyticsConfigured = /^G-[A-Z0-9]+$/i.test(analyticsId);
+
+  const readConsent = () => {
+    try {
+      return JSON.parse(localStorage.getItem(consentKey));
+    } catch {
+      return null;
+    }
+  };
+
+  const loadAnalytics = () => {
+    if (!analyticsConfigured || document.querySelector('[data-google-analytics]')) return;
+    window[`ga-disable-${analyticsId}`] = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', analyticsId, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      cookie_expires: 33696000
+    });
+    const script = document.createElement('script');
+    script.async = true;
+    script.dataset.googleAnalytics = '';
+    script.referrerPolicy = 'strict-origin-when-cross-origin';
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(analyticsId)}`;
+    document.head.append(script);
+  };
+
+  const disableAnalytics = () => {
+    if (!analyticsConfigured) return;
+    window[`ga-disable-${analyticsId}`] = true;
+    const measurementCookie = `_ga_${analyticsId.slice(2).replaceAll('-', '_')}`;
+    ['_ga', measurementCookie].forEach((name) => {
+      document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax`;
+    });
+  };
+
+  const saveConsent = (analytics) => {
+    try {
+      localStorage.setItem(consentKey, JSON.stringify({ analytics, decidedAt: new Date().toISOString() }));
+    } catch {
+      // Die Auswahl gilt für diesen Seitenaufruf, auch wenn Browserspeicher blockiert ist.
+    }
+    if (analytics) loadAnalytics();
+    else disableAnalytics();
+  };
+
+  let consentReturnFocus;
+  const openConsent = (returnFocus) => {
+    if (!analyticsConfigured) return;
+    consentReturnFocus = returnFocus;
+    let banner = document.querySelector('[data-consent-banner]');
+    if (!banner) {
+      banner = document.createElement('section');
+      banner.className = 'consent-banner';
+      banner.dataset.consentBanner = '';
+      banner.setAttribute('role', 'region');
+      banner.setAttribute('aria-label', 'Datenschutzeinstellungen');
+      banner.innerHTML = `
+        <div class="consent-banner__copy">
+          <strong>Ihre Privatsphäre</strong>
+          <p>Notwendige Funktionen laufen immer. Google Analytics wird nur nach Ihrer freiwilligen Zustimmung geladen. Ihre Auswahl können Sie jederzeit ändern. <a href="../datenschutz.html#google-analytics">Mehr erfahren</a></p>
+        </div>
+        <div class="consent-banner__actions">
+          <button class="button button--secondary" type="button" data-consent-choice="necessary">Nur notwendig</button>
+          <button class="button button--secondary" type="button" data-consent-choice="analytics">Analyse erlauben</button>
+        </div>`;
+      document.body.append(banner);
+      banner.querySelectorAll('[data-consent-choice]').forEach((button) => {
+        button.addEventListener('click', () => {
+          saveConsent(button.dataset.consentChoice === 'analytics');
+          banner.hidden = true;
+          consentReturnFocus?.focus();
+        });
+      });
+    }
+    banner.hidden = false;
+    if (returnFocus) banner.querySelector('[data-consent-choice="necessary"]')?.focus({ preventScroll: true });
+  };
+
+  const consentSettings = document.querySelectorAll('[data-consent-settings]');
+  consentSettings.forEach((button) => {
+    button.hidden = !analyticsConfigured;
+    if (analyticsConfigured) button.addEventListener('click', () => openConsent(button));
+  });
+  if (analyticsConfigured) {
+    const consent = readConsent();
+    if (consent?.analytics === true) loadAnalytics();
+    if (typeof consent?.analytics !== 'boolean') openConsent();
+  }
+
+  const menuButton = document.querySelector('[data-menu-button]');
+  const mobileMenu = document.querySelector('[data-mobile-menu]');
+
+  const closeMenu = () => {
+    if (!menuButton || !mobileMenu) return;
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.textContent = 'Menü';
+    mobileMenu.hidden = true;
+    document.body.classList.remove('menu-open');
+  };
+
+  menuButton?.addEventListener('click', () => {
+    const open = menuButton.getAttribute('aria-expanded') === 'true';
+    if (open) return closeMenu();
+    menuButton.setAttribute('aria-expanded', 'true');
+    menuButton.textContent = 'Schließen';
+    mobileMenu.hidden = false;
+    document.body.classList.add('menu-open');
+    mobileMenu.querySelector('a')?.focus();
+  });
+
+  mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || mobileMenu?.hidden) return;
+    closeMenu();
+    menuButton?.focus();
+  });
+
+  document.querySelectorAll('[data-year]').forEach((item) => {
+    item.textContent = new Date().getFullYear();
+  });
+
+  const header = document.querySelector('[data-header]');
+  if (header) {
+    let headerFrame;
+    const updateHeader = () => {
+      const scrollTop = window.scrollY;
+      const scrollRange = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      header.classList.toggle('is-scrolled', scrollTop > 24);
+      header.style.setProperty('--page-progress', String(Math.min(1, scrollTop / scrollRange)));
+      headerFrame = undefined;
+    };
+    const requestHeaderUpdate = () => {
+      if (headerFrame) return;
+      headerFrame = requestAnimationFrame(updateHeader);
+    };
+    addEventListener('scroll', requestHeaderUpdate, { passive: true });
+    addEventListener('resize', requestHeaderUpdate);
+    updateHeader();
+  }
+
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const supportsObserver = 'IntersectionObserver' in window;
+  const counters = [...document.querySelectorAll('[data-count-to]')];
+
+  const connection = document.querySelector('[data-living-connection]');
+  const hero = document.querySelector('.hero');
+  if (connection && hero && !reduceMotion) {
+    const lines = [...connection.querySelectorAll('.hero__connection-line')];
+    const pulse = connection.querySelector('.hero__connection-pulse');
+    let connectionFrame;
+
+    const updateConnection = () => {
+      const heroRect = hero.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, -heroRect.top / Math.max(1, heroRect.height * .72)));
+      const shifts = [-18, 14, -10];
+      const baseOpacity = [.28, .7, .43];
+
+      lines.forEach((line, index) => {
+        const x = progress * shifts[index];
+        const y = progress * (10 + index * 3);
+        line.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        line.style.opacity = String(baseOpacity[index] * (1 - progress * .42));
+      });
+      if (pulse) pulse.style.transform = `translate3d(${progress * shifts[1]}px, ${progress * 13}px, 0)`;
+      connection.style.opacity = String(1 - progress * .28);
+      connectionFrame = undefined;
+    };
+
+    const requestConnectionUpdate = () => {
+      if (connectionFrame) return;
+      connectionFrame = requestAnimationFrame(updateConnection);
+    };
+
+    addEventListener('scroll', requestConnectionUpdate, { passive: true });
+    addEventListener('resize', requestConnectionUpdate);
+    requestConnectionUpdate();
+  }
+
+  const animateCounter = (element) => {
+    if (element.dataset.counted) return;
+    element.dataset.counted = 'true';
+    const from = Number(element.dataset.countFrom);
+    const to = Number(element.dataset.countTo);
+    const suffix = element.dataset.countSuffix || '';
+    const duration = reduceMotion ? 900 : Math.min(3200, 1800 + Math.abs(to - from) * 16);
+    const started = performance.now();
+    let previous;
+    element.classList.add('is-counting');
+
+    const update = (now) => {
+      const progress = Math.min(1, (now - started) / duration);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const next = Math.round(from + (to - from) * eased);
+      if (next !== previous) element.textContent = `${next}${suffix}`;
+      previous = next;
+      if (progress < 1) return requestAnimationFrame(update);
+      element.textContent = `${to}${suffix}`;
+      element.classList.remove('is-counting');
+    };
+
+    requestAnimationFrame(update);
+  };
+
+  counters.forEach((element) => {
+    if (reduceMotion) {
+      element.textContent = `${element.dataset.countTo}${element.dataset.countSuffix || ''}`;
+      element.dataset.counted = 'true';
+      return;
+    }
+    element.textContent = `${element.dataset.countFrom}${element.dataset.countSuffix || ''}`;
+  });
+
+  if (supportsObserver) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.35 });
+
+    counters.forEach((counter) => counterObserver.observe(counter));
+  } else {
+    counters.forEach(animateCounter);
+  }
+
+  if (reduceMotion || !supportsObserver) return;
+
+  const items = [...document.querySelectorAll('[data-reveal]')];
+  document.documentElement.classList.add('reveal-enabled');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -3% 0px', threshold: 0.04 });
+
+  items.forEach((item) => observer.observe(item));
+})();
