@@ -685,3 +685,97 @@ h3 {
 .page-cta p { max-width: 60ch; color: var(--muted); }
 @media (max-width: 800px) { .keynote-layout, .page-head__grid, .editorial-grid { grid-template-columns: 1fr; } .topic-list { grid-template-columns: 1fr; } .edition-list { grid-template-columns: 1fr; } .page-head__cover { max-width: 340px; } }
 @media (max-width: 640px) { .preview-strip { flex-wrap: nowrap; gap: .3rem; padding: .3rem 10px; font-size: .65rem; white-space: nowrap; } .site-header { top: 30px; } .keynote-topics article { grid-template-columns: 1.75rem 1fr; } }
+
+/* Preview-only watercolor backgrounds and book-inspired palette. */
+:root {
+  --bg: #0d2d3a;
+  --surface: #143945;
+  --surface-alt: #1d4852;
+  --ink: #f0d6a2;
+  --text: #f4eee4;
+  --muted: #c7d1ce;
+  --accent: #c69a4b;
+  --accent-strong: #e5c17d;
+  --secondary: #367986;
+  --secondary-deep: #265c69;
+}
+.preview-strip { background: #ead7aa; color: #173744; }
+.preview-strip a { color: #173744; }
+.hero {
+  background-color: var(--bg);
+  background-image: linear-gradient(90deg, rgb(10 37 49 / 88%) 0%, rgb(10 37 49 / 72%) 52%, rgb(10 37 49 / 35%) 100%), url('assets/aquarell-nacht.webp');
+  background-position: center;
+  background-size: cover;
+}
+.intro {
+  background-image: linear-gradient(rgb(13 45 58 / 80%), rgb(13 45 58 / 86%)), url('assets/aquarell-nacht.webp');
+  background-position: 70% center;
+  background-size: cover;
+}
+.keynote-section {
+  background-color: #0c2632;
+  background-image: linear-gradient(90deg, rgb(9 31 42 / 91%), rgb(9 31 42 / 72%)), url('assets/aquarell-nacht.webp');
+  background-position: right center;
+  background-size: cover;
+}
+.book {
+  --ink: #143b49;
+  --text: #173b47;
+  --muted: #34535b;
+  --accent-strong: #6b4e23;
+  color: var(--text);
+  background-color: #f4ecda;
+  background-image: linear-gradient(90deg, rgb(247 240 224 / 54%), rgb(247 240 224 / 82%) 56%, rgb(247 240 224 / 91%)), url('assets/aquarell-pergament.webp');
+  background-position: center;
+  background-size: cover;
+}
+.book .button--primary { color: #f4ead7; background: #153a49; border-color: #153a49; }
+.book .button--primary:hover { color: #f4ead7; background: #245e68; border-color: #245e68; }
+.book__media--real { box-shadow: 0 24px 60px rgb(14 45 55 / 24%); }
+.podcast {
+  background-color: var(--surface);
+  background-image: linear-gradient(90deg, rgb(20 57 69 / 88%), rgb(20 57 69 / 70%)), url('assets/aquarell-nacht.webp');
+  background-position: right bottom;
+  background-size: cover;
+}
+.engagement {
+  background-color: var(--surface);
+  background-image: linear-gradient(90deg, rgb(20 57 69 / 88%), rgb(20 57 69 / 76%)), url('assets/aquarell-nacht.webp');
+  background-position: left bottom;
+  background-size: cover;
+}
+.page-head {
+  background-color: var(--surface);
+  background-image: linear-gradient(90deg, rgb(20 57 69 / 91%), rgb(20 57 69 / 65%)), url('assets/aquarell-nacht.webp');
+  background-position: center;
+  background-size: cover;
+}
+.book-page .page-head {
+  --ink: #143b49;
+  --text: #173b47;
+  --muted: #34535b;
+  --accent-strong: #6b4e23;
+  color: var(--text);
+  background-color: #f4ecda;
+  background-image: linear-gradient(90deg, rgb(247 240 224 / 88%), rgb(247 240 224 / 66%)), url('assets/aquarell-pergament.webp');
+  background-position: center;
+  background-size: cover;
+}
+.book-page .page-head .button--primary { color: #f4ead7; background: #153a49; border-color: #153a49; }
+.book-page .page-head .button--secondary { color: #153a49; border-color: #153a49; }
+.book-page .page-head .button--secondary:hover { background: rgb(20 57 69 / 12%); }
+.book-page .page-cta {
+  --ink: #143b49;
+  --muted: #34535b;
+  --accent-strong: #6b4e23;
+  color: #173b47;
+  background-color: #f4ecda;
+  background-image: linear-gradient(rgb(247 240 224 / 78%), rgb(247 240 224 / 82%)), url('assets/aquarell-pergament.webp');
+  background-position: right bottom;
+  background-size: cover;
+}
+.book-page .page-cta .button--primary { color: #f4ead7; background: #153a49; border-color: #153a49; }
+@media (max-width: 640px) {
+  .hero, .keynote-section, .podcast, .engagement, .page-head { background-position: 75% center; }
+  .book, .book-page .page-head, .book-page .page-cta { background-position: 30% center; }
+}
