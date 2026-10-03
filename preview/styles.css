@@ -805,3 +805,93 @@ h3 {
   .book-page .book-hero h1 { font-size: clamp(2.7rem, 10vw, 3.5rem); }
   .book-sample__paper { min-height: 380px; }
 }
+
+/* Preview controls and content panels use the same paper and ink washes. */
+.button--primary,
+.desktop-nav .nav-cta {
+  color: #fbf8f2;
+  border: 1px solid rgb(198 154 75 / 62%);
+  background-color: #143945;
+  background-image: linear-gradient(105deg, rgb(13 45 58 / 78%), rgb(20 57 69 / 71%)), url('assets/aquarell-nacht.webp');
+  background-position: center, right top;
+  background-size: cover, 520px auto;
+  box-shadow: 0 8px 22px rgb(13 45 58 / 18%);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.button--primary:hover,
+.desktop-nav .nav-cta:hover {
+  color: #fbf8f2;
+  border-color: #c69a4b;
+  box-shadow: 0 12px 28px rgb(13 45 58 / 25%);
+}
+.button--secondary,
+.menu-button,
+.social-link,
+.platforms span {
+  color: #1e3a5f;
+  border-color: rgb(118 85 31 / 65%);
+  background-color: #fbf8f2;
+  background-image: linear-gradient(100deg, rgb(251 248 242 / 79%), rgb(251 248 242 / 91%)), url('assets/aquarell-pergament.webp');
+  background-position: center, left top;
+  background-size: cover, 500px auto;
+}
+.button--secondary:hover,
+.menu-button:hover,
+.menu-button[aria-expanded="true"],
+.social-link:hover {
+  color: #1e3a5f;
+  border-color: #76551f;
+  box-shadow: 0 8px 20px rgb(30 58 95 / 12%);
+}
+.keynote-section .button--primary,
+.book-page .page-cta .button--primary {
+  color: #1e3a5f;
+  border-color: #c69a4b;
+  background-color: #fbf8f2;
+  background-image: linear-gradient(100deg, rgb(251 248 242 / 82%), rgb(251 248 242 / 92%)), url('assets/aquarell-pergament.webp');
+  background-position: center, left top;
+  background-size: cover, 520px auto;
+}
+.keynote-section .button--primary:hover,
+.book-page .page-cta .button--primary:hover { color: #1e3a5f; border-color: #e5c17d; }
+
+.offers article:not(:first-child),
+.ecosystem__grid a,
+.topic-list article,
+.contact__card,
+.note,
+.consent-banner {
+  background-image: linear-gradient(110deg, rgb(251 248 242 / 86%), rgb(251 248 242 / 82%)), url('assets/aquarell-pergament.webp');
+  background-position: center;
+  background-size: cover;
+}
+.offers article:first-child,
+.engagement__signal,
+.values article:last-child {
+  background-image: linear-gradient(105deg, rgb(13 45 58 / 78%), rgb(20 57 69 / 69%)), url('assets/aquarell-nacht.webp');
+  background-position: center;
+  background-size: cover;
+}
+.offers article:not(:first-child):hover { background-color: #fbf8f2; }
+.contact__card { border: 1px solid var(--line); }
+.note { border: 1px solid var(--line); }
+.engagement .note { color: #2b3a4a; }
+.mobile-nav { background-image: linear-gradient(rgb(251 248 242 / 90%), rgb(251 248 242 / 90%)), url('assets/aquarell-pergament.webp'); background-size: cover; }
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  border: 1px solid rgb(118 85 31 / 52%);
+  border-radius: var(--radius);
+  min-height: 48px;
+  padding: .7rem .9rem;
+  color: #1e3a5f;
+  background-color: #fbf8f2;
+  background-image: linear-gradient(rgb(251 248 242 / 89%), rgb(251 248 242 / 89%)), url('assets/aquarell-pergament.webp');
+  background-size: cover;
+}
+textarea { min-height: 120px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: #475767; opacity: 1; }
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+textarea:focus-visible,
+select:focus-visible { outline: 3px solid #76551f; outline-offset: 3px; }
