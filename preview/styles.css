@@ -731,6 +731,46 @@ h3 {
 }
 .book-page .page-head { background-position: 30% center; }
 
+/* Buchseite: Text und Cover beginnen auf einer Linie statt mittig am hohen Cover. */
+.book-page .book-hero { padding: clamp(3rem, 5vw, 5rem) 0; }
+.book-page .book-hero .page-head__grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, .72fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+.book-hero__copy { display: grid; justify-items: start; gap: .9rem; padding-top: clamp(.25rem, 1.5vw, 1.25rem); }
+.book-page .book-hero h1 { max-width: 12ch; margin: .2rem 0; font-size: clamp(3.25rem, 5vw, 5.5rem); }
+.book-page .book-hero .book__title { margin: 0; }
+.book-page .book-hero .actions { margin-top: .4rem; }
+.book-page .book-hero .page-head__cover { width: min(100%, 340px); justify-self: center; }
+.book-page .book-hero .page-head__cover img { width: 100%; height: auto; max-width: none; max-height: 540px; object-fit: contain; }
+
+.book-sample__grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); gap: clamp(3rem, 7vw, 7rem); align-items: center; }
+.book-sample__copy { display: grid; justify-items: start; gap: 1.2rem; }
+.book-sample__copy h2 { max-width: 13ch; }
+.book-sample__copy p { max-width: 52ch; color: var(--muted); }
+.book-sample__meta { color: var(--muted); font-size: .85rem; }
+.book-sample__paper {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 1.2rem;
+  min-height: 430px;
+  padding: clamp(2rem, 4vw, 4rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background-color: var(--surface);
+  background-image: linear-gradient(110deg, rgb(251 248 242 / 87%), rgb(251 248 242 / 79%)), url('assets/aquarell-pergament.webp');
+  background-size: cover;
+  box-shadow: var(--shadow);
+}
+.book-sample__paper::before { content: ""; width: 64px; height: 1px; background: var(--accent); }
+.book-sample__eyebrow { color: var(--accent-strong); font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.book-sample__paper h3 { max-width: 15ch; font-family: var(--serif); font-size: clamp(2rem, 3.2vw, 3.4rem); font-weight: 500; }
+.book-sample__paper blockquote { margin: 0; color: var(--ink); font-family: var(--serif); font-size: clamp(1.5rem, 2.2vw, 2.25rem); line-height: 1.25; }
+.book-sample__paper p { max-width: 42ch; color: var(--muted); }
+.book-sample__folio { position: absolute; right: 2rem; bottom: 1.5rem; color: var(--accent-strong); font-size: .75rem; font-weight: 700; letter-spacing: .12em; }
+
 .keynote-section, .engagement, .site-footer, .book-page .page-cta {
   --bg: #0d2d3a;
   --surface: #143945;
@@ -754,7 +794,14 @@ h3 {
 @media (max-width: 900px) {
   .voices article + article { border-left: 0; border-top: 1px solid var(--line); }
 }
+@media (max-width: 800px) {
+  .book-page .book-hero .page-head__grid, .book-sample__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .book-hero__copy { padding-top: 0; }
+  .book-page .book-hero .page-head__cover { width: min(100%, 300px); }
+}
 @media (max-width: 640px) {
   .hero, .intro, .offers, .podcast, .page-head { background-position: 70% center; }
   .book, .book-page .page-head { background-position: 30% center; }
+  .book-page .book-hero h1 { font-size: clamp(2.7rem, 10vw, 3.5rem); }
+  .book-sample__paper { min-height: 380px; }
 }
