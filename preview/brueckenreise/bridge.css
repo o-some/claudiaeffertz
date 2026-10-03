@@ -1,0 +1,182 @@
+:root { --journey-header: 72px; --journey-strip: 30px; }
+
+.journey-page { overflow-x: clip; background: #f4eee1; }
+.journey-header {
+  position: sticky;
+  top: var(--journey-strip);
+  z-index: 20;
+  min-height: var(--journey-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 12px max(24px, calc((100vw - 1240px) / 2));
+  border-bottom: 1px solid rgb(30 58 95 / 16%);
+  background: rgb(251 248 242 / 95%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.journey-nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
+.journey-nav a { color: #1e3a5f; font-size: .87rem; font-weight: 750; text-decoration: none; white-space: nowrap; }
+.journey-nav a:hover { color: #76551f; text-decoration: underline; }
+
+.bridge-run {
+  --landscape-from: 1.02;
+  --landscape-to: 1.11;
+  --deck-from: 1;
+  --deck-to: 1.24;
+  --rails-from: 1;
+  --rails-to: 1.28;
+  --pan: 2%;
+  --pan-far: .5%;
+  position: relative;
+  height: 190svh;
+  view-timeline-name: --bridge-progress;
+  view-timeline-axis: block;
+}
+.bridge-run--podcast {
+  --landscape-from: 1.11;
+  --landscape-to: 1.18;
+  --deck-from: 1.24;
+  --deck-to: 1.45;
+  --rails-from: 1.28;
+  --rails-to: 1.48;
+  --pan: -2%;
+  --pan-far: -.5%;
+}
+.bridge-run__sticky {
+  position: sticky;
+  top: calc(var(--journey-strip) + var(--journey-header));
+  height: calc(100svh - var(--journey-strip) - var(--journey-header));
+  overflow: hidden;
+  background: #15394a;
+}
+.bridge-scene, .bridge-scene__landscape, .bridge-scene__deck, .bridge-scene__rails, .bridge-scene__light { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bridge-scene { overflow: hidden; pointer-events: none; }
+.bridge-scene__landscape {
+  background: #1e3a5f url('../assets/brueckenreise-see.webp') center 43% / cover no-repeat;
+  transform: scale(var(--landscape-from));
+  transform-origin: 50% 40%;
+}
+.bridge-scene__deck, .bridge-scene__rails { display: block; object-fit: fill; transform-origin: 50% 40%; }
+.bridge-scene__deck { transform: scale(var(--deck-from)); }
+.bridge-scene__rails { transform: scale(var(--rails-from)); }
+.bridge-scene__light { background: radial-gradient(circle at 50% 40%, rgb(249 216 133 / 30%), transparent 20%), linear-gradient(0deg, rgb(8 34 45 / 25%), transparent 38%); opacity: .55; }
+.bridge-run__caption {
+  position: absolute;
+  bottom: clamp(2rem, 7vh, 5rem);
+  z-index: 2;
+  width: min(420px, calc(100% - 48px));
+  display: grid;
+  justify-items: start;
+  gap: .8rem;
+  padding: clamp(1.6rem, 3vw, 2.5rem);
+  border: 1px solid rgb(118 85 31 / 38%);
+  border-radius: var(--radius);
+  color: #2b3a4a;
+  background: linear-gradient(110deg, rgb(251 248 242 / 92%), rgb(251 248 242 / 86%)), url('../assets/aquarell-pergament.webp') center / cover;
+  box-shadow: 0 20px 50px rgb(8 34 45 / 23%);
+}
+.bridge-run__caption--left { left: max(24px, calc((100vw - 1240px) / 2)); }
+.bridge-run__caption--right { right: max(24px, calc((100vw - 1240px) / 2)); }
+.bridge-run__caption h1, .bridge-run__caption h2 { max-width: 12ch; margin: 0; font-size: clamp(2.3rem, 3.5vw, 3.6rem); line-height: 1.04; }
+.bridge-run__caption p { max-width: 38ch; font-size: .98rem; line-height: 1.5; }
+.bridge-run__caption a { color: #1e3a5f; font-size: .9rem; font-weight: 800; text-underline-offset: .25em; }
+.bridge-run__caption a:hover { color: #76551f; }
+.bridge-run__edge {
+  position: absolute;
+  top: 1.5rem;
+  z-index: 2;
+  padding: .45rem .75rem;
+  border: 1px solid rgb(229 193 125 / 70%);
+  border-radius: var(--radius);
+  color: #fbf8f2;
+  background: rgb(13 45 58 / 79%);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+.bridge-run__edge--left { left: max(24px, calc((100vw - 1240px) / 2)); }
+.bridge-run__edge--right { right: max(24px, calc((100vw - 1240px) / 2)); }
+
+.journey-stop { position: relative; z-index: 3; padding: clamp(5rem, 9vw, 9rem) 0; scroll-margin-top: calc(var(--journey-strip) + var(--journey-header) + 12px); }
+.journey-stop::before { content: ""; position: absolute; right: 0; bottom: 100%; left: 0; height: clamp(3rem, 8vw, 6rem); pointer-events: none; }
+.journey-stop--book::before { background: linear-gradient(transparent, #fbf8f2); }
+.journey-stop--podcast::before { background: linear-gradient(transparent, #f4eee1); }
+.journey-stop--book { background: linear-gradient(100deg, rgb(251 248 242 / 87%), rgb(251 248 242 / 79%)), url('../assets/aquarell-pergament.webp') center / cover; }
+.journey-stop--podcast { background: linear-gradient(100deg, rgb(244 238 225 / 84%), rgb(251 248 242 / 83%)), url('../assets/aquarell-pergament.webp') right center / cover; }
+.journey-stop__grid { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 7vw, 7rem); align-items: center; }
+.journey-stop--podcast .journey-stop__grid { grid-template-columns: minmax(0, .9fr) minmax(300px, 1.1fr); }
+.journey-stop__book, .journey-stop__podcast { justify-self: center; width: min(100%, 350px); }
+.journey-stop__book img { width: 100%; height: auto; box-shadow: 0 25px 55px rgb(13 45 58 / 19%); }
+.journey-stop__podcast { width: 100%; }
+.journey-stop__podcast img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); box-shadow: 0 25px 55px rgb(13 45 58 / 17%); }
+.journey-stop__copy { display: grid; justify-items: start; gap: 1.2rem; }
+.journey-stop__copy h2 { max-width: 13ch; font-size: clamp(3rem, 5vw, 5rem); }
+.journey-stop__copy p { max-width: 54ch; color: #475767; }
+.journey-stop__copy .journey-stop__lead { color: #1e3a5f; font-family: var(--serif); font-size: clamp(1.4rem, 2.3vw, 2rem); line-height: 1.25; }
+.journey-stop__copy .journey-stop__status { color: #76551f; font-size: .85rem; font-weight: 800; }
+.journey-stop__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
+
+.journey-end { padding: clamp(5rem, 9vw, 9rem) 0; color: #fbf8f2; background: linear-gradient(90deg, rgb(13 45 58 / 87%), rgb(20 57 69 / 72%)), url('../assets/aquarell-nacht.webp') center / cover; }
+.journey-end .shell { display: grid; justify-items: start; gap: 1.2rem; }
+.journey-end h2 { color: #f0d9a8; }
+.journey-end p { max-width: 55ch; color: #eef0e8; }
+.journey-end .button--secondary { margin-top: .5rem; }
+.journey-footer { padding: 1.7rem 0; color: #f4eee1; background: #0d2d3a; font-size: .85rem; }
+.journey-footer .shell, .journey-footer nav { display: flex; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+.journey-footer a { color: #f4eee1; }
+
+@keyframes landscape-glide { from { transform: translate3d(0, 0, 0) scale(var(--landscape-from)); } to { transform: translate3d(var(--pan-far), -1.5%, 0) scale(var(--landscape-to)); } }
+@keyframes deck-glide { from { transform: translate3d(0, 0, 0) scale(var(--deck-from)); } to { transform: translate3d(var(--pan), 7%, 0) scale(var(--deck-to)); } }
+@keyframes rails-glide { from { transform: translate3d(0, 0, 0) scale(var(--rails-from)); } to { transform: translate3d(var(--pan), 8%, 0) scale(var(--rails-to)); } }
+@keyframes light-bloom { from { opacity: .42; } to { opacity: .88; } }
+
+@supports (animation-timeline: view()) {
+  .bridge-scene__landscape, .bridge-scene__deck, .bridge-scene__rails, .bridge-scene__light { animation-duration: 1s; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --bridge-progress; animation-range: contain 0% contain 100%; }
+  .bridge-scene__landscape { animation-name: landscape-glide; }
+  .bridge-scene__deck { animation-name: deck-glide; }
+  .bridge-scene__rails { animation-name: rails-glide; }
+  .bridge-scene__light { animation-name: light-bloom; }
+}
+
+@media (max-width: 760px) {
+  :root { --journey-header: 68px; }
+  .journey-header { padding-inline: 14px; }
+  .journey-nav { gap: .85rem; }
+  .journey-nav a { font-size: .78rem; }
+  .journey-nav a:last-child { display: none; }
+  .bridge-run { height: 165svh; --deck-to: 1.14; --rails-to: 1.16; --pan: 0%; --pan-far: 0%; }
+  .bridge-run--podcast { --deck-from: 1.14; --deck-to: 1.26; --rails-from: 1.16; --rails-to: 1.3; }
+  .bridge-run__caption { bottom: 1.2rem; width: calc(100% - 28px); padding: 1.3rem; }
+  .bridge-run__caption--left { left: 14px; }
+  .bridge-run__caption--right { right: 14px; }
+  .bridge-run__caption h1, .bridge-run__caption h2 { font-size: clamp(2rem, 8vw, 3rem); }
+  .bridge-run__caption p { font-size: .88rem; }
+  .bridge-run__edge { top: 1rem; }
+  .bridge-run__edge--left { left: 14px; }
+  .bridge-run__edge--right { right: 14px; }
+  .journey-stop__grid, .journey-stop--podcast .journey-stop__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .journey-stop__book { width: min(70%, 300px); }
+  .journey-stop__copy h2 { font-size: clamp(2.65rem, 10vw, 3.8rem); }
+  .journey-stop__actions { width: 100%; }
+  .journey-stop__actions .button { width: 100%; }
+}
+
+@media (max-width: 400px) {
+  .journey-header .brand { font-size: .84rem; }
+  .journey-header .brand__mark { width: 28px; }
+  .journey-nav { gap: .65rem; }
+  .bridge-run__caption p { display: none; }
+}
+
+@supports not (animation-timeline: view()) {
+  .bridge-run { height: auto; }
+  .bridge-run__sticky { position: relative; top: auto; height: min(80svh, 720px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bridge-run { height: auto; }
+  .bridge-run__sticky { position: relative; top: auto; height: min(80svh, 720px); }
+  .bridge-scene__landscape, .bridge-scene__deck, .bridge-scene__rails, .bridge-scene__light { animation: none !important; transform: none !important; }
+}
