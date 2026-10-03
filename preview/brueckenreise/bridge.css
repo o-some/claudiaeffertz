@@ -58,7 +58,7 @@
   transform: scale(var(--landscape-from));
   transform-origin: 50% 40%;
 }
-.bridge-scene__deck, .bridge-scene__rails { display: block; object-fit: fill; transform-origin: 50% 40%; }
+.bridge-scene__deck, .bridge-scene__rails { display: block; object-fit: fill; transform-origin: 50% 40.556%; }
 .bridge-scene__deck { transform: scale(var(--deck-from)); }
 .bridge-scene__rails { transform: scale(var(--rails-from)); }
 .bridge-scene__light { background: radial-gradient(circle at 50% 40%, rgb(249 216 133 / 30%), transparent 20%), linear-gradient(0deg, rgb(8 34 45 / 25%), transparent 38%); opacity: .55; }
@@ -129,8 +129,8 @@
 .journey-footer a { color: #f4eee1; }
 
 @keyframes landscape-glide { from { transform: translate3d(0, 0, 0) scale(var(--landscape-from)); } to { transform: translate3d(var(--pan-far), -1.5%, 0) scale(var(--landscape-to)); } }
-@keyframes deck-glide { from { transform: translate3d(0, 0, 0) scale(var(--deck-from)); } to { transform: translate3d(var(--pan), 7%, 0) scale(var(--deck-to)); } }
-@keyframes rails-glide { from { transform: translate3d(0, 0, 0) scale(var(--rails-from)); } to { transform: translate3d(var(--pan), 8%, 0) scale(var(--rails-to)); } }
+@keyframes deck-glide { from { transform: translate3d(0, 0, 0) scale(var(--deck-from)); } to { transform: translate3d(var(--pan), 0, 0) scale(var(--deck-to)); } }
+@keyframes rails-glide { from { transform: translate3d(0, 0, 0) scale(var(--rails-from)); } to { transform: translate3d(var(--pan), 0, 0) scale(var(--rails-to)); } }
 @keyframes light-bloom { from { opacity: .42; } to { opacity: .88; } }
 
 @supports (animation-timeline: view()) {
