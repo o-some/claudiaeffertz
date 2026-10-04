@@ -205,7 +205,7 @@ h3 {
 .hero__values { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--accent-strong); font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .hero__values span + span::before { margin-right: 20px; color: var(--accent); content: "·"; }
 
-/* Reuse the painted paper: concentrated at the portrait corners, washed out toward the page. */
+/* Reuse the painted paper: tapered diagonally from lower left to upper right behind the portrait. */
 .hero__stage { position: relative; isolation: isolate; animation: hero-stage-in 1s var(--ease-out) .08s both; }
 .hero__stage::before {
   position: absolute;
@@ -216,8 +216,8 @@ h3 {
   transform: scaleX(-1);
   opacity: .82;
   mix-blend-mode: multiply;
-  -webkit-mask-image: radial-gradient(ellipse 30% 30% at 27% 27%, #000 8%, rgb(0 0 0 / 85%) 28%, transparent 88%), radial-gradient(ellipse 30% 30% at 73% 73%, #000 8%, rgb(0 0 0 / 85%) 28%, transparent 88%);
-  mask-image: radial-gradient(ellipse 30% 30% at 27% 27%, #000 8%, rgb(0 0 0 / 85%) 28%, transparent 88%), radial-gradient(ellipse 30% 30% at 73% 73%, #000 8%, rgb(0 0 0 / 85%) 28%, transparent 88%);
+  -webkit-mask: url('assets/portrait-wash-mask.svg') center / 100% 100% no-repeat;
+  mask: url('assets/portrait-wash-mask.svg') center / 100% 100% no-repeat;
   pointer-events: none;
 }
 @media (max-width: 640px) {
