@@ -324,6 +324,16 @@ h3 {
 .facts .facts__word { font-size: clamp(2rem, 3.4vw, 3.35rem); }
 .facts dd { color: var(--muted); font-size: 14px; }
 
+.credentials__layout { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(3rem, 8vw, 8rem); align-items: start; }
+.credentials__intro { display: grid; justify-items: start; gap: 1.25rem; }
+.credentials__intro h2 { max-width: 12ch; }
+.credentials__intro p { max-width: 42ch; color: var(--muted); font-size: 1.1rem; }
+.credentials__list { margin: 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
+.credentials__list li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 1rem; align-items: baseline; padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
+.credentials__list li > span { color: var(--accent-strong); font-size: .75rem; font-weight: 800; letter-spacing: .08em; }
+.credentials__list p { color: var(--ink); font-family: var(--serif); font-size: clamp(1.25rem, 1.8vw, 1.65rem); line-height: 1.3; }
+.credentials__note { max-width: 55ch; margin-top: 1.5rem; color: var(--muted); font-size: .95rem; }
+
 .method { background: var(--surface); }
 .method__layout { display: grid; grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr); gap: clamp(3rem, 7vw, 7rem); align-items: start; }
 .method__media { position: sticky; top: calc(var(--header) + 40px); overflow: hidden; aspect-ratio: 3 / 2; border-radius: var(--radius); box-shadow: var(--shadow); }
@@ -358,6 +368,13 @@ h3 {
 .offers article:first-child p { color: #dce7e8; }
 .offers article:nth-child(3), .offers article:nth-child(6) { background: var(--surface-alt); }
 .offers article p { max-width: 46ch; color: var(--muted); }
+
+.references__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 4rem); }
+.references__group { min-width: 0; padding-top: 1.1rem; border-top: var(--gold-rule) solid var(--accent); }
+.references__group h3 { min-height: 2.5rem; margin-bottom: 1rem; color: var(--accent-strong); font-family: var(--sans); font-size: .75rem; font-weight: 800; letter-spacing: .12em; line-height: 1.4; text-transform: uppercase; }
+.references__group ul { margin: 0; padding: 0; list-style: none; }
+.references__group li { padding: .75rem 0; border-bottom: 1px solid var(--line); color: var(--ink); font-family: var(--serif); font-size: clamp(1.25rem, 1.75vw, 1.6rem); line-height: 1.27; }
+.references__note { max-width: 70ch; margin-top: 2rem; color: var(--muted); font-size: .82rem; }
 
 .voices { color: #fbf8f2; background: var(--secondary-deep); }
 .voices h2 { color: #f0d9a8; }
@@ -609,7 +626,7 @@ h3 {
   .shell { width: min(760px, calc(100% - 36px)); }
   .section { padding: 4.75rem 0; }
   .hero { min-height: auto; padding: 4rem 0 5rem; }
-  .hero__grid, .intro__grid, .method__layout, .book__grid, .podcast__grid, .engagement__grid, .contact__grid { grid-template-columns: 1fr; }
+  .hero__grid, .intro__grid, .credentials__layout, .method__layout, .book__grid, .podcast__grid, .engagement__grid, .contact__grid { grid-template-columns: 1fr; }
   .hero__grid { gap: 3rem; }
   .hero__stage { width: min(100%, 680px); margin-inline: auto; }
   .hero__media { height: 520px; min-height: 0; }
@@ -617,6 +634,8 @@ h3 {
   .facts { grid-template-columns: repeat(2, 1fr); }
   .method__media { position: static; }
   .training__grid, .ecosystem__grid, .values__grid { grid-template-columns: 1fr; }
+  .references__grid { grid-template-columns: 1fr; gap: 2rem; }
+  .references__group h3 { min-height: 0; }
   .values__visuals { min-height: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto; }
   .values__image--main { grid-row: auto; grid-column: 1 / -1; aspect-ratio: 3 / 2; }
   .values__image--detail { aspect-ratio: 4 / 3; }
@@ -782,7 +801,7 @@ h3 {
   .actions .button { min-width: 0; white-space: normal; overflow-wrap: anywhere; text-align: center; }
 }
 
-.hero, .intro, .method, .offers, .voices, .book, .training, .podcast,
+.hero, .intro, .credentials, .method, .offers, .references, .voices, .book, .training, .podcast,
 .ecosystem, .values, .contact, .page-head,
 .book-page .section:not(.page-cta), .podcast-page .section {
   background-color: var(--bg);
@@ -794,7 +813,7 @@ h3 {
   background-image: linear-gradient(90deg, rgb(251 248 242 / 91%) 0 49%, rgb(244 238 225 / 60%) 100%), url('assets/aquarell-pergament.webp');
   background-position: center;
 }
-.intro, .offers, .podcast, .values, .book-page .section:not(.page-cta) {
+.intro, .credentials, .offers, .podcast, .values, .book-page .section:not(.page-cta) {
   background-color: var(--surface);
   background-image: linear-gradient(100deg, rgb(251 248 242 / 76%), rgb(251 248 242 / 86%)), url('assets/aquarell-pergament.webp');
   background-position: right center;
@@ -1000,7 +1019,7 @@ h3 {
 
 /* Keep dark paper panels clean at their light edges. The cream fades above
    and below them mixed the two colors into a wide grey stripe. */
-.site-home main > section.offers::after,
+.site-home main > section.references::after,
 .site-home main > section.keynote-section::before,
 .site-home main > section.keynote-section::after,
 .site-home main > section.keynote-section + section::before,
