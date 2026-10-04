@@ -1,9 +1,3 @@
-# Claudia Effertz – GitHub-Pages-Vorschau
+# Archivierter Vorschaupfad
 
-Öffentliche Prüfadresse: https://o-some.github.io/claudiaeffertz/preview/
-
-Dieser Ordner enthält die eigenständige redaktionelle Vorschau. Die Website in der Repository-Wurzel bleibt für Besucher unverändert. Gemeinsame Originalassets und Rechtstexte werden über relative Pfade eingebunden. Neue Medien liegen nur unter `preview/assets/`.
-
-Die Vorschau ist mit `noindex, nofollow` gekennzeichnet. Der Status der Buchveröffentlichung, Bezugslink, Kontaktangaben, Ausbildungszahlen, Podcastlinks und Medienrechte sind vor einer Übernahme in die Hauptseite redaktionell zu prüfen. Nach Freigabe die Inhalte gezielt in die Hauptseite übertragen und die Vorschau gegebenenfalls entfernen.
-
-Quelle und Umsetzungsplan: `[Website]/[[INPUT]]/[Zusammenfassung].md` außerhalb des öffentlichen Repositorys.
+Die freigegebene helle Website liegt jetzt im Repository-Stamm und wird über GitHub Pages unter `https://o-some.github.io/claudiaeffertz/` veröffentlicht. Die ehemaligen Vorschauseiten leiten dorthin beziehungsweise auf ihre neuen Unterseiten weiter. Änderungen bitte nur an den Stammdateien vornehmen.
