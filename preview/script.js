@@ -152,7 +152,6 @@
   const hero = document.querySelector('.hero');
   if (connection && hero && !reduceMotion) {
     const lines = [...connection.querySelectorAll('.hero__connection-line')];
-    const pulse = connection.querySelector('.hero__connection-pulse');
     let connectionFrame;
 
     const updateConnection = () => {
@@ -167,7 +166,6 @@
         line.style.transform = `translate3d(${x}px, ${y}px, 0)`;
         line.style.opacity = String(baseOpacity[index] * (1 - progress * .42));
       });
-      if (pulse) pulse.style.transform = `translate3d(${progress * shifts[1]}px, ${progress * 13}px, 0)`;
       connection.style.opacity = String(1 - progress * .28);
       connectionFrame = undefined;
     };
