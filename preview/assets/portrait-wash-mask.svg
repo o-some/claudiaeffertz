@@ -1,17 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none">
   <defs>
-    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="white" stop-opacity="0"/>
-      <stop offset=".2" stop-color="white" stop-opacity=".65"/>
-      <stop offset=".55" stop-color="white"/>
-    </linearGradient>
-    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
-      <feGaussianBlur stdDeviation="6"/>
+    <radialGradient id="wash" cx=".55" cy=".55" r=".68">
+      <stop stop-color="white"/>
+      <stop offset=".4" stop-color="white" stop-opacity=".9"/>
+      <stop offset=".75" stop-color="white" stop-opacity=".35"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="32"/>
     </filter>
-    <path id="tip" d="M30 30 C175 88 293 130 410 370 C195 310 102 190 30 30Z"/>
+    <path id="wash-shape" d="M90 85 C145 50 195 95 255 105 C305 105 330 155 375 180 C440 205 445 290 455 350 C455 425 385 455 330 425 C265 405 250 355 200 345 C140 335 140 290 110 250 C65 195 70 135 90 85Z"/>
   </defs>
   <g fill="url(#wash)" filter="url(#soft)">
-    <use href="#tip"/>
-    <use href="#tip" transform="translate(1000 1000) rotate(180)"/>
+    <use href="#wash-shape"/>
+    <use href="#wash-shape" transform="translate(1000 1000) rotate(180)"/>
   </g>
 </svg>
