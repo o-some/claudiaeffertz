@@ -328,6 +328,8 @@ h3 {
 .credentials__intro { display: grid; justify-items: start; gap: 1.25rem; }
 .credentials__intro h2 { max-width: 12ch; }
 .credentials__intro p { max-width: 42ch; color: var(--muted); font-size: 1.1rem; }
+.credentials__image { width: min(100%, 430px); margin-top: 1.5rem; overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid rgb(198 154 75 / 28%); border-radius: var(--radius); box-shadow: var(--shadow); }
+.credentials__image img { width: 100%; height: 100%; object-fit: cover; }
 .credentials__list { margin: 0; padding: 0; border-top: 1px solid var(--line); list-style: none; }
 .credentials__list li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: 1rem; align-items: baseline; padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
 .credentials__list li > span { color: var(--accent-strong); font-size: .75rem; font-weight: 800; letter-spacing: .08em; }
@@ -480,9 +482,13 @@ h3 {
 .engagement { background: var(--surface); }
 .engagement__grid { display: grid; grid-template-columns: minmax(340px, .86fr) minmax(0, 1.14fr); gap: clamp(4rem, 8vw, 8rem); align-items: center; }
 .engagement__signal { min-height: 480px; display: grid; align-content: center; gap: 8px; padding: clamp(30px, 5vw, 58px); border-radius: var(--radius); color: #fbf8f2; background: var(--secondary-deep); box-shadow: var(--shadow); }
-.engagement__signal span { font-family: var(--serif); font-size: clamp(2.6rem, 5vw, 5rem); line-height: 1; }
-.engagement__signal span:nth-child(2) { padding-left: 12%; color: var(--accent); }
-.engagement__signal span:nth-child(3) { padding-left: 24%; }
+.engagement__signal { position: relative; overflow: hidden; align-content: start; background-image: none; }
+.engagement__signal::before { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgb(4 25 34 / 30%) 0%, rgb(4 25 34 / 10%) 48%, transparent 75%); content: ""; pointer-events: none; }
+.engagement__art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.engagement__signal span { position: relative; z-index: 2; text-shadow: 0 2px 16px rgb(0 0 0 / 38%); }
+.engagement__signal span { font-family: var(--serif); font-size: clamp(2.4rem, 3.4vw, 3.35rem); line-height: 1; }
+.engagement__signal span:nth-of-type(2) { padding-left: 12%; color: var(--accent); }
+.engagement__signal span:nth-of-type(3) { padding-left: 24%; }
 .engagement__copy { display: grid; gap: 20px; }
 .engagement__copy > p { color: var(--muted); }
 .note { padding: 18px; border-radius: var(--radius); background: var(--surface-alt); font-size: 14px; }
