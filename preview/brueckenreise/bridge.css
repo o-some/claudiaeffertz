@@ -17,7 +17,7 @@
   backdrop-filter: blur(10px);
 }
 .journey-nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
-.journey-nav a { color: #17474a; font-size: .87rem; font-weight: 750; text-decoration: none; white-space: nowrap; }
+.journey-nav a { display: inline-flex; align-items: center; min-height: 24px; color: #17474a; font-size: .87rem; font-weight: 750; text-decoration: none; white-space: nowrap; }
 .journey-nav a:hover { color: #76551f; text-decoration: underline; }
 
 .bridge-run {
@@ -130,7 +130,7 @@
 .journey-end .button--secondary { margin-top: .5rem; }
 .journey-footer { padding: 1.7rem 0; color: #f4eee1; background: #103a42; font-size: .85rem; }
 .journey-footer .shell, .journey-footer nav { display: flex; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
-.journey-footer a { color: #f4eee1; }
+.journey-footer a { display: inline-flex; align-items: center; min-height: 24px; color: #f4eee1; }
 
 @keyframes landscape-glide { from { transform: translate3d(0, 0, 0) scale(var(--landscape-from)); } to { transform: translate3d(var(--pan-far), -1.5%, 0) scale(var(--landscape-to)); } }
 @keyframes deck-glide { from { transform: translate3d(0, 0, 0) scale(var(--deck-from)); } to { transform: translate3d(var(--pan), 0, 0) scale(var(--deck-to)); } }
@@ -174,7 +174,7 @@
   .journey-nav { gap: .65rem; }
   .bridge-run__caption p { display: none; }
 }
-@media (max-width: 360px) {
+@media (max-width: 640px) {
   :root { --journey-strip: 46px; }
 }
 
