@@ -380,15 +380,18 @@ h3 {
   background-color: #24565a;
   background-image: linear-gradient(105deg, rgb(31 76 78 / 77%), rgb(27 80 84 / 76%)), url('assets/aquarell-nacht.webp');
 }
+.testimonials__rating { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; color: #e5c17d; font-size: .78rem; font-weight: 800; letter-spacing: .06em; line-height: 1.2; }
+.testimonials__stars { font-size: 1.45rem; letter-spacing: .13em; line-height: 1; white-space: nowrap; }
 .testimonials__label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; line-height: 1.4; text-transform: uppercase; }
 .testimonials__featured .testimonials__label, .testimonials__source { color: #e5c17d; }
 .testimonials__featured blockquote, .testimonials__draft blockquote { margin: 0; }
 .testimonials__featured blockquote { max-width: 29ch; font-family: var(--serif); font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.28; }
 .testimonials__featured blockquote p + p { margin-top: 1.15rem; }
-.testimonials__source { font-size: .83rem; }
+.testimonials__source { padding-top: .85rem; border-top: 1px solid rgb(251 248 242 / 25%); font-size: .83rem; font-weight: 700; }
 .testimonials__drafts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: clamp(12px, 2vw, 24px); }
 .testimonials__draft {
-  align-content: center;
+  align-content: start;
+  gap: .75rem;
   padding: clamp(1.35rem, 2.2vw, 2rem);
   border: 1px solid var(--line);
   color: var(--ink);
@@ -397,6 +400,8 @@ h3 {
   background-position: center;
   background-size: cover;
 }
+.testimonials__draft .testimonials__rating { color: var(--accent-strong); }
+.testimonials__draft .testimonials__rating--sample > span:last-child { font-size: .68rem; text-transform: uppercase; }
 .testimonials__draft .testimonials__label { color: var(--accent-strong); }
 .testimonials__draft blockquote { font-family: var(--serif); font-size: clamp(1.15rem, 1.5vw, 1.45rem); line-height: 1.27; }
 
