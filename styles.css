@@ -998,6 +998,18 @@ h3 {
 .site-home .site-footer { border-top: 0; }
 .site-home .site-footer::before { height: 48px; }
 
+/* Keep dark paper panels clean at their light edges. The cream fades above
+   and below them mixed the two colors into a wide grey stripe. */
+.site-home main > section.offers::after,
+.site-home main > section.keynote-section::before,
+.site-home main > section.keynote-section::after,
+.site-home main > section.keynote-section + section::before,
+.site-home main > section.ecosystem::after,
+.site-home main > section.engagement::before,
+.site-home main > section.engagement::after,
+.site-home main > section.engagement + section::before,
+.site-home .site-footer::before { content: none; }
+
 @media (max-width: 640px) {
   .site-home main > section + section::before,
   .site-home main > section:not(:last-child)::after,
