@@ -125,6 +125,7 @@
 
 .journey-end { padding: clamp(5rem, 9vw, 9rem) 0; color: #fbf8f2; background: linear-gradient(90deg, rgb(16 58 66 / 87%), rgb(31 76 78 / 72%)), url('../assets/aquarell-nacht.webp') center / cover; }
 .journey-end .shell { display: grid; justify-items: start; gap: 1.2rem; }
+.journey-end .section-kicker { color: #f0d9a8; }
 .journey-end h2 { color: #f0d9a8; }
 .journey-end p { max-width: 55ch; color: #eef0e8; }
 .journey-end .button--secondary { margin-top: .5rem; }
