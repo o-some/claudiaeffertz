@@ -407,7 +407,7 @@ h3 {
 .testimonials__intro { display: grid; gap: .55rem; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
 .testimonials__intro h2 { max-width: 16ch; }
 .testimonials__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
-.testimonials__featured, .testimonials__draft { min-width: 0; display: grid; gap: 1rem; border-radius: var(--radius); }
+.testimonials__featured, .testimonials__compact { min-width: 0; display: grid; gap: 1rem; border-radius: var(--radius); }
 .testimonials__featured {
   align-content: space-between;
   padding: clamp(1.7rem, 3.5vw, 3.2rem);
@@ -426,12 +426,12 @@ h3 {
 .testimonials__stars { font-size: 1.45rem; letter-spacing: .13em; line-height: 1; white-space: nowrap; }
 .testimonials__label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; line-height: 1.4; text-transform: uppercase; }
 .testimonials__featured .testimonials__label, .testimonials__source { color: #e5c17d; }
-.testimonials__featured blockquote, .testimonials__draft blockquote { margin: 0; }
+.testimonials__featured blockquote, .testimonials__compact blockquote { margin: 0; }
 .testimonials__featured blockquote { max-width: 29ch; font-family: var(--serif); font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.28; }
 .testimonials__featured blockquote p + p { margin-top: 1.15rem; }
 .testimonials__source { padding-top: .85rem; border-top: 1px solid rgb(251 248 242 / 25%); font-size: .83rem; font-weight: 700; }
-.testimonials__drafts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: clamp(12px, 2vw, 24px); }
-.testimonials__draft {
+.testimonials__compact-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: clamp(12px, 2vw, 24px); }
+.testimonials__compact {
   align-content: start;
   gap: .75rem;
   padding: clamp(1.35rem, 2.2vw, 2rem);
@@ -442,12 +442,10 @@ h3 {
   background-position: center;
   background-size: cover;
 }
-.testimonials__draft .testimonials__rating { color: var(--accent-strong); }
-.testimonials__draft .testimonials__rating--sample > span:last-child { font-size: .68rem; text-transform: uppercase; }
-.testimonials__draft .testimonials__label { color: var(--accent-strong); }
-.testimonials__draft blockquote { font-family: var(--serif); font-size: clamp(1.15rem, 1.5vw, 1.45rem); line-height: 1.27; }
-.testimonials__draft .testimonials__source { color: var(--muted); border-top-color: var(--line); }
-.testimonials__note { margin-top: 1rem; color: var(--muted); font-size: .82rem; }
+.testimonials__compact .testimonials__rating { color: var(--accent-strong); }
+.testimonials__compact .testimonials__label { color: var(--accent-strong); }
+.testimonials__compact blockquote { font-family: var(--serif); font-size: clamp(1.15rem, 1.5vw, 1.45rem); line-height: 1.27; }
+.testimonials__compact .testimonials__source { color: var(--muted); border-top-color: var(--line); }
 .book-sample__transcript { max-width: 62ch; margin-top: 1rem; padding: 1rem 1.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
 .book-sample__transcript summary { color: var(--ink); font-weight: 800; cursor: pointer; }
 .book-sample__transcript > div { display: grid; gap: .85rem; padding-top: 1.25rem; }
@@ -647,7 +645,7 @@ h3 {
   .values article:last-child { grid-column: auto; grid-template-columns: 1fr; align-items: end; gap: 18px; }
   .book__media, .podcast__visual, .engagement__signal { width: min(100%, 560px); margin-inline: auto; }
   .testimonials__grid { grid-template-columns: 1fr; }
-  .testimonials__drafts { grid-template-columns: 1fr; }
+  .testimonials__compact-grid { grid-template-columns: 1fr; }
   .site-footer__grid { grid-template-columns: 1fr 1fr; }
   .site-footer__meta { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; }
   .legal-layout { grid-template-columns: 1fr; gap: 3rem; }
@@ -704,7 +702,7 @@ h3 {
   .book__facts div + div { border-top: 1px solid var(--line); }
   .testimonials { padding: 3.5rem 0; }
   .testimonials__featured { padding: 1.5rem; }
-  .testimonials__draft { padding: 1.2rem 1.35rem; }
+  .testimonials__compact { padding: 1.2rem 1.35rem; }
   .contact__card .button { width: 100%; }
   .site-footer__grid { grid-template-columns: 1fr; gap: 28px; }
   .site-footer__meta { grid-column: auto; grid-template-columns: 1fr; }
