@@ -354,6 +354,47 @@ h3 {
 .book__facts dd { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.4; }
 .text-link { width: max-content; color: var(--ink); font-weight: 800; }
 
+.testimonials {
+  padding: clamp(4rem, 7vw, 7rem) 0;
+  background-color: #f4eee1;
+  background-image: linear-gradient(105deg, rgb(244 238 225 / 79%), rgb(251 248 242 / 88%)), url('assets/aquarell-pergament.webp');
+  background-position: center;
+  background-size: cover;
+}
+.testimonials__intro { display: grid; gap: .55rem; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+.testimonials__intro h2 { max-width: 16ch; }
+.testimonials__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(12px, 2vw, 24px); }
+.testimonials__featured, .testimonials__draft { min-width: 0; display: grid; gap: 1rem; border-radius: var(--radius); }
+.testimonials__featured {
+  align-content: space-between;
+  padding: clamp(1.7rem, 3.5vw, 3.2rem);
+  color: #fbf8f2;
+  background-color: #143945;
+  background-image: linear-gradient(105deg, rgb(13 45 58 / 80%), rgb(20 57 69 / 69%)), url('assets/aquarell-nacht.webp');
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 20px 50px rgb(13 45 58 / 16%);
+}
+.testimonials__label { font-size: .72rem; font-weight: 800; letter-spacing: .12em; line-height: 1.4; text-transform: uppercase; }
+.testimonials__featured .testimonials__label, .testimonials__source { color: #e5c17d; }
+.testimonials__featured blockquote, .testimonials__draft blockquote { margin: 0; }
+.testimonials__featured blockquote { max-width: 29ch; font-family: var(--serif); font-size: clamp(1.4rem, 2.2vw, 2.2rem); line-height: 1.28; }
+.testimonials__featured blockquote p + p { margin-top: 1.15rem; }
+.testimonials__source { font-size: .83rem; }
+.testimonials__drafts { display: grid; gap: 12px; }
+.testimonials__draft {
+  align-content: center;
+  padding: clamp(1.35rem, 2.2vw, 2rem);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background-color: #fbf8f2;
+  background-image: linear-gradient(110deg, rgb(251 248 242 / 84%), rgb(251 248 242 / 90%)), url('assets/aquarell-pergament.webp');
+  background-position: center;
+  background-size: cover;
+}
+.testimonials__draft .testimonials__label { color: var(--accent-strong); }
+.testimonials__draft blockquote { font-family: var(--serif); font-size: clamp(1.15rem, 1.5vw, 1.45rem); line-height: 1.27; }
+
 .training__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 24px; }
 .training article { padding: clamp(30px, 5vw, 54px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
 .training article:nth-child(2) { background: var(--surface-alt); }
@@ -545,6 +586,7 @@ h3 {
   .values article:nth-child(even) { padding-left: 0; }
   .values article:last-child { grid-column: auto; grid-template-columns: 1fr; align-items: end; gap: 18px; }
   .book__media, .podcast__visual, .engagement__signal { width: min(100%, 560px); margin-inline: auto; }
+  .testimonials__grid { grid-template-columns: 1fr; }
   .site-footer__grid { grid-template-columns: 1fr 1fr; }
   .site-footer__meta { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; }
   .legal-layout { grid-template-columns: 1fr; gap: 3rem; }
@@ -597,6 +639,9 @@ h3 {
   .book__media picture { aspect-ratio: 900 / 674; }
   .book__facts { grid-template-columns: 1fr; }
   .book__facts div + div { border-top: 1px solid var(--line); }
+  .testimonials { padding: 3.5rem 0; }
+  .testimonials__featured { padding: 1.5rem; }
+  .testimonials__draft { padding: 1.2rem 1.35rem; }
   .contact__card .button { width: 100%; }
   .site-footer__grid { grid-template-columns: 1fr; gap: 28px; }
   .site-footer__meta { grid-column: auto; grid-template-columns: 1fr; }
