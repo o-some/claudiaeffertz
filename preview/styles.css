@@ -879,6 +879,34 @@ h3 {
 .engagement .note { color: #2b3a4a; }
 .mobile-nav { background-image: linear-gradient(rgb(251 248 242 / 90%), rgb(251 248 242 / 90%)), url('assets/aquarell-pergament.webp'); background-size: cover; }
 
+/* The home preview's independent watercolor panels meet on one soft paper wash. */
+.preview-home main > section,
+.preview-home .site-footer { position: relative; isolation: isolate; }
+.preview-home main > section + section::before,
+.preview-home main > section:not(:last-child)::after,
+.preview-home .site-footer::before {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: clamp(48px, 6vw, 90px);
+  pointer-events: none;
+  content: "";
+}
+.preview-home main > section + section::before,
+.preview-home .site-footer::before {
+  top: 0;
+  background: linear-gradient(#f4eee1, rgb(244 238 225 / 0));
+}
+.preview-home main > section:not(:last-child)::after {
+  bottom: 0;
+  background: linear-gradient(rgb(244 238 225 / 0), #f4eee1);
+}
+.preview-home main > section > .shell,
+.preview-home .site-footer > .shell { position: relative; z-index: 2; }
+.preview-home .site-footer { border-top: 0; }
+.preview-home .site-footer::before { height: 48px; }
+
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
