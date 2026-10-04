@@ -104,10 +104,7 @@
 .bridge-run__edge--left { left: max(24px, calc((100vw - 1240px) / 2)); }
 .bridge-run__edge--right { right: max(24px, calc((100vw - 1240px) / 2)); }
 
-.journey-stop { position: relative; z-index: 3; padding: clamp(5rem, 9vw, 9rem) 0; scroll-margin-top: calc(var(--journey-strip) + var(--journey-header) + 12px); }
-.journey-stop::before { content: ""; position: absolute; right: 0; bottom: 100%; left: 0; height: clamp(3rem, 8vw, 6rem); pointer-events: none; }
-.journey-stop--book::before { background: linear-gradient(transparent, #fbf8f2); }
-.journey-stop--podcast::before { background: linear-gradient(transparent, #f4eee1); }
+.journey-stop { position: relative; z-index: 3; padding: clamp(5rem, 9vw, 9rem) 0; border-block: 1px solid rgb(198 154 75 / 70%); scroll-margin-top: calc(var(--journey-strip) + var(--journey-header) + 12px); }
 .journey-stop--book { background: linear-gradient(100deg, rgb(251 248 242 / 87%), rgb(251 248 242 / 79%)), url('../assets/aquarell-pergament.webp') center / cover; }
 .journey-stop--podcast { background: linear-gradient(100deg, rgb(244 238 225 / 84%), rgb(251 248 242 / 83%)), url('../assets/aquarell-pergament.webp') right center / cover; }
 .journey-stop__grid { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 7vw, 7rem); align-items: center; }
@@ -123,7 +120,7 @@
 .journey-stop__copy .journey-stop__status { color: #76551f; font-size: .85rem; font-weight: 800; }
 .journey-stop__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
 
-.journey-end { padding: clamp(5rem, 9vw, 9rem) 0; color: #fbf8f2; background: linear-gradient(90deg, rgb(16 58 66 / 87%), rgb(31 76 78 / 72%)), url('../assets/aquarell-nacht.webp') center / cover; }
+.journey-end { padding: clamp(5rem, 9vw, 9rem) 0; border-top: 1px solid rgb(198 154 75 / 70%); color: #fbf8f2; background: linear-gradient(90deg, rgb(16 58 66 / 87%), rgb(31 76 78 / 72%)), url('../assets/aquarell-nacht.webp') center / cover; }
 .journey-end .shell { display: grid; justify-items: start; gap: 1.2rem; }
 .journey-end .section-kicker { color: #f0d9a8; }
 .journey-end h2 { color: #f0d9a8; }

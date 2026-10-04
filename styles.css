@@ -1061,3 +1061,53 @@ input::placeholder, textarea::placeholder { color: #4b6160; opacity: 1; }
 input:not([type="checkbox"]):not([type="radio"]):focus-visible,
 textarea:focus-visible,
 select:focus-visible { outline: 3px solid #76551f; outline-offset: 3px; }
+
+/* Subpages share one uninterrupted paper field instead of restarting the
+   watercolor photograph at every section boundary. */
+.book-page main,
+.podcast-page main,
+.legal-page .legal-main {
+  background: radial-gradient(circle at 4% 8%, rgb(198 154 75 / 8%), transparent 28%),
+    radial-gradient(circle at 96% 62%, rgb(23 71 74 / 7%), transparent 34%),
+    linear-gradient(110deg, #fbf8f2, #f4eee1 54%, #fbf8f2);
+}
+.book-page main > section.page-head,
+.book-page main > section.section:not(.page-cta),
+.podcast-page main > section.page-head,
+.podcast-page main > section.section { background: transparent; }
+.book-page .page-cta,
+.book-page .site-footer,
+.podcast-page .site-footer,
+.legal-page .site-footer { border-top: var(--gold-rule) solid rgb(198 154 75 / 70%); }
+
+.book-metaphors__image {
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+  border: 1px solid rgb(198 154 75 / 28%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.book-metaphors__image img,
+.book-edition__image img { width: 100%; height: 100%; object-fit: cover; }
+.book-edition__image {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid rgb(198 154 75 / 28%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.legal-title .eyebrow {
+  color: var(--accent-strong);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.legal-title::after { width: 82px; height: var(--gold-rule); background: var(--accent); content: ""; }
+.legal-content {
+  background: linear-gradient(115deg, rgb(251 248 242 / 96%), rgb(251 248 242 / 93%)),
+    url('assets/aquarell-pergament.webp') center / cover;
+}
