@@ -907,6 +907,15 @@ h3 {
 .preview-home .site-footer { border-top: 0; }
 .preview-home .site-footer::before { height: 48px; }
 
+@media (max-width: 640px) {
+  .preview-home main > section + section::before,
+  .preview-home main > section:not(:last-child)::after,
+  .preview-home .site-footer::before { height: 24px; }
+  .preview-home .ecosystem { padding-bottom: 2.25rem; }
+  .preview-home .engagement { padding-top: 2.25rem; }
+  .preview-home .engagement__signal { min-height: 320px; }
+}
+
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
