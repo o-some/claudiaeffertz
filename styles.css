@@ -15,7 +15,7 @@
   --radius: 14px;
   --shell: 1240px;
   --header: 78px;
-  --gold-rule: clamp(2px, .12vw, 3px);
+  --gold-rule: 1px;
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
   --sans: "Avenir Next", "Segoe UI", system-ui, sans-serif;
@@ -229,9 +229,9 @@ h3 {
 .hero__connection { position: absolute; inset: auto -1% 2%; width: 102%; height: 38%; overflow: visible; fill: none; stroke-linecap: round; pointer-events: none; -webkit-mask-image: radial-gradient(ellipse 24% 105% at 43% 30%, transparent 0 68%, rgb(0 0 0 / 55%) 78%, #000 90%); mask-image: radial-gradient(ellipse 24% 105% at 43% 30%, transparent 0 68%, rgb(0 0 0 / 55%) 78%, #000 90%); }
 .hero__connection path { vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: center; will-change: transform, opacity; }
 .hero__connection-line { stroke: #dfbd7c; stroke-dasharray: 1; stroke-dashoffset: 1; animation: connection-draw 1.55s var(--ease-out) forwards; }
-.hero__connection-line--far { opacity: .28; stroke-width: 1.8; animation-delay: .22s; }
-.hero__connection-line--main { opacity: .7; stroke-width: 2.5; animation-delay: .28s; }
-.hero__connection-line--near { opacity: .43; stroke-width: 2; animation-delay: .34s; }
+.hero__connection-line--far { opacity: .28; stroke-width: 1; animation-delay: .22s; }
+.hero__connection-line--main { opacity: .7; stroke-width: 1.7; animation-delay: .28s; }
+.hero__connection-line--near { opacity: .43; stroke-width: 1.2; animation-delay: .34s; }
 
 .hero__glass {
   position: absolute;
