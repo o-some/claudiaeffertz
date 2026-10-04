@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'none'; frame-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#F4EEE1">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2317474a'/%3E%3Cpath d='M14 39h36M20 39l6-15 6 15 6-15 6 15' fill='none' stroke='%23dfbd7c' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -13,26 +14,12 @@
     <meta property="og:image" content="../assets/ce-portrait-hero.webp">
     <title>Vorschau | Claudia Effertz – Die Brückenbauerin</title>
     <link rel="preload" href="../assets/ce-portrait-hero.webp" as="image" fetchpriority="high">
-    <link rel="stylesheet" href="styles.css?v=preview-12">
+    <link rel="stylesheet" href="styles.css?v=preview-13">
     <script src="script.js?v=preview-2" defer></script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Claudia Effertz",
-        "jobTitle": "Coach, Speakerin und Autorin",
-        "url": "https://www.claudia-effertz.de",
-        "telephone": "+49 171 8327272",
-        "email": "office@gesundeunternehmen.com",
-        "sameAs": [
-          "https://de.linkedin.com/in/claudia-effertz-0615822a"
-        ]
-      }
-    </script>
   </head>
   <body class="preview-home">
     <a class="skip-link" href="#inhalt">Zum Inhalt</a>
-    <div class="preview-strip"><span>Website-Vorschau · Arbeitsstand</span><a href="../">Aktuelle Website ansehen</a></div>
+    <aside class="preview-strip" aria-label="Vorschaustatus"><span>Website-Vorschau · Arbeitsstand</span><a href="../">Aktuelle Website ansehen</a></aside>
 
     <header class="site-header" data-header>
       <a class="brand" href="#start" aria-label="Claudia Effertz, Startseite">
@@ -77,7 +64,7 @@
               <a class="button button--primary" href="buch/">Buch &amp; Edition entdecken</a>
               <a class="button button--secondary" href="#keynotes">Keynotes entdecken</a>
             </div>
-            <p class="hero__values" aria-label="Klar, authentisch und empathisch"><span>Klar</span><span>Authentisch</span><span>Empathisch</span></p>
+            <p class="hero__values"><span>Klar</span><span>Authentisch</span><span>Empathisch</span></p>
           </div>
           <div class="hero__stage">
             <figure class="hero__media">
@@ -217,7 +204,7 @@
           </header>
           <div class="testimonials__grid">
             <article class="testimonials__featured" data-reveal>
-              <div class="testimonials__rating" aria-label="5 von 5 Sternen"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>5,0 / 5</span></div>
+              <div class="testimonials__rating"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>5,0 / 5</span></div>
               <span class="testimonials__label">Persönliches Feedback an Claudia</span>
               <blockquote>
                 <p>Liebe Claudia, dass ist ja genial. Wo kann man denn dein Buch kaufen?</p>
@@ -226,7 +213,7 @@
               <span class="testimonials__source">Direkte Rückmeldung · ohne Namensnennung</span>
             </article>
             <article class="testimonials__featured testimonials__featured--markus" data-reveal>
-              <div class="testimonials__rating" aria-label="5 von 5 Sternen"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>5,0 / 5</span></div>
+              <div class="testimonials__rating"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>5,0 / 5</span></div>
               <span class="testimonials__label">Stimme aus der Zusammenarbeit</span>
               <blockquote>
                 <p>Claudia Effertz steht als erfahrene Krisenmanagerin Menschen und Unternehmen gerade dann zur Seite, wenn es schwierig wird – mit einem offenen Ohr, viel Empathie, menschlicher Wärme und der Erfahrung, gemeinsam wieder Klarheit, Halt und Zuversicht zu finden.</p>
@@ -234,23 +221,24 @@
               <span class="testimonials__source">Markus Riebel · Unternehmer</span>
             </article>
           </div>
-          <div class="testimonials__drafts" aria-label="Drei Beispieltexte für spätere echte Testimonials">
+          <div class="testimonials__drafts">
             <article class="testimonials__draft" data-reveal>
-              <div class="testimonials__rating testimonials__rating--sample" aria-label="Beispiel für fünf Sterne, keine echte Bewertung"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>Muster</span></div>
-              <span class="testimonials__label">Beispieltext · noch keine Bewertung</span>
-              <blockquote><p>Die Bilder bleiben im Kopf und helfen mir, Führungssituationen mit mehr Abstand und Klarheit zu betrachten.</p></blockquote>
+              <span class="testimonials__label">Zum ersten Bucheindruck</span>
+              <blockquote><p>So schöne Bilder und ich würde mich am liebsten direkt hinsetzen und alles lesen.</p></blockquote>
+              <span class="testimonials__source">Persönliche Rückmeldung · anonymisiert</span>
             </article>
             <article class="testimonials__draft" data-reveal>
-              <div class="testimonials__rating testimonials__rating--sample" aria-label="Beispiel für fünf Sterne, keine echte Bewertung"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>Muster</span></div>
-              <span class="testimonials__label">Beispieltext · noch keine Bewertung</span>
-              <blockquote><p>Claudia spricht Dinge klar an und schafft gleichzeitig Raum für neue Perspektiven.</p></blockquote>
+              <span class="testimonials__label">Zur Wirkung der Lektüre</span>
+              <blockquote><p>Ich habe sofort einige Ideen mitgenommen, die am Mittwoch sicher zum Einsatz kommen!</p></blockquote>
+              <span class="testimonials__source">Persönliche Rückmeldung · anonymisiert</span>
             </article>
             <article class="testimonials__draft" data-reveal>
-              <div class="testimonials__rating testimonials__rating--sample" aria-label="Beispiel für fünf Sterne, keine echte Bewertung"><span class="testimonials__stars" aria-hidden="true">★★★★★</span><span>Muster</span></div>
-              <span class="testimonials__label">Beispieltext · noch keine Bewertung</span>
-              <blockquote><p>Aus einem schwierigen Thema wurde ein verständlicher nächster Schritt.</p></blockquote>
+              <span class="testimonials__label">Zu den Reflexionsfragen</span>
+              <blockquote><p>Ich fand die Reflexionsfragen am Ende jedes Kapitels auch sehr hilfreich.</p></blockquote>
+              <span class="testimonials__source">Persönliche Rückmeldung · anonymisiert</span>
             </article>
           </div>
+          <p class="testimonials__note">Aus persönlichen Rückmeldungen ausgewählt. Sterne werden nur bei ausdrücklich vergebenen Bewertungen gezeigt.</p>
         </div>
       </section>
 
@@ -264,7 +252,7 @@
             <article>
               <h3>Führungsausbildung</h3>
               <p>Selbstführung, Zusammenarbeit und Veränderung mit einer klaren Haltung verbinden.</p>
-              <a class="text-link" href="https://top-fuehrungsausbildung.de">Führungsausbildung kennenlernen</a>
+              <a class="text-link" href="#kontakt">Führungsausbildung anfragen</a>
             </article>
             <article>
               <h3>Systemische Coachingausbildung</h3>
@@ -300,10 +288,10 @@
             <p>Persönliche Begleitung, Umsetzung und Qualifizierung greifen ineinander.</p>
           </header>
           <div class="ecosystem__grid">
-            <a href="#start" data-reveal><strong>claudia-effertz.de</strong><span>Expertise, Speaking, Coaching, Buch, Podcast und gesellschaftliche Wirkung.</span></a>
-            <a href="https://gesundeunternehmen.com" data-reveal><strong>gesundeunternehmen.com</strong><span>Projektentwicklung und ein qualitätsgesichertes Umsetzungsnetzwerk.</span></a>
+            <a href="#start" data-reveal><strong>Claudia Effertz</strong><span>Expertise, Speaking, Coaching, Buch, Podcast und gesellschaftliche Wirkung.</span></a>
+            <a href="https://www.gesundeunternehmen.com" data-reveal><strong>gesundeunternehmen.com</strong><span>Projektentwicklung und ein qualitätsgesichertes Umsetzungsnetzwerk.</span></a>
             <a href="https://top-coachingausbildung.de" data-reveal><strong>top-coachingausbildung.de</strong><span>Systemische Coachingausbildung, Vertiefung, Supervision und Alumni.</span></a>
-            <a href="https://top-fuehrungsausbildung.de" data-reveal><strong>top-fuehrungsausbildung.de</strong><span>Fundierte Führungsbasis, Intensivmodule und kontinuierliche Entwicklung.</span></a>
+            <a href="#kontakt" data-reveal><strong>Führungsausbildung</strong><span>Fundierte Führungsbasis, Intensivmodule und kontinuierliche Entwicklung – derzeit über Claudia anfragen.</span></a>
           </div>
         </div>
       </section>
@@ -362,7 +350,7 @@
             <strong>Claudia Effertz</strong>
             <span>Coach | Speakerin | Autorin</span>
             <a href="tel:+491718327272">0171 832 72 72</a>
-            <a href="https://www.claudia-effertz.de">www.claudia-effertz.de</a>
+            <a href="mailto:office@gesundeunternehmen.com">office@gesundeunternehmen.com</a>
             <a class="button button--primary" href="tel:+491718327272">Gespräch beginnen</a>
           </address>
         </div>
