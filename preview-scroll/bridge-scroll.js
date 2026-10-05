@@ -29,6 +29,11 @@
     };
 
     video.addEventListener('loadedmetadata', () => {
+      if (state.failed && !reduceMotion.matches) {
+        state.failed = false;
+        section.classList.remove('is-static-fallback');
+        section.classList.add('is-scroll-enabled');
+      }
       state.loaded = true;
       seekToLatest();
     });
@@ -70,7 +75,6 @@
   }, { rootMargin: '100% 0px' });
 
   states.forEach(({ section }) => loadNear.observe(section));
-  addEventListener('scroll', schedule, { passive: true });
   addEventListener('resize', schedule);
   narrowScreen.addEventListener('change', () => {
     for (const state of states) {
@@ -83,6 +87,32 @@
     }
     schedule();
   });
+  let wasSuspended = false;
+  const recoverAfterSuspend = (retryFailed = false) => {
+    if ((!wasSuspended && !(retryFailed && states.some((state) => state.failed))) || document.hidden || reduceMotion.matches) return;
+    wasSuspended = false;
+    for (const state of states) {
+      if (!state.video.src) continue;
+      state.failed = false;
+      state.loaded = false;
+      state.section.classList.remove('is-static-fallback', 'is-video-ready');
+      state.section.classList.add('is-scroll-enabled');
+      state.video.load();
+    }
+    schedule();
+  };
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) wasSuspended = true;
+    else recoverAfterSuspend();
+  });
+  addEventListener('pagehide', () => { wasSuspended = true; });
+  addEventListener('pageshow', (event) => {
+    if (event.persisted) wasSuspended = true;
+    recoverAfterSuspend(true);
+  });
+  addEventListener('blur', () => { wasSuspended = true; });
+  addEventListener('focus', () => recoverAfterSuspend(true));
+  addEventListener('scroll', () => { recoverAfterSuspend(); schedule(); }, { passive: true });
   reduceMotion.addEventListener('change', () => {
     if (reduceMotion.matches) {
       for (const state of states) {

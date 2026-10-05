@@ -23,8 +23,8 @@
 .site-home main > .bridge-journey::after { content: none; }
 
 .site-home main > .bridge-journey.is-scroll-enabled {
-  height: calc(var(--journey-height) + 100vh);
-  height: calc(var(--journey-height) + 100dvh);
+  height: calc(var(--journey-height) + 175vh);
+  height: calc(var(--journey-height) + 175dvh);
   padding: 0;
 }
 
