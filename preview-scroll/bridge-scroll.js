@@ -3,6 +3,12 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const narrowScreen = matchMedia('(max-width: 700px)');
   if (!journeys.length || reduceMotion.matches || navigator.connection?.saveData || !('IntersectionObserver' in window)) return;
+  const filenames = {
+    '00': '00_zur_qualifikation',
+    '01': '01_zum_buch',
+    '02': '02_zum_podcast',
+    '03': '03_vor_kontakt'
+  };
 
   const clamp = (value) => Math.max(0, Math.min(1, value));
   const states = journeys.map((section) => {
@@ -39,11 +45,10 @@
   let frame = 0;
   const update = () => {
     frame = 0;
-    const header = document.querySelector('[data-header]')?.getBoundingClientRect().height || 72;
     for (const state of states) {
       const rect = state.section.getBoundingClientRect();
       const travel = Math.max(1, state.section.offsetHeight - state.stage.offsetHeight);
-      state.progress = clamp((header + 10 - rect.top) / travel);
+      state.progress = clamp(-rect.top / travel);
       if (rect.bottom < 0 || rect.top > innerHeight) continue;
       state.seekToLatest();
     }
@@ -56,7 +61,7 @@
       const state = states.find(({ section }) => section === entry.target);
       if (!state || state.video.src) continue;
       const size = narrowScreen.matches ? 'mobil' : 'desktop';
-      state.video.src = `media/${size}/${state.section.dataset.clip}_${state.section.dataset.clip === '03' ? 'vor_kontakt' : state.section.dataset.clip === '02' ? 'zum_podcast' : 'zum_buch'}.mp4`;
+      state.video.src = `media/${size}/${filenames[state.section.dataset.clip]}.mp4`;
       state.video.preload = 'auto';
       state.video.load();
       loadNear.unobserve(entry.target);
@@ -72,7 +77,7 @@
       state.loaded = false;
       state.section.classList.remove('is-video-ready');
       const size = narrowScreen.matches ? 'mobil' : 'desktop';
-      state.video.src = `media/${size}/${state.video.src.split('/').pop()}`;
+      state.video.src = `media/${size}/${filenames[state.section.dataset.clip]}.mp4`;
       state.video.load();
     }
     schedule();

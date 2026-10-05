@@ -13,41 +13,39 @@
 .preview-ribbon a { color: inherit; text-underline-offset: .18em; }
 
 .site-home main > .bridge-journey {
-  --journey-height: min(780px, calc(100svh - var(--header) - 20px));
-  padding: 28px 0;
-  background: #f4eee1 url('../assets/aquarell-pergament.webp') center / cover;
+  --journey-height: 100vh;
+  --journey-height: 100dvh;
+  padding: 0;
+  background: #17474a;
 }
 
 .site-home main > .bridge-journey::before,
 .site-home main > .bridge-journey::after { content: none; }
 
 .site-home main > .bridge-journey.is-scroll-enabled {
-  height: calc(var(--journey-height) + 105svh);
+  height: calc(var(--journey-height) + 100vh);
+  height: calc(var(--journey-height) + 100dvh);
   padding: 0;
 }
 
 .site-home main > .bridge-journey.is-static-fallback {
   height: auto;
-  padding: 28px 0;
+  padding: 0;
 }
 
 .is-static-fallback .bridge-journey__stage { position: relative; top: auto; }
-.is-static-fallback .bridge-journey__hint { display: none; }
 
 .bridge-journey__stage {
   position: relative;
-  width: min(1440px, calc(100% - 32px));
+  width: 100%;
   height: var(--journey-height);
-  margin-inline: auto;
   overflow: hidden;
-  border-radius: 18px;
   background: #17474a;
-  box-shadow: 0 22px 60px rgb(23 71 74 / 18%);
 }
 
 .is-scroll-enabled .bridge-journey__stage {
   position: sticky;
-  top: calc(var(--header) + 10px);
+  top: 0;
 }
 
 .bridge-journey__poster,
@@ -67,37 +65,23 @@
 
 .bridge-journey__shade {
   background:
-    linear-gradient(180deg, rgb(244 238 225 / 46%), transparent 17%, transparent 70%, rgb(10 47 52 / 54%) 100%),
-    linear-gradient(90deg, rgb(10 47 52 / 30%), transparent 65%);
+    linear-gradient(180deg, rgb(244 238 225 / 24%), transparent 15%, transparent 55%, rgb(10 47 52 / 76%) 100%),
+    linear-gradient(90deg, rgb(10 47 52 / 22%), transparent 70%);
   pointer-events: none;
 }
 
 .bridge-journey__copy {
   position: absolute !important;
-  inset: auto 0 clamp(24px, 5vw, 64px);
+  inset: auto 0 clamp(44px, 7vh, 88px);
+  inset: auto 0 clamp(44px, 7dvh, 88px);
   z-index: 2;
   display: grid;
   justify-items: start;
-  gap: .5rem;
   color: #fbf8f2;
   text-shadow: 0 2px 18px rgb(8 37 42 / 65%);
   pointer-events: none;
 }
 
-.bridge-journey__step,
-.bridge-journey__hint {
-  font-size: .75rem;
-  font-weight: 750;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-}
-
-.bridge-journey__step {
-  padding: .2rem .5rem;
-  border-radius: 4px;
-  color: #f4d79c;
-  background: rgb(10 47 52 / 76%);
-}
 .bridge-journey__copy p {
   max-width: 16ch;
   color: inherit;
@@ -107,38 +91,30 @@
   text-wrap: balance;
 }
 
-.bridge-journey__hint {
-  display: none;
-  margin-top: .75rem;
-  padding-top: .35rem;
-  border-top: 1px solid #e6c583;
+.bridge-journey__copy p::after {
+  display: block;
+  width: clamp(110px, 12vw, 170px);
+  height: 2px;
+  margin-top: 1.25rem;
+  background: #e6c583;
+  content: "";
 }
-
-.is-scroll-enabled .bridge-journey__hint { display: block; }
 
 @media (max-width: 700px) {
   .preview-ribbon { align-items: center; font-size: .69rem; line-height: 1.25; }
   .preview-ribbon span { max-width: 13ch; }
   .preview-ribbon a { max-width: 17ch; text-align: right; }
 
-  .site-home main > .bridge-journey { --journey-height: min(78svh, 680px); padding: 18px 0; }
-  .site-home main > .bridge-journey.is-scroll-enabled {
-    height: calc(var(--journey-height) + 85svh);
-    padding: 0;
-  }
-  .bridge-journey__stage { width: calc(100% - 20px); border-radius: 14px; }
-  .is-scroll-enabled .bridge-journey__stage { top: calc(var(--header) + 6px); }
-  .bridge-journey__copy { bottom: 28px; width: calc(100% - 56px); }
+  .bridge-journey__copy { bottom: max(48px, calc(env(safe-area-inset-bottom) + 24px)); width: calc(100% - 48px); }
   .bridge-journey__copy p { max-width: 14ch; font-size: clamp(2rem, 8vw, 3.15rem); }
   .bridge-journey__shade {
-    background: linear-gradient(180deg, rgb(244 238 225 / 25%), transparent 18%, transparent 59%, rgb(9 41 47 / 73%) 100%);
+    background: linear-gradient(180deg, rgb(244 238 225 / 15%), transparent 16%, transparent 48%, rgb(9 41 47 / 82%) 100%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-home main > .bridge-journey.is-scroll-enabled { height: auto; padding: 18px 0; }
+  .site-home main > .bridge-journey.is-scroll-enabled { height: auto; padding: 0; }
   .bridge-journey__stage,
   .is-scroll-enabled .bridge-journey__stage { position: relative; top: auto; }
   .bridge-journey__video { display: none; }
-  .bridge-journey__hint { display: none !important; }
 }
