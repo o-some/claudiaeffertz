@@ -3,6 +3,7 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const narrowScreen = matchMedia('(max-width: 700px)');
   if (!journeys.length || reduceMotion.matches || navigator.connection?.saveData || !('IntersectionObserver' in window)) return;
+  const mediaBase = new URL('media/', document.currentScript.src);
   const filenames = {
     '00': '00_zur_qualifikation',
     '01': '01_zum_buch',
@@ -61,7 +62,7 @@
       const state = states.find(({ section }) => section === entry.target);
       if (!state || state.video.src) continue;
       const size = narrowScreen.matches ? 'mobil' : 'desktop';
-      state.video.src = `media/${size}/${filenames[state.section.dataset.clip]}.mp4`;
+      state.video.src = new URL(`${size}/${filenames[state.section.dataset.clip]}.mp4`, mediaBase).href;
       state.video.preload = 'auto';
       state.video.load();
       loadNear.unobserve(entry.target);
@@ -77,7 +78,7 @@
       state.loaded = false;
       state.section.classList.remove('is-video-ready');
       const size = narrowScreen.matches ? 'mobil' : 'desktop';
-      state.video.src = `media/${size}/${filenames[state.section.dataset.clip]}.mp4`;
+      state.video.src = new URL(`${size}/${filenames[state.section.dataset.clip]}.mp4`, mediaBase).href;
       state.video.load();
     }
     schedule();
