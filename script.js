@@ -125,6 +125,69 @@
     item.textContent = new Date().getFullYear();
   });
 
+  document.querySelectorAll('[data-interview]').forEach((figure) => {
+    const video = figure.querySelector('video');
+    const playButton = figure.querySelector('[data-video-play]');
+    if (!video || !playButton) return;
+    video.controls = false;
+    playButton.hidden = false;
+    playButton.addEventListener('click', async () => {
+      video.controls = true;
+      playButton.hidden = true;
+      try {
+        await video.play();
+      } catch {
+        video.controls = false;
+        playButton.hidden = false;
+      }
+    });
+    video.addEventListener('play', () => figure.classList.add('is-playing'));
+    video.addEventListener('pause', () => figure.classList.remove('is-playing'));
+  });
+
+  const audioPlayer = document.querySelector('[data-audio-player]');
+  if (audioPlayer) {
+    const audio = audioPlayer.querySelector('audio');
+    const ui = audioPlayer.querySelector('[data-audio-ui]');
+    const toggle = audioPlayer.querySelector('[data-audio-toggle]');
+    const seek = audioPlayer.querySelector('[data-audio-seek]');
+    const mute = audioPlayer.querySelector('[data-audio-mute]');
+    const current = audioPlayer.querySelector('[data-audio-current]');
+    const duration = audioPlayer.querySelector('[data-audio-duration]');
+    if (audio && ui && toggle && seek && mute && current && duration && audio.canPlayType('audio/mpeg')) {
+      const formatTime = (seconds) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
+      const sync = () => {
+        const total = Number.isFinite(audio.duration) ? audio.duration : 304;
+        seek.disabled = audio.readyState < 1;
+        seek.max = String(total);
+        seek.value = String(Math.min(audio.currentTime, total));
+        seek.style.setProperty('--audio-progress', `${(audio.currentTime / total) * 100}%`);
+        current.textContent = formatTime(audio.currentTime);
+        duration.textContent = formatTime(Math.ceil(total));
+        seek.setAttribute('aria-valuetext', `${current.textContent} von ${duration.textContent}`);
+        audioPlayer.classList.toggle('is-playing', !audio.paused);
+        toggle.setAttribute('aria-label', audio.paused ? 'Podcast-Folge abspielen' : 'Podcast-Folge pausieren');
+        mute.setAttribute('aria-pressed', String(audio.muted));
+        mute.setAttribute('aria-label', audio.muted ? 'Ton einschalten' : 'Ton stummschalten');
+      };
+      audio.controls = false;
+      ui.hidden = false;
+      toggle.addEventListener('click', async () => {
+        if (!audio.paused) return audio.pause();
+        try {
+          await audio.play();
+        } catch {
+          audio.controls = true;
+          ui.hidden = true;
+        }
+      });
+      mute.addEventListener('click', () => { audio.muted = !audio.muted; sync(); });
+      seek.addEventListener('input', () => { if (audio.readyState >= 1) audio.currentTime = Number(seek.value); sync(); });
+      ['loadedmetadata', 'timeupdate', 'play', 'pause', 'ended'].forEach((event) => audio.addEventListener(event, sync));
+      sync();
+    }
+  }
+
   const header = document.querySelector('[data-header]');
   if (header) {
     let headerFrame;
