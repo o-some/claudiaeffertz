@@ -755,8 +755,11 @@ h3 {
 .keynote-intro { display: grid; align-content: start; justify-items: start; gap: 1.25rem; }
 .keynote-intro h2 { max-width: 14ch; }
 .keynote-intro p { color: var(--muted); max-width: 50ch; }
-.keynote-intro__image { width: min(100%, 520px); margin-top: 1rem; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid rgb(229 193 125 / 35%); border-radius: var(--radius); box-shadow: 0 20px 50px rgb(0 0 0 / 18%); }
-.keynote-intro__image img { width: 100%; height: 100%; object-fit: cover; }
+.keynote-intro__image { width: min(100%, 520px); margin-top: 1rem; overflow: hidden; border: 1px solid rgb(229 193 125 / 35%); border-radius: var(--radius); box-shadow: 0 20px 50px rgb(0 0 0 / 18%); }
+.keynote-intro__image video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #103940; }
+.keynote-intro__image figcaption { padding: .65rem 1rem; color: var(--surface); background: #17474a; font-size: .85rem; }
+.podcast-player { align-self: start; padding: clamp(1.25rem, 3vw, 2.25rem); border: 1px solid rgb(198 154 75 / 45%); border-radius: var(--radius); background: linear-gradient(110deg, rgb(251 248 242 / 90%), rgb(244 238 225 / 80%)), url('assets/aquarell-pergament.webp') center / cover; box-shadow: var(--shadow); }
+.podcast-player audio { display: block; width: 100%; min-width: 0; margin-top: 1.25rem; }
 .keynote-topics { border-top: 1px solid var(--line); }
 .keynote-topics article { display: grid; grid-template-columns: 2.5rem 1fr; gap: 1rem; padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
 .keynote-topics article > span { color: var(--accent-strong); font-size: .8rem; font-weight: 800; }
